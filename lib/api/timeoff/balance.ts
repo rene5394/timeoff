@@ -11,7 +11,7 @@ export const findAllBalance = async() => {
 
 export const findOneBalance = async(id: number) => {
     const url = `${Api.TIMEOFF}/balances/${id}`;
-    const result = await axios.get<IBalance[]>(url);
+    const result = await axios.get<IBalance>(url);
 
     return result.data
 };
