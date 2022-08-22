@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as React from 'react';
 import { Api } from '../../../common/constants/api';
 import { findOneBalance } from '../../../lib/api/timeoff/balance';
@@ -23,8 +22,8 @@ export const MyBalance = () => {
       {balances.map((balance) => {
         return (
           <div className="row">
-            <InfoCard title={'Comp days'} text={String(balance.compDays)} borderColorClass={'border-start border-success'}></InfoCard>
-            <InfoCard title={'Vacations'} text={String(balance.vacationDays)} borderColorClass={'border-start border-success'}></InfoCard>
+            <InfoCard title={'Comp days'} text={String(balance.comp_Days)} borderColorClass={'border-start border-success'}></InfoCard>
+            <InfoCard title={'Vacations'} text={String(balance.vacation_Days)} borderColorClass={'border-start border-success'}></InfoCard>
           </div>
         )
       })}
