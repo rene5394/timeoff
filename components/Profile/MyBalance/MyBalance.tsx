@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { log } from 'console';
 import * as React from 'react';
 import { Api } from '../../../common/constants/api';
 import { findOneBalance } from '../../../lib/api/timeoff/balance';
@@ -7,27 +8,28 @@ import { InfoCard } from '../InfoCard';
 import styles from './BalanceTable.module.css';
 
 export const MyBalance = () => {
-  const [balances, setBalances] = React.useState<IBalance[]>([]);
+  const [balance, setBalance] = React.useState<IBalance>();
 
   React.useEffect(() => {
     const fillBalanceCards = async() => {
       const result = await findOneBalance(1);
-      setBalances(result);
+      setBalance(result);
     };
     fillBalanceCards();
   }, [])
-  
+
+  if (!balance) {
+    return (
+      <div className="row">
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
   return (
-    <div className="row">
-      {balances.length === 0 && <span>Loading...</span>}
-      {balances.map((balance) => {
-        return (
-          <div className="row">
-            <InfoCard title={'Comp days'} text={String(balance.compDays)} borderColorClass={'border-start border-success'}></InfoCard>
-            <InfoCard title={'Vacations'} text={String(balance.vacationDays)} borderColorClass={'border-start border-success'}></InfoCard>
-          </div>
-        )
-      })}
-    </div>
+      <div className="row">
+        <InfoCard title={'Comp days'} text={String(balance?.compDays)} borderColorClass={'border-start border-success'}></InfoCard>
+        <InfoCard title={'Vacations'} text={String(balance?.vacationDays)} borderColorClass={'border-start border-success'}></InfoCard>
+      </div>
   );
 };
