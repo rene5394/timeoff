@@ -18,18 +18,18 @@ export const MyBalance = () => {
     fillBalanceCards();
   }, [])
 
-  if (!balance) {
+  if (balance) {
     return (
       <div className="row">
-        <span>Loading...</span>
+        <InfoCard title={'Comp days'} text={String(balance.compDays)} borderColorClass={'border-start border-success'}></InfoCard>
+        <InfoCard title={'Vacations'} text={String(balance.vacationDays)} borderColorClass={'border-start border-success'}></InfoCard>
       </div>
     );
   }
 
   return (
-      <div className="row">
-        <InfoCard title={'Comp days'} text={String(balance?.compDays)} borderColorClass={'border-start border-success'}></InfoCard>
-        <InfoCard title={'Vacations'} text={String(balance?.vacationDays)} borderColorClass={'border-start border-success'}></InfoCard>
-      </div>
+    <div className="row">
+      <span>Loading...</span>
+    </div>
   );
 };
