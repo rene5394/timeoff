@@ -21,8 +21,8 @@ export const MyBalance = () => {
   if (balance) {
     return (
       <div className="row">
-        <InfoCard title={'Comp days'} text={String(balance.compDays)} borderColorClass={'border-start border-success'}></InfoCard>
-        <InfoCard title={'Vacations'} text={String(balance.vacationDays)} borderColorClass={'border-start border-success'}></InfoCard>
+        <InfoCard title={'Comp days'} text={String(balance.comp_Days)} borderColorClass={'border-start border-success'}></InfoCard>
+        <InfoCard title={'Vacations'} text={String(balance.vacation_Days)} borderColorClass={'border-start border-success'}></InfoCard>
       </div>
     );
   }
