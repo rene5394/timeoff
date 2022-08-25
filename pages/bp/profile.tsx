@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { MyBalance } from '../../components/Profile/MyBalance'
 import { PersonalDetails } from '../../components/Profile/PersonalDetails'
 import { NavHeader } from '../../components/Layout/NavHeader'
+import { SideBar } from '../../components/Layout/Sidebar'
 
 const Profile: NextPage = () => {
   return (
@@ -13,10 +14,15 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader></NavHeader>
-      <div className='container'>
-        <PersonalDetails/>
-        <MyBalance/>
+      <div className='body row'>
+        <SideBar/>
+        <div className='content col-sm-8'>
+          
+          <PersonalDetails/>
+          <MyBalance/>
+        </div>
       </div>
+      
     </div>
   )
 }

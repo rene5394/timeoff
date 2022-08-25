@@ -6,8 +6,8 @@ import { Avatar } from './Avatar/Avatar';
 export const NavHeader = () => {
     return (
         
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container">
             <a href="#" className="navbar-brand">
             <Image src="/assets/img/uam.png" alt="Vercel Logo" width={60} height={20} className="d-inline-block align-text-top"/>
             </a>
@@ -23,14 +23,14 @@ export const NavHeader = () => {
                     <a className="nav-link" href="#">
                         <Image src='/assets/icons/papernews.png' alt="news" width={15} height={15} />
                     </a>
-                  <div className="nav-item dropdown">
-                    <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                      <Avatar />
+                  <div className="nav-item dropdown row">
+                    <Avatar />
+                    <a href="#" className="nav-link dropdown-toggle col" data-bs-toggle="dropdown">
+                    Carlos Rodriguez
                     </a>
                     <div className="dropdown-menu">
-                        <a href="#" className="dropdown-item">Inbox</a>
-                        <a href="#" className="dropdown-item">Sent</a>
-                        <a href="#" className="dropdown-item">Drafts</a>
+                        
+                        <a href="#" className="dropdown-item">Log Out</a>
                     </div>
                 </div>
                 </div>
