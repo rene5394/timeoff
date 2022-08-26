@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Api } from "../../../common/constants/api";
-import { IBalance } from '../../../lib/domain/timeoff/IBalance';
+import { IBalance } from '../../domain/timeoff/IBalance';
 
 export const findAllBalance = async() => {
     const url = `${Api.TIMEOFF}/balances`;
