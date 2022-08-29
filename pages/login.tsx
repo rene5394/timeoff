@@ -1,6 +1,6 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { LoginForm } from '../components/Login'
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { LoginForm } from '../components/Login';
 
 const Login: NextPage = () => {
   return (
@@ -15,7 +15,7 @@ const Login: NextPage = () => {
             <div className="row">
               <div className="col mb-5">
                 <figure>
-                  <img src="https://app.uassistme.com/img/common/logo.png" alt="" className="d-block img-fluid mx-auto" />
+                  <img src="/assets/img/uam.png" alt="" className="d-block img-fluid mx-auto" />
                 </figure>
               </div>
             </div>
