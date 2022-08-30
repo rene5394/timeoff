@@ -2,23 +2,28 @@ import axios from "axios";
 import { Api } from "../../../common/constants/api";
 import { IBalance } from '../../domain/timeoff/IBalance';
 
-export const findAllBalance = async() => {
-    const url = `${Api.TIMEOFF}/balances`;
-    const result = await axios.get<IBalance[]>(url);
+const instance = axios.create({
+  baseURL: `${Api.TIMEOFF}`,
+  withCredentials: true
+});
 
-    return result.data
+export const findAllBalance = async() => {
+  const url = '/balances';
+  const result = await instance.get<IBalance[]>(url);
+
+  return result.data;
 };
 
 export const findOneBalance = async(id: number) => {
-    const url = `${Api.TIMEOFF}/balances/${id}`;
-    const result = await axios.get<IBalance>(url);
+  const url = `/balances/${id}`;
+  const result = await instance.get<IBalance>(url);
 
-    return result.data
+  return result.data;
 };
 
-export const findMyBalance = async(id: number) => {
-    const url = `${Api.TIMEOFF}/balance/`;
-    const result = await axios.get(url);
+export const findOneByUserJWT = async(id: number) => {
+  const url = '/balances/user/me';
+  const result = await instance.get<IBalance>(url);
 
-    return result.data
+  return result.data;
 };
