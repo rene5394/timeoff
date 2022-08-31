@@ -6,7 +6,7 @@ import { Avatar } from './Avatar/Avatar';
 export const NavHeader = () => {
     return (
         
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg">
         <div className="container">
             <a href="#" className="navbar-brand">
             <Image src="/assets/img/uam.png" alt="Vercel Logo" width={60} height={20} className="d-inline-block align-text-top"/>
