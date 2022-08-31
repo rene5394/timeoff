@@ -1,0 +1,21 @@
+.banner{
+  background-image: url('/assets/img/UAM-BG.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+  width: 103.5%;
+  margin-left: -13px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+.ProfilePic{
+  margin-top: 6%;
+  border: solid;
+  border-radius: 50%;
+  border-color: white;
+  border-width: 2px;
+  margin-left: 5%;
+  display: flexbox;
+}
