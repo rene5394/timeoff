@@ -7,6 +7,7 @@ import { SideBar } from '../../components/Layout/Sidebar'
 import { Banner } from '../../components/Profile/Banner/Banner'
 
 
+
 const Profile: NextPage = () => {
   return (
     <div className='container'>
@@ -21,7 +22,6 @@ const Profile: NextPage = () => {
         <div className='content col-8'>
           <Banner />
           <PersonalDetails/>
-          <MyBalance/>
         </div>
       </div>
       

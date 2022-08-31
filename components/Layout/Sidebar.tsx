@@ -24,6 +24,7 @@ export const SideBar = () => {
             <FontAwesomeIcon icon={['fas', 'calendar']} /> Calendar
           </a>
         </Link>
+
         </li>
         <li className="list-group-item">
           <FontAwesomeIcon icon={['fas', 'sun']} /> Time Off Request

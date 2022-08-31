@@ -22,7 +22,6 @@ nav{
 }
 .content{
   background-color: #fff;
-  
   border-radius: 33px;
   box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.07);
   -webkit-box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.07);
@@ -31,4 +30,5 @@ nav{
 .rbc-btn-group>button{
   background-color: #FCC025 !important;
   color: #fff !important;
+
 }
