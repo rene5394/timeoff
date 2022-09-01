@@ -27,7 +27,12 @@ export const SideBar = () => {
 
         </li>
         <li className="list-group-item">
-          <FontAwesomeIcon icon={['fas', 'sun']} /> Time Off Request
+          <Link href={'./TimeOffRequest'} >
+            <a>
+              <FontAwesomeIcon icon={['fas', 'sun']} /> Time Off Request
+            </a>
+          </Link>
+          
         </li>
         <li className="list-group-item">
           <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Time Off Summary
@@ -37,7 +42,6 @@ export const SideBar = () => {
         </li>
       </ul>
     </div>
-    <div className='col-1'></div>
     </>
   );
 }

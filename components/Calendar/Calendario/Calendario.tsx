@@ -66,7 +66,6 @@ export const Calendario = () =>{
         resources={resourceMap}
         resourceIdAccessor="resourceId"
         resourceTitleAccessor="resourceTitle"
-        AllDay="true"
       />
     </div>
     
