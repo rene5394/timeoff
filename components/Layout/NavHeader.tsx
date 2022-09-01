@@ -9,7 +9,7 @@ export const NavHeader = () => {
       <nav className="navbar navbar-expand-lg">
         <div className="container">
             <a href="#" className="navbar-brand">
-            <Image src="/assets/img/uam.png" alt="Vercel Logo" width={60} height={20} className="d-inline-block align-text-top"/>
+            <Image src="/assets/img/uam.png" alt="Vercel Logo" width={60} height={30} className="d-inline-block align-text-top"/>
             </a>
             <button type="button" className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span className="navbar-toggler-icon"></span>

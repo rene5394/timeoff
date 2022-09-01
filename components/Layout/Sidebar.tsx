@@ -11,16 +11,15 @@ export const SideBar = () => {
       <ul className="list-group list-group-flush">
         <li className="list-group-item Active">
         <Link href={'./profile'} >
-          <a>
+          <a className='LinkItem'>
             <FontAwesomeIcon icon={["fas", "user"]} /> Profile
           </a>
         </Link>
         
         </li>
         <li className="list-group-item">
-          
           <Link href={'./Calendar'} >
-          <a>
+          <a className='LinkItem'>
             <FontAwesomeIcon icon={['fas', 'calendar']} /> Calendar
           </a>
         </Link>
@@ -28,14 +27,18 @@ export const SideBar = () => {
         </li>
         <li className="list-group-item">
           <Link href={'./TimeOffRequest'} >
-            <a>
+            <a className='LinkItem'>
               <FontAwesomeIcon icon={['fas', 'sun']} /> Time Off Request
             </a>
           </Link>
-          
         </li>
+        
         <li className="list-group-item">
-          <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Time Off Summary
+          <Link href={'./TimeOffSummary'} >
+            <a className='LinkItem'>
+              <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Time Off Summary
+            </a>
+          </Link>
         </li>
         <li className="list-group-item">
           

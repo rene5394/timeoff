@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { MyBalance } from '../../components/Profile/MyBalance'
 import { PersonalDetails } from '../../components/Profile/PersonalDetails'
 import { NavHeader } from '../../components/Layout/NavHeader'
 import { SideBar } from '../../components/Layout/Sidebar'
