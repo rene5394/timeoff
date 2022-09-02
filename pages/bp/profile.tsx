@@ -4,6 +4,7 @@ import { PersonalDetails } from '../../components/Profile/PersonalDetails'
 import { NavHeader } from '../../components/Layout/NavHeader'
 import { SideBar } from '../../components/Layout/Sidebar'
 import { Banner } from '../../components/Profile/Banner/Banner'
+import { MyBalance } from '../../components/Profile/MyBalance'
 
 
 
@@ -21,6 +22,7 @@ const Profile: NextPage = () => {
         <div className='content col-8'>
           <Banner />
           <PersonalDetails/>
+          <MyBalance />
         </div>
       </div>
       
