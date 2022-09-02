@@ -1,14 +1,28 @@
 import * as React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Styles from './Balance.module.css';
+import { IBalance } from '../../../lib/domain/timeoff/IBalance';
+import { IRequest } from '../../../lib/domain/timeoff/IRequest';
+import { findAllRequestByUserJWT } from '../../../lib/api/timeoff/request';
+
 
 export const Balance = () =>{
+  React.useEffect(()=>{
+    const CountRequests = async() =>{
+      const result = await findAllRequestByUserJWT();
+      return Object.keys(result).length;
+    }
+    CountRequests()
+  });
+
   return(
     <div className="col-4">
       <div>
         <h3 className={Styles.title}>Overview</h3>
         <p>Quick Stats and Balances</p>
         <br />
+        <p className={Styles.balances}>Pending Requests</p>
+        <p>0</p>
         <p className={Styles.balances}>Pending Requests</p>
         <p>09/02/2023</p>
         <p className={Styles.balances}>Comp Day</p>
