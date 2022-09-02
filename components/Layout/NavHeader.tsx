@@ -1,9 +1,20 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { Avatar } from './Avatar/Avatar';
-
+import { IUser } from '../../lib/domain/team/IUser';
+import { findOneUserByJWT } from '../../lib/api/team/user';
 
 export const NavHeader = () => {
+  const [User, setUser]=React.useState<IUser>();
+
+  React.useEffect(()=>{
+    const FillUser = async()=>{
+      const Result = await findOneUserByJWT();
+      setUser(Result);
+    };
+    FillUser();
+  })
+
     return (
         
       <nav className="navbar navbar-expand-lg">
@@ -26,7 +37,7 @@ export const NavHeader = () => {
                   <div className="nav-item dropdown row">
                     <Avatar />
                     <a href="#" className="nav-link dropdown-toggle col" data-bs-toggle="dropdown">
-                    Carlos Rodriguez
+                    {User?.firstname} {User?.lastname}
                     </a>
                     <div className="dropdown-menu">
                         

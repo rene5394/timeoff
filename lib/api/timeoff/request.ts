@@ -14,10 +14,16 @@ export const createRequest = async () =>{
   return result.data;
 }
 
-export const createRequestByUserJWT = async () =>{
+export const createRequestByUserJWT = async (form:any) =>{
   const url = '/requests/user/me';
-  const result = await instance.get<IRequest>(url);
-
+  console.log(form.target.elements.type.value);
+  console.log(form.target.elements.start.value);
+  console.log(form.target.elements.end.value);
+  const result = await instance.post<any>(url, {
+    typeId: form.target.elements.type.value,
+    startDate: form.target.elements.start.value,
+    endDate: form.target.elements.end.value
+  })
   return result.data;
 }
 

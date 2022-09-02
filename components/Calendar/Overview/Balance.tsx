@@ -4,6 +4,7 @@ import Styles from './Balance.module.css';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequestByUserJWT } from '../../../lib/api/timeoff/request';
+import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 
 
 export const Balance = () =>{
@@ -14,6 +15,16 @@ export const Balance = () =>{
     }
     CountRequests()
   });
+
+  const [balance, setBalance] = React.useState<IBalance>();
+
+  React.useEffect(() => {
+    const fillBalanceCards = async() => {
+      const result = await findOneByUserJWT();
+      setBalance(result);
+    };
+    fillBalanceCards();
+  }, [])
 
   return(
     <div className="col-4">
@@ -26,9 +37,9 @@ export const Balance = () =>{
         <p className={Styles.balances}>Pending Requests</p>
         <p>09/02/2023</p>
         <p className={Styles.balances}>Comp Day</p>
-        <p>0 d</p>
+        <p>{balance?.compDays} d</p>
         <p className={Styles.balances}>Vacation</p>
-        <p>0.5 d</p>
+        <p>{balance?.vacationDays} d</p>
       </div>
       <div>
         <h3>My Pending</h3>

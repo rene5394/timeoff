@@ -2,7 +2,7 @@ import axios from 'axios';
 import { log } from 'console';
 import * as React from 'react';
 import { Api } from '../../../common/constants/api';
-import { findOneBalance } from '../../../lib/api/timeoff/balance';
+import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { InfoCard } from '../InfoCard';
 import styles from './Balance.module.css';
@@ -13,7 +13,7 @@ export const MyBalance = () => {
 
   React.useEffect(() => {
     const fillBalanceCards = async() => {
-      const result = await findOneBalance(1);
+      const result = await findOneByUserJWT();
       setBalance(result);
     };
     fillBalanceCards();
