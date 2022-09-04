@@ -6,21 +6,16 @@ import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
 
 
 export const Request= () => {
-  const [Type,setType]= React.useState<IType[]>();
-  React.useEffect(()=>{
-    const FillTypes = async() =>{
-      const Result = await findAllTypes();
-      setType(Result);
-    }
-  })
+  const [types, setTypes]= React.useState<IType[]>();
 
-  if (Type) {
-    Type.map((TypeItem)=>{
-      if (TypeItem.id==1 || TypeItem.id==2 || TypeItem.id==5) {
-        console.log(TypeItem.id);
-      }
-    })  
-  }
+  React.useEffect(() => {
+    const fillTypes = async() =>{
+      const result = await findAllTypes();
+      setTypes(result);
+    };
+    fillTypes();
+  }, [])
+
   const submitForm = async(form: any) => {
     form.preventDefault();
     await createRequestByUserJWT(form);
@@ -29,22 +24,18 @@ export const Request= () => {
   return(
     <>
     <div className={'col-3 ' + Styles.Request}>
-      <h3>Time Off Request</h3>
+      <h4 className='mb-2'>Time Off Request</h4>
       <p>You are in the process of requesting a new time-off</p>
       <form onSubmit={submitForm}>
-        <label htmlFor="type">TIME-OFF TYPE</label>
-        <select className="form-select" id='type' name="type" aria-label="Default select example">
-          
-          <option defaultValue={'Open'}>Open this select menu</option>
-          <option value="1">Comp Day</option>
-          <option value="2">Vacation</option>
-          <option value="5">Permiso sin goce</option>
-
+        <label htmlFor="type" className='light-gray-text-2 mt-4 mb-2'>TIME-OFF TYPE</label>
+        <select className="form-select rounded" id='type' name="type" aria-label="Default select example">
+          <option value="0">Select option</option>
+          { types?.map((type) => <option value={type.id}>{type.name}</option>) }
         </select>
-        <label htmlFor="Start">START DATE</label>
-        <input className={'form-control '} type="date" name="start" id="Start" />
-        <label htmlFor="End">END DATE</label>
-        <input className={'form-control '} type="date" name="end" id="End" />
+        <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
+        <input className="form-control rounded" type="date" name="start" id="start" />
+        <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
+        <input className="form-control rounded" type="date" name="end" id="end" />
         <button type='submit' className={'btn btn-dark ' + Styles.submitBtn}>Submit</button>
       </form>
     </div>
