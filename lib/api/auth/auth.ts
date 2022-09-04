@@ -15,3 +15,10 @@ export const login = async(form: any) => {
 
   return result.data;
 };
+
+export const logout = async() => {
+  const url =  '/logout';
+  const result = await instance.post<any>(url, {withCredentials: true});
+
+  return result;
+};

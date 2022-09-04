@@ -1,9 +1,18 @@
-import { Api } from '../../common/constants/api';
 import { login } from '../../lib/api/auth/auth';
+import { Role } from '../../common/enums/role.enum';
+import { AppUrl } from '../../common/constants/app';
 
 const submitForm = async(form: any) => {
   form.preventDefault();
-  await login(form);
+  const result = await login(form);
+
+  if (result.roleId === Role.admin) {
+    window.location.href = `${AppUrl}/admin/profile`;
+  } if (result.roleId === Role.coach || result.roleId === Role.jrCoach) {
+    window.location.href = `${AppUrl}/coach/profile`;
+  } if (result.roleId === Role.va) {
+    window.location.href = `${AppUrl}/bp/profile`;
+  }
 }
 
 export const LoginForm = () => {

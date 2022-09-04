@@ -3,6 +3,16 @@ import Image from 'next/image';
 import { Avatar } from './Avatar/Avatar';
 import { IUser } from '../../lib/domain/team/IUser';
 import { findOneUserByJWT } from '../../lib/api/team/user';
+import { logout } from '../../lib/api/auth/auth';
+import { AppUrl } from '../../common/constants/app';
+
+const toLogout = async() => {
+  const result = await logout();
+
+  if (result.status === 200) {
+    window.location.href = `${AppUrl}/login`;
+  }
+}
 
 export const NavHeader = () => {
   const [User, setUser]=React.useState<IUser>();
@@ -41,7 +51,7 @@ export const NavHeader = () => {
                     </a>
                     <div className="dropdown-menu">
                         
-                        <a href="#" className="dropdown-item">Log Out</a>
+                        <a href="#" className="dropdown-item" onClick={toLogout}>Log Out</a>
                     </div>
                 </div>
                 </div>
