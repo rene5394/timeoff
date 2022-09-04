@@ -25,6 +25,12 @@ nav{
 .LinkItem{
   text-decoration: none;
 }
+.light-gray-text {
+  color: #858F9A;
+}
+.light-gray-text-2 {
+  color: #717579;
+}
 .content{
   background-color: #fff;
   border-radius: 33px;
