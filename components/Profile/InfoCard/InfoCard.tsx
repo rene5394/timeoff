@@ -11,8 +11,8 @@ interface InfoCardProps {
 
 export const InfoCard: React.FC<InfoCardProps> = ({ title, text, borderColorClass }) => {
   return (
-    <div className={'col-lg-3 col-md-2 ' + borderColorClass}>
-      <h4>{title}</h4>
+    <div className={`col-lg-3 col-md-2 ps-2 ${borderColorClass}`}>
+      <h6>{title}</h6>
       <p>{text}</p>
     </div>
   );
