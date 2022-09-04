@@ -1,4 +1,5 @@
 import axios from "axios";
+import { error } from "console";
 import { Api } from "../../../common/constants/api";
 import { IRequest } from '../../domain/timeoff/IRequest';
 
@@ -7,24 +8,36 @@ const instance = axios.create({
   withCredentials: true
 });
 
-export const createRequest = async () =>{
+export const createRequest = async (form: any) =>{
   const url = '/requests';
-  const result = await instance.get<IRequest>(url);
 
-  return result.data;
+  try {
+    const result = await instance.post<any>(url, {
+      userId: parseInt(form.target.elements.user.value),
+      typeId: parseInt(form.target.elements.type.value),
+      startDate: form.target.elements.start.value,
+      endDate: form.target.elements.end.value
+    });
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 }
 
 export const createRequestByUserJWT = async (form:any) =>{
   const url = '/requests/user/me';
-  console.log(form.target.elements.type.value);
-  console.log(form.target.elements.start.value);
-  console.log(form.target.elements.end.value);
-  const result = await instance.post<any>(url, {
-    typeId: form.target.elements.type.value,
-    startDate: form.target.elements.start.value,
-    endDate: form.target.elements.end.value
-  })
-  return result.data;
+
+  try {
+    const result = await instance.post<any>(url, {
+      typeId: parseInt(form.target.elements.type.value),
+      startDate: form.target.elements.start.value,
+      endDate: form.target.elements.end.value
+    });
+
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 }
 
 export const findAll = async() => {
