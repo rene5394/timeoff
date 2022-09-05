@@ -1,13 +1,13 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
   Calendar as BigCalendar,
   momentLocalizer,
   Views
 } from 'react-big-calendar';
-import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
-import Styles from './Calendario.module.css';
+import Styles from './Calendar.module.css';
 
 moment.tz.setDefault('America/El_Salvador');
 
@@ -52,11 +52,9 @@ const resourceMap = [
   { resourceId: 4, resourceTitle: "Meeting room 2" }
 ];
 
-
-
-export const Calendario = () =>{
+export const Calendar = () => {
   return(
-    <div className={"col-8 "+Styles.Calendar}>
+    <div className={`col-8 ${Styles.calendar}`}>
       <BigCalendar
         selectable
         localizer={localizer}
@@ -68,6 +66,5 @@ export const Calendario = () =>{
         resourceTitleAccessor="resourceTitle"
       />
     </div>
-    
   );
 }

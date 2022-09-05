@@ -18,12 +18,12 @@ export const Request= () => {
 
   const submitForm = async(form: any) => {
     form.preventDefault();
-    await createRequestByUserJWT(form);
+    const result  = await createRequestByUserJWT(form);
   }
 
   return(
     <>
-    <div className={'col-3 ' + Styles.Request}>
+    <div className={`col-3 ${Styles.request}`}>
       <h4 className='mb-2'>Time Off Request</h4>
       <p>You are in the process of requesting a new time-off</p>
       <form onSubmit={submitForm}>
@@ -36,7 +36,7 @@ export const Request= () => {
         <input className="form-control rounded" type="date" name="start" id="start" />
         <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
         <input className="form-control rounded" type="date" name="end" id="end" />
-        <button type='submit' className={'btn btn-dark ' + Styles.submitBtn}>Submit</button>
+        <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
       </form>
     </div>
     </>

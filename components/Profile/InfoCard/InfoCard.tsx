@@ -1,7 +1,4 @@
-import axios from 'axios';
 import * as React from 'react';
-import { Api } from '../../../common/constants/api';
-import styles from './InfoCard.module.css';
 
 interface InfoCardProps {
   title: string;

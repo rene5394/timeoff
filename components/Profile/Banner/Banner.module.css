@@ -1,4 +1,4 @@
-.banner{
+.banner {
   background-image: url('/assets/img/UAM-BG.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -10,7 +10,8 @@
   height: 100px;
   margin-bottom: 20px;
 }
-.ProfilePic{
+
+.profilePic {
   margin-top: 6%;
   border: solid;
   border-radius: 50%;

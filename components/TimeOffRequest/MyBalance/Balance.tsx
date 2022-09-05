@@ -3,7 +3,7 @@ import Styles from './Balance.module.css';
 
 export const MyBalance = () =>{
   return(
-    <div className={'col-5 '+ Styles.balance}>
+    <div className={`col-5 ${Styles.balance}`}>
       <h3>Your current allowance/balance</h3>
       <table className="table">
         <thead>

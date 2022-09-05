@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { NavHeader } from "../../components/Layout/NavHeader";
 import { SideBar } from "../../components/Layout/Sidebar";
-import { Calendario } from "../../components/Calendar/Calendario";
+import { Calendar as CalendarComponent } from "../../components/Calendar/Calendar/Calendar";
 import { Balance } from "../../components/Calendar/Overview";
 
 const Calendar: NextPage = () => {
@@ -18,7 +18,7 @@ const Calendar: NextPage = () => {
         <SideBar />
         <div className="content col-8">
           <div className="row">
-            <Calendario />
+            <CalendarComponent />
             <Balance />
           </div>
           
