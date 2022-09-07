@@ -3,14 +3,14 @@ import { countRequestsByStatus } from './requestByStatus/countRequests';
 import { RequestSummaryByStatus } from './requestByStatus/requestSummary';
 import Styles from './Requests.module.css';
 
-
 export const Requests = () => {
-  var amountPending = countRequestsByStatus(1);
-  var amountApproved = countRequestsByStatus(2);
-  var amountDenied = countRequestsByStatus(3);
-  var amountCancelled = countRequestsByStatus(4);
+  const amountPending = countRequestsByStatus(1);
+  const amountApproved = countRequestsByStatus(2);
+  const amountDenied = countRequestsByStatus(3);
+  const amountCancelled = countRequestsByStatus(4);
+
   return(
-    <div className={'col '+Styles.RequestsDiv}>
+    <div className={'col ' + Styles.RequestsDiv}>
       <div className="row">
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
