@@ -1,7 +1,19 @@
 import * as React from 'react';
+import { IBalance } from '../../../lib/domain/timeoff/IBalance';
+import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import Styles from './Balance.module.css';
 
-export const MyBalance = () =>{
+export const MyBalance = () => {
+  const [balance, setBalance] = React.useState<IBalance>();
+
+  React.useEffect(() => {
+    const fillBalanceCards = async() => {
+      const result = await findOneByUserJWT();
+      setBalance(result);
+    };
+    fillBalanceCards();
+  }, [])
+
   return(
     <div className={`col-5 ${Styles.balance}`}>
       <h3>Your current allowance/balance</h3>
@@ -18,13 +30,13 @@ export const MyBalance = () =>{
           <tr>
             <th>Comp Day</th>
             <td>15 d</td>
-            <td>0 d</td>
+            <td>{String(balance?.compDays)}</td>
             <td>1 d</td>
           </tr>
           <tr>
             <th>Vacation</th>
             <td>15 d</td>
-            <td>7 d</td>
+            <td>{String(balance?.vacationDays)}</td>
             <td>0 d</td>
           </tr>
         </tbody>
