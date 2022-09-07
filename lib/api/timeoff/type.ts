@@ -8,7 +8,7 @@ const instance = axios.create({
 });
 
 export const findAllTypes = async() => {
-  const url = '/types';
+  const url = '/types?app=true';
   const result = await instance.get<IType[]>(url);
 
   return result.data;
