@@ -1,13 +1,9 @@
 import * as React from 'react';
 import { getCurrentDate } from '../../../common/utils/timeValidation';
-import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { MyAllocation } from '../../Commons/AllocationTable';
-import { Requests } from '../Requests';
 import Styles from './Summary.module.css';
 
 export const Summary = () =>{
-  const [balance, setBalance] = React.useState<IBalance>();
-  
   return(
     <div className={"col " + Styles.SummaryDiv}>
       <div className="row">
@@ -21,6 +17,7 @@ export const Summary = () =>{
         <div className={"col-7 " + Styles.Allocation}>
           <h4>Time-Off Type Allocation</h4>
           <MyAllocation />
+
         </div>
       </div>
     </div>
