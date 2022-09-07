@@ -5,4 +5,3 @@ export interface ITeam {
   name: string;
   deactivated: number;
 }
-  
