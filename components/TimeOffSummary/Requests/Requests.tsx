@@ -4,7 +4,7 @@ import { RequestSummaryByStatus } from './requestByStatus/requestSummary';
 import Styles from './Requests.module.css';
 
 
-export const Requests= () =>{
+export const Requests = () => {
   var amountPending = countRequestsByStatus(1);
   var amountApproved = countRequestsByStatus(2);
   var amountDenied = countRequestsByStatus(3);

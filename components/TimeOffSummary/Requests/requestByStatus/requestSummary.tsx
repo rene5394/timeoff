@@ -1,5 +1,6 @@
+import { format } from 'date-fns';
 import * as React from 'react';
-import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
+import { diffrenceBetweenDates, diffrenceBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
 import { findAllRequestByUserJWT } from '../../../../lib/api/timeoff/request';
 import { findOneType } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
@@ -10,7 +11,7 @@ export const RequestSummaryByStatus = (id: number) => {
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWT();
-      const resultRequest = result.filter(type => type.statusId == id);
+      const resultRequest = result.filter(request => request.statusId == id);
       setRequests(resultRequest);
     }
     fillRequests();
@@ -30,15 +31,15 @@ export const RequestSummaryByStatus = (id: number) => {
   }
   const countDaysbyType = (TypeId: number, startDate: Date, endDate: Date) => {
     const daysBetween = TypeId == 1 ? (
-      daysBetweenDatesNoWeekends(startDate,endDate)
+      diffrenceBetweenDatesNoWeekends(startDate,endDate)
     ):(
-      daysBetweenDates(startDate,endDate)
+      diffrenceBetweenDates(startDate,endDate)
     );
     return daysBetween;
   }
   return(
     <>
-      <table className="table-responsive">
+      <table className="table">
       <thead>
         <tr>
           <th scope="col">Type</th>
@@ -53,10 +54,10 @@ export const RequestSummaryByStatus = (id: number) => {
         {Requests?.map((request) => 
           <tr>
             <th scope="row">{TypeSearch(request.typeId)}</th>
-            <td>{String(request.startDate)}</td>
-            <td>{String(request.endDate)}</td>
+            <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
+            <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
             <td>All Day</td>
-            <td>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}</td>
+            <td>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</td>
             <td>No comments...</td>
           </tr>
         )}
