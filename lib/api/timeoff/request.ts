@@ -29,7 +29,7 @@ export const createRequestByUserJWT = async (form:any) =>{
 
   try {
     const result = await instance.post<any>(url, {
-      typeId: form.target.elements.type.value,
+      typeId: parseInt(form.target.elements.type.value),
       startDate: form.target.elements.start.value,
       endDate: form.target.elements.end.value
     });
@@ -49,6 +49,13 @@ export const findAll = async() => {
 
 export const findAllRequestByUserJWT = async() => {
   const url = '/requests/user/me';
+  const result = await instance.get<IRequest[]>(url);
+
+  return result.data;
+};
+
+export const findAllRequestByUserJWTAndStatus = async(status: string) => {
+  const url = `/requests/user/me?status=${status}`;
   const result = await instance.get<IRequest[]>(url);
 
   return result.data;
