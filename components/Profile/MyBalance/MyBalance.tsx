@@ -21,8 +21,8 @@ export const MyBalance = () => {
           <h5 className='ps-0 pb-2'><b>My</b> Balance</h5>
         </div>
         <div className='row ps-5'>
-            <InfoCard title={'Comp days'} text={String(balance.compDays)} borderColorClass={'border-start border-3 border-success'}></InfoCard>
-            <InfoCard title={'Vacations'} text={String(balance.vacationDays)} borderColorClass={'border-start border-3 border-success'}></InfoCard>
+          <InfoCard title={'Comp days'} text={String(balance.compDays)} borderColorClass={'border-start border-3 border-success'}></InfoCard>
+          <InfoCard title={'Vacations'} text={String(balance.vacationDays)} borderColorClass={'border-start border-3 border-success'}></InfoCard>
         </div>
       </>
     );
