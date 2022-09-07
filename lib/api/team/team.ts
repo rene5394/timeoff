@@ -21,4 +21,11 @@ export const findOneTeam = async(id: number) => {
   return result.data;
 };
 
+export const findOneTeamByUserJWT = async() => {
+  const url = '/teams/user/me';
+  const result = await instance.get<ITeam>(url);
+
+  return result.data;
+};
+
 
