@@ -18,7 +18,7 @@ export const createRequest = async (form: any) =>{
       startDate: form.target.elements.start.value,
       endDate: form.target.elements.end.value
     });
-    return result.data;
+    return result;
   } catch (error: any) {
     return error.response.data;
   }
@@ -29,15 +29,14 @@ export const createRequestByUserJWT = async (form:any) =>{
 
   try {
     const result = await instance.post<any>(url, {
-      typeId: parseInt(form.target.elements.type.value),
+      typeId: form.target.elements.type.value,
       startDate: form.target.elements.start.value,
       endDate: form.target.elements.end.value
     });
 
-    return result.data;
+    return result;
   } catch (error: any) {
-    
-    return error;
+    return error.response;
   }
 }
 
