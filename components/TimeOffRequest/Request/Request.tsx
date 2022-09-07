@@ -4,7 +4,6 @@ import { IType } from '../../../lib/domain/timeoff/IType';
 import { findAllTypes } from '../../../lib/api/timeoff/type';
 import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
 
-
 export const Request= () => {
   const [types, setTypes]= React.useState<IType[]>();
 
@@ -19,6 +18,12 @@ export const Request= () => {
   const submitForm = async(form: any) => {
     form.preventDefault();
     const result  = await createRequestByUserJWT(form);
+
+    if (result.status === 201) {
+      console.log('Result True', result.data);
+    } if (result.status === 400) {
+      console.log('Result False', result.data);
+    }
   }
 
   return(
