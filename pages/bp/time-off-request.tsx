@@ -5,6 +5,7 @@ import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBar } from '../../components/Layout/Sidebar';
 import { Request } from '../../components/TimeOffRequest/Request';
 import { MyBalance } from '../../components/TimeOffRequest/MyBalance';
+import { CreatedModal } from '../../components/Modals/CreatedModal';
 
 const timeOffRequest: NextPage = () => {
   return (
@@ -19,6 +20,7 @@ const timeOffRequest: NextPage = () => {
         <SideBar/>
         <Request />
         <MyBalance />
+        <CreatedModal />
       </div>
       
     </div>
