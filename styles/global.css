@@ -23,8 +23,13 @@ nav {
   margin-right: 70px;
 }
 
+#sidebar .sidebar-item-active a,
+#sidebar a:hover {
+  color: #fcc025 !important;
+}
+
 .active {
-  color: #FCC025;
+  color: #fcc025;
 }
 
 .linkItem {
