@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { findAllRequestByUserJWT } from '../../../../lib/api/timeoff/request';
-import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
+import { findAllRequestByUserJWT } from '../../lib/api/timeoff/request';
+import { IRequest } from '../../lib/domain/timeoff/IRequest';
 
 export const countRequestsByStatus = (id: number) => {
   const [Requests,setRequests] = React.useState<IRequest[]>();

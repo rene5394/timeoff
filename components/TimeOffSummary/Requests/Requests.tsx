@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { countRequestsByStatus } from './requestByStatus/countRequests';
+import { countRequestsByStatus } from '../../Commons/countRequests';
 import { RequestSummaryByStatus } from './requestByStatus/requestSummary';
 import Styles from './Requests.module.css';
 

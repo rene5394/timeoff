@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { getCurrentDate } from '../../../common/utils/timeValidation';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
+import { MyAllocation } from '../../Commons/AllocationTable';
 import { Requests } from '../Requests';
 import Styles from './Summary.module.css';
 
@@ -19,30 +20,7 @@ export const Summary = () =>{
         </div>
         <div className={"col-7 " + Styles.Allocation}>
           <h4>Time-Off Type Allocation</h4>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Time-Off Type</th>
-                <th scope="col">Allowance</th>
-                <th scope="col">Balance</th>
-                <th scope="col">Pending</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Comp Day</th>
-                <td>15 d</td>
-                <td>0 d</td>
-                <td>1 d</td>
-              </tr>
-              <tr>
-                <th>Vacation</th>
-                <td>15 d</td>
-                <td>7 d</td>
-                <td>0 d</td>
-              </tr>
-            </tbody>
-          </table>
+          <MyAllocation />
         </div>
       </div>
     </div>

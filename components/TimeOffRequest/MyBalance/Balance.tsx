@@ -6,68 +6,13 @@ import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/reque
 import Styles from './Balance.module.css';
 import { RequestType } from '../../../common/enums/request-type.enum';
 import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../common/utils/timeValidation';
+import { MyAllocation } from '../../Commons/AllocationTable';
 
 export const MyBalance = () => {
-  const [balance, setBalance] = React.useState<IBalance>();
-  const [pendingBalance, setPendingBalance] = React.useState<IPendingBalance>();
-
-  React.useEffect(() => {
-    const fillBalanceData = async() => {
-      const result = await findOneByUserJWT();
-      setBalance(result);
-    };
-    fillBalanceData();
-  }, [])
-
-  React.useEffect(() => {
-    const fillPendingData = async() => {
-      const requests = await findAllRequestByUserJWTAndStatus('pending');
-      let compDays = 0;
-      let vacationDays = 0;
-
-      requests.map((request) => {
-        if (request.typeId === RequestType.compDay) {
-          const dates = daysBetweenDatesNoWeekends(request.startDate, request.endDate);
-          console.log(dates, dates.length);
-          compDays += dates.length;
-        } if (request.typeId === RequestType.vacation) {
-          const dates = daysBetweenDates(request.startDate, request.endDate);
-          vacationDays += dates.length;
-        }
-      });
-
-      setPendingBalance({compDays, vacationDays});
-    };
-    fillPendingData();
-  }, [])
-
   return(
     <div className={`col-5 ${Styles.balance}`}>
       <h3>Your current allowance/balance</h3>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Time-Off Type</th>
-            <th scope="col">Allowance</th>
-            <th scope="col">Balance</th>
-            <th scope="col">Pending</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>Comp Day</th>
-            <td>15 d</td>
-            <td>{String(balance?.compDays)} d</td>
-            <td>{String(pendingBalance?.compDays)} d</td>
-          </tr>
-          <tr>
-            <th>Vacation</th>
-            <td>15 d</td>
-            <td>{String(balance?.vacationDays)} d</td>
-            <td>{String(pendingBalance?.vacationDays)} d</td>
-          </tr>
-        </tbody>
-      </table>
+      <MyAllocation />
     </div>
   );
 }
