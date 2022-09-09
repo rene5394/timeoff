@@ -3,25 +3,37 @@ import Styles from './Request.module.css';
 import { IType } from '../../../lib/domain/timeoff/IType';
 import { findAllTypes } from '../../../lib/api/timeoff/type';
 import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
+import { CreatedModal } from '../../Modals';
 
 export const Request= () => {
-  const [types, setTypes]= React.useState<IType[]>();
+  const [types, setTypes] = React.useState<IType[]>();
+  const [modalVisibility, setModalVisibility] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    const fillTypes = async() =>{
+    const fillTypes = async() => {
       const result = await findAllTypes();
       setTypes(result);
     };
     fillTypes();
   }, [])
 
+  const openModal = () => {
+    setModalVisibility(true);
+  }
+
+  const closeModal = () => {
+    setModalVisibility(false);
+  }
+  
   const submitForm = async(form: any) => {
     form.preventDefault();
     const result  = await createRequestByUserJWT(form);
 
     if (result.status === 201) {
+      openModal();
       console.log('Result True', result.data);
     } if (result.status === 400) {
+      openModal();
       console.log('Result False', result.data);
     }
   }
@@ -44,6 +56,7 @@ export const Request= () => {
         <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
       </form>
     </div>
+    <CreatedModal visibility={modalVisibility} closeModal={closeModal} />
     </>
   );
 }

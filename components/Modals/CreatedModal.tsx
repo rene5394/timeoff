@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export const CreatedModal = () => {
-  const [show, setShow] = useState(false);
+interface CreateModalProps {
+  visibility: boolean;
+  closeModal: () => void;
+}
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+export const CreatedModal: React.FC<CreateModalProps> = ({ visibility, closeModal }) => {
   return (
     <>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={visibility} onHide={closeModal}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={closeModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={closeModal}>
             Save Changes
           </Button>
         </Modal.Footer>
