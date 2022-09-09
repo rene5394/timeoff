@@ -5,16 +5,11 @@ import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
+import { countRequestsByStatus } from '../../Commons/countRequests';
 
 export const Balance = () =>{
-  React.useEffect(()=>{
-    const CountRequests = async() =>{
-      const result = await findAllRequestByUserJWT();
-      return Object.keys(result).length;
-    }
-    CountRequests()
-  });
 
+  const [Requests,setRequest] = React.useState<IRequest[]>();
   const [balance, setBalance] = React.useState<IBalance>();
 
   React.useEffect(() => {
@@ -25,6 +20,14 @@ export const Balance = () =>{
     fillBalanceCards();
   }, [])
 
+  React.useEffect(() => {
+    const fillRequests = async() => {
+      const result = await findAllRequestByUserJWT();
+      setRequest(result);
+    }
+    fillRequests();
+  })
+
   return(
     <div className="col-4">
       <div>
@@ -32,8 +35,8 @@ export const Balance = () =>{
         <p>Quick Stats and Balances</p>
         <br />
         <p className={Styles.balances}>Pending Requests</p>
-        <p>0</p>
-        <p className={Styles.balances}>Pending Requests</p>
+        <p>{ countRequestsByStatus(1) }</p>
+        <p className={Styles.balances}>Next Approved Leave</p>
         <p>09/02/2023</p>
         <p className={Styles.balances}>Comp Day</p>
         <p>{balance?.compDays} d</p>
