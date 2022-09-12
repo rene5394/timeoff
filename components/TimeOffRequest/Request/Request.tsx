@@ -1,13 +1,19 @@
 import * as React from 'react';
 import Styles from './Request.module.css';
 import { IType } from '../../../lib/domain/timeoff/IType';
+import { RequestType } from '../../../common/enums/request-type.enum';
 import { findAllTypes } from '../../../lib/api/timeoff/type';
 import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
-import { CreatedModal } from '../../Modals';
+import { ErrorModalTextProps } from '../../Modals/ErrorModal';
+import { SuccessModalTextProps } from '../../Modals/SucessModal';
 
-export const Request= () => {
+interface RequestProps {
+  openSuccessModal: (textProps: SuccessModalTextProps) => void;
+  openErrorModal: (textProps: ErrorModalTextProps) => void;
+}
+
+export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorModal }) => {
   const [types, setTypes] = React.useState<IType[]>();
-  const [modalVisibility, setModalVisibility] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const fillTypes = async() => {
@@ -16,25 +22,35 @@ export const Request= () => {
     };
     fillTypes();
   }, [])
-
-  const openModal = () => {
-    setModalVisibility(true);
-  }
-
-  const closeModal = () => {
-    setModalVisibility(false);
-  }
   
   const submitForm = async(form: any) => {
     form.preventDefault();
     const result  = await createRequestByUserJWT(form);
 
     if (result.status === 201) {
-      openModal();
-      console.log('Result True', result.data);
+      console.log('DATA', result, result.data);
+      const data = result.data;
+      let requestType = '';
+
+      if (data.typeId == RequestType.compDay) {
+        requestType = 'Comp day(s)';
+      } if (data.typeId == RequestType.vacation) {
+        requestType = 'Vacations';
+      } if (data.typeId == RequestType.permisoSinGoce) {
+        requestType = 'Permiso sin goce';
+      } 
+
+      openSuccessModal({
+        title: 'Success',
+        body: `${requestType} request made from ${data.startDate} to ${data.endDate}`
+      });
     } if (result.status === 400) {
-      openModal();
-      console.log('Result False', result.data);
+      const messages = result.data.message;
+      console.log(messages);
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
     }
   }
 
@@ -45,18 +61,17 @@ export const Request= () => {
       <p>You are in the process of requesting a new time-off</p>
       <form onSubmit={submitForm}>
         <label htmlFor="type" className='light-gray-text-2 mt-4 mb-2'>TIME-OFF TYPE</label>
-        <select className="form-select rounded" id='type' name="type" aria-label="Default select example">
-          <option value="0">Select option</option>
+        <select className="form-select rounded" id='type' name="type" required>
+          <option value="">Select option</option>
           { types?.map((type) => <option value={type.id}>{type.name}</option>) }
         </select>
         <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
-        <input className="form-control rounded" type="date" name="start" id="start" />
+        <input className="form-control rounded" type="date" name="start" id="start" required />
         <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
-        <input className="form-control rounded" type="date" name="end" id="end" />
+        <input className="form-control rounded" type="date" name="end" id="end" required />
         <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
       </form>
     </div>
-    <CreatedModal visibility={modalVisibility} closeModal={closeModal} />
     </>
   );
 }

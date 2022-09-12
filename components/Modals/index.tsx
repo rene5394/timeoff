@@ -1,1 +1,2 @@
-export { CreatedModal } from './CreatedModal';
+export { ErrorModal } from './ErrorModal';
+export { SuccessModal} from './SucessModal';

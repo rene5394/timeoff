@@ -5,8 +5,42 @@ import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBar } from '../../components/Layout/Sidebar';
 import { Request } from '../../components/TimeOffRequest/Request';
 import { MyBalance } from '../../components/TimeOffRequest/MyBalance';
+import { ErrorModal, SuccessModal } from '../../components/Modals';
+import { ErrorModalTextProps } from '../../components/Modals/ErrorModal';
+import { SuccessModalTextProps } from '../../components/Modals/SucessModal';
 
 const timeOffRequest: NextPage = () => {
+  const [successModalVisibility, setSuccessModalVisibility] = React.useState<boolean>(false);
+  const [errorModalVisibility, setErrorModalVisibility] = React.useState<boolean>(false);
+  const [modalSuccessText, setModalSuccessText] = React.useState<SuccessModalTextProps>();
+  const [modalErrorText, setModalErrorText] = React.useState<ErrorModalTextProps>();
+
+  const openSuccessModal = (textProps: SuccessModalTextProps) => {
+    setModalSuccessText({
+      title: textProps.title,
+      body: textProps.body
+    });
+    
+    setSuccessModalVisibility(true);
+  }
+
+  const openErrorModal = (textProps: ErrorModalTextProps) => {
+    setModalErrorText({
+      title: textProps.title,
+      body: textProps.body
+    });
+
+    setErrorModalVisibility(true);
+  }
+
+  const closeSuccessModal = () => {
+    setSuccessModalVisibility(false);
+  }
+
+  const closeErrorModal = () => {
+    setErrorModalVisibility(false);
+  }
+
   return (
     <div className='container'>
       <Head>
@@ -17,8 +51,10 @@ const timeOffRequest: NextPage = () => {
       <NavHeader></NavHeader>
       <div className='body row'>
         <SideBar/>
-        <Request />
+        <Request openSuccessModal={openSuccessModal} openErrorModal={openErrorModal} />
         <MyBalance />
+        <SuccessModal text={modalSuccessText} visibility={successModalVisibility} closeModal={closeSuccessModal} />
+        <ErrorModal text={modalErrorText} visibility={errorModalVisibility} closeModal={closeErrorModal} />
       </div>
       
     </div>
