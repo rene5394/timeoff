@@ -13,6 +13,7 @@ library.add(fas)
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(()=>{
     import('bootstrap/dist/js/bootstrap.js');
+    import('bootstrap-icons/font/bootstrap-icons.css');
   },[])
   return <Component {...pageProps} />
 }
