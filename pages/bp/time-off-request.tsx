@@ -9,7 +9,7 @@ import { ErrorModal, SuccessModal } from '../../components/Modals';
 import { ErrorModalTextProps } from '../../components/Modals/ErrorModal';
 import { SuccessModalTextProps } from '../../components/Modals/SucessModal';
 
-const timeOffRequest: NextPage = () => {
+const TimeOffRequest: NextPage = () => {
   const [successModalVisibility, setSuccessModalVisibility] = React.useState<boolean>(false);
   const [errorModalVisibility, setErrorModalVisibility] = React.useState<boolean>(false);
   const [modalSuccessText, setModalSuccessText] = React.useState<SuccessModalTextProps>();
@@ -60,4 +60,4 @@ const timeOffRequest: NextPage = () => {
     </div>
   )
 }
-export default timeOffRequest;
+export default TimeOffRequest;

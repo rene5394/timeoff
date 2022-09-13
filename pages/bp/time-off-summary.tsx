@@ -5,7 +5,7 @@ import { SideBar } from '../../components/Layout/Sidebar';
 import { Summary } from '../../components/TimeOffSummary/Summary';
 import { Requests } from '../../components/TimeOffSummary/Requests';
 
-const TimeOffSummary: NextPage = () =>{
+const TimeOffSummary: NextPage = () => {
   return(
     <div className="container">
       <Head>

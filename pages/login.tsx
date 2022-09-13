@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Image from "next/future/image";
 import { LoginForm } from '../components/Login';
 
 const Login: NextPage = () => {
@@ -15,7 +16,7 @@ const Login: NextPage = () => {
             <div className="row">
               <div className="col mb-5">
                 <figure>
-                  <img src="/assets/img/uam.png" alt="" className="d-block img-fluid mx-auto" />
+                  <Image src="/assets/img/uam.png" alt="UAM logo" className="d-block img-fluid mx-auto" width={100} height={62} />
                 </figure>
               </div>
             </div>
