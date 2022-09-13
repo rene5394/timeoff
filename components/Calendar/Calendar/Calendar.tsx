@@ -9,25 +9,17 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
 
-
-interface calendarEvents {
-  title: string;
-  start: Date;
-  end: Date;
-}
-
 moment.tz.setDefault('America/El_Salvador');
 moment.locale('es');
+
 const localizer = momentLocalizer(moment);
 const eventCalendar = [{
   title:'Test',
   start: new Date(),
   end: new Date()
 }];
-export const Calendar = () => {
- 
-  
-  
+
+export const Calendar = () => {  
   return(
     <div className={`col-8 ${Styles.calendar}`}>
       <BigCalendar

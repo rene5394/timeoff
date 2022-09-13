@@ -9,7 +9,7 @@ import { CountRequestsByStatus } from '../../Commons/CountRequests';
 
 export const Balance = () =>{
 
-  const [Requests,setRequest] = React.useState<IRequest[]>();
+  const [requests, setRequests] = React.useState<IRequest[]>();
   const [balance, setBalance] = React.useState<IBalance>();
 
   React.useEffect(() => {
@@ -23,10 +23,10 @@ export const Balance = () =>{
   React.useEffect(() => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWT();
-      setRequest(result);
+      setRequests(result);
     }
     fillRequests();
-  })
+  }, [])
 
   return(
     <div className="col-4">
