@@ -8,62 +8,56 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
+import { IEvents } from '../../../lib/domain/timeoff/IEvents';
+import { findNumberByYearMonth } from '../../../lib/api/timeoff/request';
+
+interface calendarEvents {
+  title: string;
+  start: Date;
+  End: Date;
+}
 
 moment.tz.setDefault('America/El_Salvador');
-
 moment.locale('es');
 const localizer = momentLocalizer(moment);
-const events = [
-  {
-    id: 0,
-    title: "Board meeting",
-    start: new Date(2022, 0, 29, 9, 0, 0),
-    end: new Date(2022, 0, 29, 13, 0, 0),
-    resourceId: 1
-  },
-  {
-    id: 1,
-    title: "MS training",
-    allDay: true,
-    start: new Date(2018, 0, 29, 14, 0, 0),
-    end: new Date(2018, 0, 29, 16, 30, 0),
-    resourceId: 2
-  },
-  {
-    id: 2,
-    title: "Team lead meeting",
-    start: new Date(2018, 0, 29, 8, 30, 0),
-    end: new Date(2018, 0, 29, 12, 30, 0),
-    resourceId: 3
-  },
-  {
-    id: 11,
-    title: "Birthday Party",
-    start: new Date(2018, 0, 30, 7, 0, 0),
-    end: new Date(2018, 0, 30, 10, 30, 0),
-    resourceId: 4
-  }
-];
 
-const resourceMap = [
-  { resourceId: 1, resourceTitle: "Board room" },
-  { resourceId: 2, resourceTitle: "Training room" },
-  { resourceId: 3, resourceTitle: "Meeting room 1" },
-  { resourceId: 4, resourceTitle: "Meeting room 2" }
-];
+const [events,setEvents] = React.useState<IEvents[]>();
+const [eventCalendar, setEventCalendar] = React.useState<calendarEvents[]>();
+
+const fillEvents = async(year: number, month: number) => {
+  const result = await findNumberByYearMonth(year,month);
+  setEvents(result);
+}
+
+const fillCalendarEvents = () => {
+  const result = events?.map(event => return{
+        title = event.number,
+        start = event.day,
+        end = event.day
+  })
+  setEventCalendar(result);
+}
+
+
 
 export const Calendar = () => {
+  React.useEffect(() => {
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    fillEvents(year,month);
+    fillCalendarEvents();
+  });
+  
+  
   return(
     <div className={`col-8 ${Styles.calendar}`}>
       <BigCalendar
         selectable
         localizer={localizer}
-        events={events}
+        events={eventsCalendar}
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
-        defaultDate={new Date(2018, 0, 29)}
-        resources={resourceMap}
-        resourceIdAccessor="resourceId"
-        resourceTitleAccessor="resourceTitle"
+        defaultDate={new Date()}
       />
     </div>
   );
