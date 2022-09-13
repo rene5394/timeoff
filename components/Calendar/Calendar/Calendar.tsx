@@ -14,7 +14,7 @@ import { findNumberByYearMonth } from '../../../lib/api/timeoff/request';
 interface calendarEvents {
   title: string;
   start: Date;
-  End: Date;
+  end: Date;
 }
 
 moment.tz.setDefault('America/El_Salvador');
@@ -30,12 +30,15 @@ const fillEvents = async(year: number, month: number) => {
 }
 
 const fillCalendarEvents = () => {
-  const result = events?.map(event => return{
-        title = event.number,
-        start = event.day,
-        end = event.day
-  })
-  setEventCalendar(result);
+  if(events){
+    const result = events?.map(event => {
+      title: event.number;
+      start : event.day;
+      end : event.day;
+    })
+    setEventCalendar(result);
+  }
+  
 }
 
 
@@ -55,7 +58,7 @@ export const Calendar = () => {
       <BigCalendar
         selectable
         localizer={localizer}
-        events={eventsCalendar}
+        events={eventCalendar}
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
         defaultDate={new Date()}
       />
