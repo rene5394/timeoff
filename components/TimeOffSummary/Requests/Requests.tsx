@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { countRequestsByStatus } from '../../Commons/countRequests';
+import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { RequestSummaryByStatus } from './requestByStatus/requestSummary';
 import Styles from './Requests.module.css';
 
 export const Requests = () => {
-  const amountPending = countRequestsByStatus(1);
-  const amountApproved = countRequestsByStatus(2);
-  const amountDenied = countRequestsByStatus(3);
-  const amountCancelled = countRequestsByStatus(4);
+  const amountPending = CountRequestsByStatus(1);
+  const amountApproved = CountRequestsByStatus(2);
+  const amountDenied = CountRequestsByStatus(3);
+  const amountCancelled = CountRequestsByStatus(4);
 
   return(
     <div className={'col ' + Styles.RequestsDiv}>
