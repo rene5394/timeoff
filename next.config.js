@@ -6,8 +6,10 @@ const nextConfig = {
     images: {
       allowFutureImage: true,
     },
-  }
-
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig
