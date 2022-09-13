@@ -20,37 +20,13 @@ interface calendarEvents {
 moment.tz.setDefault('America/El_Salvador');
 moment.locale('es');
 const localizer = momentLocalizer(moment);
-
-const [events,setEvents] = React.useState<IEvents[]>();
-const [eventCalendar, setEventCalendar] = React.useState<calendarEvents[]>();
-
-const fillEvents = async(year: number, month: number) => {
-  const result = await findNumberByYearMonth(year,month);
-  setEvents(result);
-}
-
-const fillCalendarEvents = () => {
-  if(events){
-    const result = events?.map(event => {
-      title: event.number;
-      start : event.day;
-      end : event.day;
-    })
-    setEventCalendar(result);
-  }
-  
-}
-
-
-
+const eventCalendar = [{
+  title:'Test',
+  start: new Date(),
+  end: new Date()
+}];
 export const Calendar = () => {
-  React.useEffect(() => {
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    fillEvents(year,month);
-    fillCalendarEvents();
-  });
+ 
   
   
   return(
