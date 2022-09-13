@@ -8,8 +8,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
-import { IEvents } from '../../../lib/domain/timeoff/IEvents';
-import { findNumberByYearMonth } from '../../../lib/api/timeoff/request';
+
 
 interface calendarEvents {
   title: string;
