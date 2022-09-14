@@ -2,7 +2,7 @@ import * as React from 'react';
 import { findAllRequestByUserJWT } from '../../lib/api/timeoff/request';
 import { IRequest } from '../../lib/domain/timeoff/IRequest';
 
-export const CountRequestsByStatus = (id: number) => {
+export const countRequestsByStatus = (id: number) => {
   const [Requests,setRequests] = React.useState<IRequest[]>();
 
   React.useEffect( () => {
@@ -13,7 +13,7 @@ export const CountRequestsByStatus = (id: number) => {
     }
 
     fillRequests();
-  });
+  }, []);
 
   var amountRequests = 0;
 

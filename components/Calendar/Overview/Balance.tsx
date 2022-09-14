@@ -5,7 +5,7 @@ import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
-import { countRequestsByStatus } from '../../Commons/countRequests';
+import { countRequestsByStatus} from '../../Commons/countRequests';
 
 export const Balance = () =>{
 
@@ -26,7 +26,7 @@ export const Balance = () =>{
       setRequest(result);
     }
     fillRequests();
-  })
+  },[])
 
   return(
     <div className="col-4">
