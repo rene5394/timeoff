@@ -15,7 +15,7 @@ const toLogout = async() => {
 }
 
 export const NavHeader = () => {
-  const [User, setUser] = React.useState<IUser>();
+  const [user, setUser] = React.useState<IUser>();
 
   React.useEffect(() => {
     const fillUser = async() => {
@@ -45,7 +45,7 @@ export const NavHeader = () => {
             <div className="nav-item dropdown row">
               <Avatar />
               <a href="#" className="nav-link dropdown-toggle col" data-bs-toggle="dropdown">
-                {User?.firstname} {User?.lastname}
+                {user?.firstname} {user?.lastname}
               </a>
               <div className="dropdown-menu">
                 <a href="#" className="dropdown-item" onClick={toLogout}>Log Out</a>
