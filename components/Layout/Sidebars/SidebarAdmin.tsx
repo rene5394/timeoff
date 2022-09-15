@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-export const SideBar = () => {
+export const SideBarAdmin = () => {
 
   const router = useRouter();
   
@@ -11,7 +11,7 @@ export const SideBar = () => {
     <>
     <div id="sidebar" className="sidebar col-3">
       <ul className="list-group list-group-flush">
-        <li className={`list-group-item ${router.pathname == '/bp/profile' ? 'sidebar-item-active' : ''}`}>
+        <li className={`list-group-item ${router.pathname == '/admin/profile' ? 'sidebar-item-active' : ''}`}>
         <Link href={'./profile'} >
           <a className='linkItem light-gray-text'>
             <FontAwesomeIcon icon={["fas", "user"]} /> Profile
@@ -19,7 +19,7 @@ export const SideBar = () => {
         </Link>
         
         </li>
-        <li className={`list-group-item ${router.pathname == '/bp/calendar' ? 'sidebar-item-active' : ''}`}>
+        <li className={`list-group-item ${router.pathname == '/admin/calendar' ? 'sidebar-item-active' : ''}`}>
           <Link href={'./calendar'} >
           <a className='linkItem light-gray-text'>
             <FontAwesomeIcon icon={['fas', 'calendar']} /> Calendar
@@ -27,7 +27,7 @@ export const SideBar = () => {
         </Link>
 
         </li>
-        <li className={`list-group-item ${router.pathname == '/bp/time-off-request' ? 'sidebar-item-active' : ''}`}>
+        <li className={`list-group-item ${router.pathname == '/admin/time-off-request' ? 'sidebar-item-active' : ''}`}>
           <Link href={'./time-off-request'} >
             <a className='linkItem light-gray-text'>
               <FontAwesomeIcon icon={['fas', 'sun']} /> Time Off Request
@@ -35,10 +35,26 @@ export const SideBar = () => {
           </Link>
         </li>
         
-        <li className={`list-group-item ${router.pathname == '/bp/time-off-summary' ? 'sidebar-item-active' : ''}`}>
+        <li className={`list-group-item ${router.pathname == '/admin/time-off-summary' ? 'sidebar-item-active' : ''}`}>
           <Link href={'./time-off-summary'} >
             <a className='linkItem light-gray-text'>
               <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Time Off Summary
+            </a>
+          </Link>
+        </li>
+
+        <li className={`list-group-item ${router.pathname == '/admin/staff-directory' ? 'sidebar-item-active' : ''}`}>
+          <Link href={'./time-off-summary'} >
+            <a className='linkItem light-gray-text'>
+              <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Team Directory
+            </a>
+          </Link>
+        </li>
+
+        <li className={`list-group-item ${router.pathname == '/admin/request-overview' ? 'sidebar-item-active' : ''}`}>
+          <Link href={'./time-off-summary'} >
+            <a className='linkItem light-gray-text'>
+              <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Request Overview
             </a>
           </Link>
         </li>
