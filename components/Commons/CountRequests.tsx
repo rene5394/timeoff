@@ -13,7 +13,7 @@ export const CountRequestsByStatus = (id: number) => {
     }
 
     fillRequests();
-  });
+  }, []);
 
   var amountRequests = 0;
 
