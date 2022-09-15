@@ -9,21 +9,21 @@ export const PersonalDetails = () => {
   const [user, setUser]=React.useState<IUser>();
   const [team, setTeam]=React.useState<ITeam>();
 
-  React.useEffect(()=>{
-    const FillUser = async()=>{
+  React.useEffect(() => {
+    const FillUser = async() => {
       const result = await findOneUserByJWT();
       setUser(result);
     };
     FillUser();
-  });
+  }, []);
 
-  React.useEffect(()=>{
-    const FillTeam = async()=>{
+  React.useEffect(() => {
+    const FillTeam = async() => {
       const result = await findOneTeamByUserJWT();
       setTeam(result);
     };
     FillTeam();
-  });
+  }, []);
 
   return (
     <>
