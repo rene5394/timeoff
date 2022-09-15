@@ -5,9 +5,24 @@ import { findAllRequestByUserJWT } from '../../../../lib/api/timeoff/request';
 import { findOneType } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
+import { countDaysbyType } from '../../../Commons/type';
 
 export const RequestSummaryByStatus = (id: number) => {
   const [Requests,setRequests] = React.useState<IRequest[]>();
+  const [Type,setType] = React.useState<IType>();
+
+  const typeSearch = (id: number) => {
+  
+  const fillType = async() => {
+    const result = await findOneType(id);
+    setType(result);
+  }
+  fillType();
+  if (Type) {
+    return Type.name;
+  }
+  return 'Bad Request';
+}
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWT();
@@ -16,27 +31,7 @@ export const RequestSummaryByStatus = (id: number) => {
     }
     fillRequests();
   });
-  const [Type,setType] = React.useState<IType>();
-
-  const TypeSearch = (id: number) =>{
-    const fillType = async() => {
-      const result = await findOneType(id);
-      setType(result);
-    }
-    fillType();
-    if (Type) {
-      return Type.name;
-    }
-    return 'Bad Request';
-  }
-  const countDaysbyType = (TypeId: number, startDate: Date, endDate: Date) => {
-    const daysBetween = TypeId == 1 ? (
-      diffrenceBetweenDatesNoWeekends(startDate,endDate)
-    ):(
-      diffrenceBetweenDates(startDate,endDate)
-    );
-    return daysBetween;
-  }
+  
   return(
     <>
       <table className="table">
@@ -53,7 +48,7 @@ export const RequestSummaryByStatus = (id: number) => {
       <tbody>
         {Requests?.map((request) => 
           <tr>
-            <th scope="row">{TypeSearch(request.typeId)}</th>
+            <th scope="row">{typeSearch(request.typeId)}</th>
             <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
             <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
             <td>All Day</td>
