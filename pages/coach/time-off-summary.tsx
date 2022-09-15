@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
-import { SideBarBP } from '../../components/Layout/Sidebars/SidebarBP';
+import { SideBarCoach } from '../../components/Layout/Sidebars/SidebarCoach';
 import { Summary } from '../../components/TimeOffSummary/Summary';
 import { Requests } from '../../components/TimeOffSummary/Requests';
 
@@ -15,7 +15,7 @@ const TimeOffSummary: NextPage = () => {
       </Head>
       <NavHeader />
       <div className="body row">
-        <SideBarBP />
+        <SideBarCoach />
         <div className="col-8">
           <Summary />
           <Requests />

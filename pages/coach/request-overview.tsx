@@ -2,11 +2,11 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { PersonalDetails } from '../../components/Profile/PersonalDetails';
 import { NavHeader } from '../../components/Layout/NavHeader';
-import { SideBarBP } from '../../components/Layout/Sidebars/SidebarBP';
+import { SideBarCoach } from '../../components/Layout/Sidebars/SidebarCoach';
 import { Banner } from '../../components/Profile/Banner/Banner';
 import { MyBalance } from '../../components/Profile/MyBalance';
 
-const Profile: NextPage = () => {
+const RequestOverview: NextPage = () => {
   return (
     <div className='container'>
       <Head>
@@ -16,7 +16,7 @@ const Profile: NextPage = () => {
       </Head>
       <NavHeader />
       <div className='body row'>
-        <SideBarBP />
+        <SideBarCoach />
         <div className='content col-8 pb-5'>
           <Banner />
           <PersonalDetails />
@@ -28,4 +28,4 @@ const Profile: NextPage = () => {
   )
 }
 
-export default Profile
+export default RequestOverview

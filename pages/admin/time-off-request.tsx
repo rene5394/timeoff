@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
-import { SideBarBP } from '../../components/Layout/Sidebars/SidebarBP';
+import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
 import { Request } from '../../components/TimeOffRequest/Request';
 import { MyBalance } from '../../components/TimeOffRequest/MyBalance';
 import { ErrorModal, SuccessModal } from '../../components/Modals';
@@ -50,7 +50,7 @@ const TimeOffRequest: NextPage = () => {
       </Head>
       <NavHeader />
       <div className='body row'>
-        <SideBarBP />
+        <SideBarAdmin />
         <Request openSuccessModal={openSuccessModal} openErrorModal={openErrorModal} />
         <MyBalance />
         <SuccessModal text={modalSuccessText} visibility={successModalVisibility} closeModal={closeSuccessModal} />
