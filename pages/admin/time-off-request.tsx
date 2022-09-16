@@ -49,7 +49,7 @@ const TimeOffRequest: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className='body row'>
+      <div className='body row mx-0'>
         <SideBarAdmin />
         <Request openSuccessModal={openSuccessModal} openErrorModal={openErrorModal} />
         <MyBalance />

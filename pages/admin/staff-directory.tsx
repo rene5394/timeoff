@@ -15,7 +15,7 @@ const StaffDirectory: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className='body row'>
+      <div className='body row mx-0'>
         <SideBarAdmin />
         <div className='content col-8 pb-5'>
           <Banner />

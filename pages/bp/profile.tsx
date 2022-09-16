@@ -15,9 +15,9 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className='body row'>
+      <div className='body row mx-0'>
         <SideBarBP />
-        <div className='content col-8 pb-5'>
+        <div className='content col-9 pb-5'>
           <Banner />
           <PersonalDetails />
           <MyBalance />
