@@ -18,34 +18,52 @@ export const Calendar = () => {
   const [events, setEvents] = React.useState<IEvents[]>();
   const CalendarEvents: any[] | undefined = [];
 
-  React.useEffect(() => {
-    const today = new Date(2022,10,1);
-    const month = today.getMonth();
-    const year = today.getFullYear();
-
-    const fillCalendarEvents = async() => {
-      await fillEvents(year,month);
-      if (events) {
-        events.map(event => {
-          CalendarEvents.push({title: String(event.number),
-            start: event.day,
-            end: event.day,
-            allDay: true});
-        }
-        );
-        console.log('CalendarEvents',CalendarEvents);
-      }
-    }
-    fillCalendarEvents();
-  }, [events])
-
   const fillEvents = async(year: number, month: number) => {
     const result = await findNumberByYearMonth(year,month);
     console.log('events',result);
     const resultRequest = result.filter(ev => ev.number != 0);
     console.log('filtro',resultRequest);
     setEvents(resultRequest);
-    console.log('eventosarray',events);
+  }
+
+  const fillCalendarEvents = () => {
+    CalendarEvents.splice(0);
+    if (events) {
+      events.map(event => {
+        CalendarEvents.push(
+          {
+            title: String(event.number),
+            start: event.day,
+            end: event.day,
+            allDay: true
+          }
+        );
+      }
+      );
+    }
+  }
+
+  React.useEffect(() => {
+    const today = new Date(2022,10,1);
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    fillEvents(year,month);
+    
+    
+  }, []);
+
+  const onNavigate = (date: moment.MomentInput, view: string) => {
+    console.log('date',date);
+    let start, end;
+  
+    if (view === 'month') {
+      start = moment(date).startOf('month').startOf('week')
+      console.log(start)
+      end = moment(date).endOf('month').endOf('week')
+    }
+    console.log(start, end);
+    fillCalendarEvents();
+    return console.log({ start, end });
   }
   
   return(
@@ -56,6 +74,7 @@ export const Calendar = () => {
         events={CalendarEvents}
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
         defaultDate={new Date()}
+        onNavigate = {(date,view) => onNavigate(date,view)}
       />
     </div>
   );

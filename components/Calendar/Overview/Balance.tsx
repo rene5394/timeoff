@@ -6,6 +6,7 @@ import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
+import { showRequests } from './Requests';
 
 
 export const Balance = () =>{
@@ -48,9 +49,7 @@ export const Balance = () =>{
       <div>
         <h3>My Pending</h3>
         <div className={Styles.compDay}>
-          <h3><FontAwesomeIcon icon={['fas','warning']} className={Styles.comp}/>Comp Day</h3>
-          <p>1 d</p>
-          <p>09/02/2023</p>
+          {showRequests()}
         </div>
 
         <div>
