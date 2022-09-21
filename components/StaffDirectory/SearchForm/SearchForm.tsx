@@ -31,7 +31,7 @@ export const SearchForm = () =>{
           </select>
         </div>
         <div className="col">
-          <label htmlFor="name" className="light-gray-text-2 mt-3 mb-2">Name or employee ID</label>
+          <label htmlFor="name" className="light-gray-text-2 mt-3 mb-2">Name</label>
           <input type="text" className="form-control" name="name" />
         </div>
       </div>
