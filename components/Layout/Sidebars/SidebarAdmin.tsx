@@ -44,15 +44,15 @@ export const SideBarAdmin = () => {
         </li>
 
         <li className={`list-group-item ${router.pathname == '/admin/staff-directory' ? 'sidebar-item-active' : ''}`}>
-          <Link href={'./time-off-summary'} >
+          <Link href={'./staff-directory'} >
             <a className='linkItem light-gray-text'>
-              <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Team Directory
+              <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Staff Directory
             </a>
           </Link>
         </li>
 
         <li className={`list-group-item ${router.pathname == '/admin/request-overview' ? 'sidebar-item-active' : ''}`}>
-          <Link href={'./time-off-summary'} >
+          <Link href={'./request-overview'} >
             <a className='linkItem light-gray-text'>
               <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Request Overview
             </a>
