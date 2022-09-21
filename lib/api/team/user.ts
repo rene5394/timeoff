@@ -7,8 +7,15 @@ const instance = axios.create({
   withCredentials: true
 });
 
-export const findAllUser = async() => {
-  const url = '/users';
+export const findAllUsers = async(page: number = 1, status: string = 'active') => {
+  const url = `/users?page=${page}&status=${status}`;
+  const result = await instance.get<IUser[]>(url);
+
+  return result.data;
+};
+
+export const findAllUsersEmployees = async(page: number = 1, status: string = 'active') => {
+  const url = `/users/employees?page=${page}&status=${status}`;
   const result = await instance.get<IUser[]>(url);
 
   return result.data;
