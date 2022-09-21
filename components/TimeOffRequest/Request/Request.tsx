@@ -28,7 +28,6 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
     const result  = await createRequestByUserJWT(form);
 
     if (result.status === 201) {
-      console.log('DATA', result, result.data);
       const data = result.data;
       let requestType = '';
 
