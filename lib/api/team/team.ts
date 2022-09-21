@@ -7,7 +7,7 @@ const instance = axios.create({
   withCredentials: true
 });
 
-export const findAllTeam = async() => {
+export const findAllTeams = async() => {
   const url = '/teams';
   const result = await instance.get<ITeam[]>(url);
 
