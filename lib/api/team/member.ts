@@ -7,6 +7,16 @@ const instance = axios.create({
   withCredentials: true
 });
 
+instance.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  if (error.response.status === 401) {
+    window.location.href = '/login';
+  }
+
+  return Promise.resolve({ error });
+});
+
 export const findAllMembers = async(page: number = 1) => {
   const url = `/members?page=${page}`;
   const result = await instance.get<IMember[]>(url);

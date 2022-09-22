@@ -8,11 +8,26 @@ const instance = axios.create({
   withCredentials: true
 });
 
+instance.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  if (error.response.status === 401) {
+    window.location.href = '/login';
+  }
+
+  return Promise.resolve({ error });
+});
+
 export const findAllBalances = async() => {
   const url = '/balances';
+
+  try {
   const result = await instance.get<IBalance[]>(url);
 
   return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 };
 
 export const findBalances = async(userIds: any[]) => {
@@ -23,21 +38,35 @@ export const findBalances = async(userIds: any[]) => {
     }
   };
   
-  const result = await instance.get<IBalance[]>(url, request);
+  try {
+    const result = await instance.get<IBalance[]>(url, request);
 
-  return result.data;
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 };
 
 export const findOneBalance = async(id: number) => {
   const url = `/balances/${id}`;
-  const result = await instance.get<IBalance>(url);
 
-  return result.data;
+  try {
+    const result = await instance.get<IBalance>(url);
+    
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 };
 
 export const findOneByUserJWT = async() => {
   const url = '/balances/user/me';
-  const result = await instance.get<IBalance>(url);
 
-  return result.data;
+  try {
+    const result = await instance.get<IBalance>(url);
+
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 };
