@@ -4,8 +4,10 @@ import { findBalances } from '../../../lib/api/timeoff/balance';
 import { findAllTeams } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
 import { findMembers } from '../../../lib/api/team/member';
+import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IUser } from '../../../lib/domain/team/IUser';
 import Moment from 'moment';
+import { IEmployee } from '../../../lib/domain/team/IEmployee';
 
 interface IUserData extends IUser {
   compDays?: number;
@@ -33,17 +35,17 @@ export const StaffTable = () => {
 
       const objs: IUserData[] = [];
 
-      users.map(user => {
+      users.map((user: IUser) => {
         const obj: IUserData = { ...user };
 
-        balances.map(balance => {
+        balances.map((balance: IBalance) => {
           if (user.id === balance.userId) {
             obj.compDays = balance.compDays;
             obj.vacationDays = balance.vacationDays;
           }
         });
 
-        employees.map(employee => {
+        employees.map((employee: IEmployee) => {
           if (user.id === employee.user_id) {
             members.map((member) => {
               if (member.employee_id === employee.id) {                
