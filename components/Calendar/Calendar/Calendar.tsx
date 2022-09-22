@@ -4,14 +4,13 @@ import {
   momentLocalizer,
   Views
 } from 'react-big-calendar';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEvents } from '../../../lib/domain/timeoff/IEvents';
-import { findNumberByYearMonth } from '../../../lib/api/timeoff/request';
+import { findNumberByYearMonth, findNumberByRange } from '../../../lib/api/timeoff/request';
 
-moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
 
 export const Calendar = () => {
@@ -20,9 +19,7 @@ export const Calendar = () => {
 
   const fillEvents = async(year: number, month: number) => {
     const result = await findNumberByYearMonth(year,month);
-    console.log('events',result);
     const resultRequest = result.filter(ev => ev.number != 0);
-    console.log('filtro',resultRequest);
     setEvents(resultRequest);
   }
 
@@ -38,32 +35,41 @@ export const Calendar = () => {
             allDay: true
           }
         );
-      }
-      );
+      });
     }
   }
 
+  const findByRange = async(startDate: Date, endDate:Date) => {
+    const result = await findNumberByRange(startDate,endDate);
+    const resultRequest = await result.filter(ev => ev.number > 0);
+    console.log('result filtrado',resultRequest);
+    console.log('result',result);
+    setEvents(resultRequest);
+    
+  }
+
   React.useEffect(() => {
-    const today = new Date(2022,10,1);
-    const month = today.getMonth();
+    const today = new Date('2022,10,1');
+    const month = today.getMonth()+1;
     const year = today.getFullYear();
+    console.log('fechas de inicio',{month,year,today});
+      
     fillEvents(year,month);
-    
-    
+    fillCalendarEvents();
   }, []);
 
-  const onNavigate = (date: moment.MomentInput, view: string) => {
-    console.log('date',date);
-    let start, end;
+
+
+  const onNavigate = () => {
+    //fillCalendarEvents();
+  }
   
-    if (view === 'month') {
-      start = moment(date).startOf('month').startOf('week')
-      console.log(start)
-      end = moment(date).endOf('month').endOf('week')
-    }
-    console.log(start, end);
-    fillCalendarEvents();
-    return console.log({ start, end });
+  const onRange = (rangeDate:any) => {
+    const onChange = async() => {
+      await findByRange(rangeDate.start,rangeDate.end);
+      fillCalendarEvents();
+    };
+    onChange();
   }
   
   return(
@@ -73,8 +79,9 @@ export const Calendar = () => {
         localizer={localizer}
         events={CalendarEvents}
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
-        defaultDate={new Date()}
-        onNavigate = {(date,view) => onNavigate(date,view)}
+        defaultDate={new Date('2022,10,1')}
+        onNavigate = {() => onNavigate()}
+        onRangeChange = {(range) => onRange(range)}
       />
     </div>
   );
