@@ -7,7 +7,17 @@ const instance = axios.create({
   withCredentials: true
 });
 
-export const findAllTeam = async() => {
+instance.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  if (error.response.status === 401) {
+    window.location.href = '/login';
+  }
+
+  return Promise.resolve({ error });
+});
+
+export const findAllTeams = async() => {
   const url = '/teams';
   const result = await instance.get<ITeam[]>(url);
 

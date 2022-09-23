@@ -1,0 +1,45 @@
+import * as React from 'react';
+import { findAllTeams } from '../../../lib/api/team/team';
+import { ITeam } from '../../../lib/domain/team/ITeam';
+
+export const SearchForm = () => {
+  const [teams, setTeams] = React.useState<ITeam[]>();
+
+  const submitForm = async(form: any) => {
+    form.preventDefault();
+  }
+
+  const onChange = async(e: any) => {
+    console.log("Value", e.target.value);
+  }
+  
+  React.useEffect(() => {
+    const fillTeams = async() => {
+      const result = await findAllTeams();
+      setTeams(result);
+    };
+    fillTeams();
+  }, [])
+
+  return(
+    <div className="row px-5 pt-4">
+      <h3>Staff Directory</h3>
+      <p>View and  manage your staff. Click on any employee name to go to their profile.</p>
+      <form onSubmit={submitForm}>
+      <div className="row g-3">
+        <div className="col">
+          <label htmlFor="team" className="light-gray-text-2 mt-3 mb-2">Team</label>
+          <select onChange={onChange} className="form-select rounded" id='team' name="team" required>
+            <option value="">Select option</option>
+            { teams?.map((team) => <option value={team.id}>{team.name}</option>) }
+          </select>
+        </div>
+        <div className="col">
+          <label htmlFor="name" className="light-gray-text-2 mt-3 mb-2">Name</label>
+          <input type="text" className="form-control" name="name" />
+        </div>
+      </div>
+      </form>
+    </div>
+  );
+}

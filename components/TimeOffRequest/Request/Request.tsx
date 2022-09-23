@@ -6,6 +6,7 @@ import { findAllTypes } from '../../../lib/api/timeoff/type';
 import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
+import Moment from 'moment';
 
 interface RequestProps {
   openSuccessModal: (textProps: SuccessModalTextProps) => void;
@@ -28,7 +29,6 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
     const result  = await createRequestByUserJWT(form);
 
     if (result.status === 201) {
-      console.log('DATA', result, result.data);
       const data = result.data;
       let requestType = '';
 
@@ -42,7 +42,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
 
       openSuccessModal({
         title: 'Success',
-        body: `${requestType} request made from ${data.startDate} to ${data.endDate}`
+        body: `${requestType} request made from ${Moment(data.startDate).format('MM-DD-YYYY')} to ${Moment(data.endDate).format('MM-DD-YYYY')}`
       });
     } if (result.status === 400) {
       const messages = result.data.message;

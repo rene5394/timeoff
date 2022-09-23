@@ -14,7 +14,7 @@ const Calendar: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className="row body">
+      <div className="row body mx-0">
         <SideBarBP />
         <div className="content col-8">
           <div className="row">

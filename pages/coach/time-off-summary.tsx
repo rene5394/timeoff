@@ -14,7 +14,7 @@ const TimeOffSummary: NextPage = () => {
       <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className="body row">
+      <div className="body row mx-0">
         <SideBarCoach />
         <div className="col-8">
           <Summary />

@@ -7,25 +7,57 @@ const instance = axios.create({
   withCredentials: true
 });
 
-export const findAllUser = async() => {
-  const url = '/users';
-  const result = await instance.get<IUser[]>(url);
+instance.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  if (error.response.status === 401) {
+    window.location.href = '/login';
+  }
 
-  return result.data;
+  return Promise.resolve({ error });
+});
+
+export const findAllUsers = async(page: number = 1, status: string = 'active') => {
+  const url = `/users?page=${page}&status=${status}`;
+
+  try {
+    const result = await instance.get<IUser[]>(url);
+
+    return result.data;
+  } catch (err) {
+    throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
+  }
+};
+
+export const findAllUsersEmployees = async(page: number = 1, status: string = 'active') => {
+  const url = `/users/employees?page=${page}&status=${status}`;
+
+  try {
+    const result = await instance.get<IUser[]>(url);
+
+    return result.data;
+  } catch (err) {
+    throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
+  }
 };
 
 export const findOneUserByJWT = async() => {
   const url = '/users/me';
-  const result = await instance.get<IUser>(url);
+  const result = await instance.get<IUser>(url)
 
   return result.data;
 };
 
 export const findOneUser = async(id: number) => {
   const url = `/users/${id}`;
-  const result = await instance.get<IUser>(url);
 
-  return result.data;
+  try {
+    const result = await instance.get<IUser>(url);
+
+    return result.data;
+  } catch (err) {
+    throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
+  }
 };
 
 
