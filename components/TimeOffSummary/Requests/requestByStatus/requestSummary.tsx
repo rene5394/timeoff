@@ -1,26 +1,20 @@
 import { format } from 'date-fns';
 import * as React from 'react';
 import { findAllRequestByUserJWT } from '../../../../lib/api/timeoff/request';
-import { findOneType } from '../../../../lib/api/timeoff/type';
+import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
 import { countDaysbyType } from '../../../Commons/type';
 
 export const RequestSummaryByStatus = (id: number) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
-  const [type, setType] = React.useState<IType>();
+  const [types, setTypes] = React.useState<IType[]>();
+
   const typeSearch = (id: number) => {
-  
-  const fillType = async() => {
-    const result = await findOneType(id);
-    setType(result);
+    var type = types?.filter(val => val.id == id);
+    var name = type?.map(res => {return res.name})
+    return name;
   }
-  fillType();
-  if (type) {
-    return type.name;
-  }
-  return 'Bad Request';
-}
 
   React.useEffect( () => {
     const fillRequests = async() => {
@@ -28,8 +22,12 @@ export const RequestSummaryByStatus = (id: number) => {
       const resultRequest = result.filter(request => request.statusId == id);
       setRequests(resultRequest);
     }
+    const fillTypes = async() => {
+      const result = await findAllTypes();
+      setTypes(result);
+    }
     fillRequests();
-
+    fillTypes();
   });
   
 
@@ -47,7 +45,7 @@ export const RequestSummaryByStatus = (id: number) => {
         </tr>
       </thead>
       <tbody>
-        {requests?.map((request) => 
+        {requests?.map((request,i) => 
           <tr>
             <th scope="row">{typeSearch(request.typeId)}</th>
             <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>

@@ -8,7 +8,6 @@ import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { showRequests } from './Requests';
 
-
 export const Balance = () =>{
 
   const [requests, setRequests] = React.useState<IRequest[]>();
@@ -28,8 +27,18 @@ export const Balance = () =>{
       setRequests(result);
     }
     fillRequests();
-  },[])
-
+  },[]);
+/*
+  const findNearestDate = () => {
+    var nearest = require('nearest-date')
+    var today = new Date();
+    var request = requests?.filter(val => val.startDate >= today);
+    var dates = request?.map(req => { return req.startDate});
+    var nearestId = nearest(dates,today);
+    var dateChoosen = dates?.at(nearestId);
+    return dateChoosen;
+  }
+*/
 
   return(
     <div className="col-4">
@@ -40,7 +49,7 @@ export const Balance = () =>{
         <p className={Styles.balances}>Pending Requests</p>
         <p>{ CountRequestsByStatus(1) }</p>
         <p className={Styles.balances}>Next Approved Leave</p>
-        <p>09/02/2023</p>
+        <p></p>
         <p className={Styles.balances}>Comp Day</p>
         <p>{balance?.compDays} d</p>
         <p className={Styles.balances}>Vacation</p>

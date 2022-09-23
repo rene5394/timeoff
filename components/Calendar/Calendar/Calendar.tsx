@@ -15,9 +15,17 @@ import { findNumberByYearMonth } from '../../../lib/api/timeoff/request';
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
 
+interface ICalendarEvent {
+  id:number;
+  title:String;
+  start:Date;
+  end:Date;
+  allDay:boolean;
+} 
+
 export const Calendar = () => {
   const [events, setEvents] = React.useState<IEvents[]>();
-  const CalendarEvents: any[] | undefined = [];
+  const [calendarEvents,setCalendarEvents]= React.useState<ICalendarEvent[]>();
   const [dates,setDates] = React.useState<any>();
 
   const fillEvents = async(compDates:Date) => {
@@ -25,26 +33,26 @@ export const Calendar = () => {
     month = compDates.getMonth()+1;
     year = compDates.getFullYear();
     const result = await findNumberByYearMonth(year,month);
-    console.log('events',result);
     const resultRequest = result.filter(ev => ev.number != 0);
-    console.log('filtro',resultRequest);
     setEvents(resultRequest);
+    fillCalendarEvents();
   }
 
   const fillCalendarEvents = () => {
-    CalendarEvents.splice(0);
+    let calendarEvent;
     if (events) {
-      events.map(event => {
-        CalendarEvents.push(
-          {
-            title: String(event.number),
-            start: event.day,
-            end: event.day,
-            allDay: true
-          }
-        );
-      }
+      const newCalendarEvent = events.map((event,i) => {
+        calendarEvent = {
+          id: i,
+          title: String(event.number),
+          start: event.day,
+          end: event.day,
+          allDay: true
+        }
+        return calendarEvent;
+      } 
       );
+      setCalendarEvents(newCalendarEvent);
     }
   }
 
@@ -56,14 +64,10 @@ export const Calendar = () => {
       date = new Date();
     }
     fillEvents(date);
-    console.log('chance',date);
-  }, [dates]);
+  }, [events]);
 
   const onNavigate = (date: moment.MomentInput, view: string) => {
-    console.log('date',date);
     setDates(date);
-    //fillEvents(year,month);
-    fillCalendarEvents();
   }
   
   return(
@@ -71,7 +75,7 @@ export const Calendar = () => {
       <BigCalendar
         selectable
         localizer={localizer}
-        events={CalendarEvents}
+        events={calendarEvents}
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
         defaultDate={new Date()}
         onNavigate = {(date,view) => onNavigate(date,view)}
