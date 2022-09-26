@@ -18,7 +18,7 @@ export const showRequests = () => {
   }
   React.useEffect(() => {
     const fillRequests = async() => {
-      let result = await findAllRequestByUserJWTAndStatus('Pending');
+      let result = await findAllRequestByUserJWTAndStatus('pending');
       setRequests(result);
     }
     const fillTypes = async() => {
@@ -37,7 +37,7 @@ export const showRequests = () => {
           <div>
             <h3><FontAwesomeIcon icon={['fas','warning']} />{typeSearch(request.typeId)}</h3>
             <p>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</p>
-            <p>{format(new Date(request.endDate), 'd MMMM Y')}</p>
+            <p>{format(new Date(request.startDate), 'd MMMM Y')}</p>
           </div>
           )
       }

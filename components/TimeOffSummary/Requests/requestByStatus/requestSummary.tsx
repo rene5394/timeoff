@@ -1,12 +1,12 @@
 import { format } from 'date-fns';
 import * as React from 'react';
-import { findAllRequestByUserJWT } from '../../../../lib/api/timeoff/request';
+import { findAllRequestByUserJWTAndStatus } from '../../../../lib/api/timeoff/request';
 import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
 import { countDaysbyType } from '../../../Commons/type';
 
-export const RequestSummaryByStatus = (id: number) => {
+export const RequestSummaryByStatus = (status: string) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [types, setTypes] = React.useState<IType[]>();
 
@@ -18,9 +18,8 @@ export const RequestSummaryByStatus = (id: number) => {
 
   React.useEffect( () => {
     const fillRequests = async() => {
-      const result = await findAllRequestByUserJWT();
-      const resultRequest = result.filter(request => request.statusId == id);
-      setRequests(resultRequest);
+      const result = await findAllRequestByUserJWTAndStatus(status);
+      setRequests(result);
     }
     const fillTypes = async() => {
       const result = await findAllTypes();
@@ -28,7 +27,7 @@ export const RequestSummaryByStatus = (id: number) => {
     }
     fillRequests();
     fillTypes();
-  });
+  },[]);
   
 
   return(
