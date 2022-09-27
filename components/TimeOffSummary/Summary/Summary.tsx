@@ -11,7 +11,7 @@ export const Summary = () =>{
           <h3>Time-Off Summary</h3>
 
           <label htmlFor="Start">START DATE</label>
-          <input type='Date' id='Start' value={ getCurrentDate() } className='form-control' />
+          <input type='Date' id='Start' defaultValue={ String(new Date()) } className='form-control' />
           
         </div>
         <div className={"col-7 " + Styles.Allocation}>

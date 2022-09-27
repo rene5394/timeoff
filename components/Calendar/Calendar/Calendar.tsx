@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import {
   Calendar as BigCalendar,
@@ -14,56 +15,59 @@ import { findNumberByYearMonth } from '../../../lib/api/timeoff/request';
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
 
+interface ICalendarEvent {
+  id:number;
+  title:String;
+  start:Date;
+  end:Date;
+  allDay:boolean;
+} 
+
 export const Calendar = () => {
   const [events, setEvents] = React.useState<IEvents[]>();
-  const CalendarEvents: any[] | undefined = [];
+  const [calendarEvents,setCalendarEvents]= React.useState<ICalendarEvent[]>();
+  const [dates,setDates] = React.useState<any>();
 
-  const fillEvents = async(year: number, month: number) => {
+  const fillEvents = async(compDates:Date) => {
+    let year, month;
+    month = compDates.getMonth()+1;
+    year = compDates.getFullYear();
     const result = await findNumberByYearMonth(year,month);
-    console.log('events',result);
     const resultRequest = result.filter(ev => ev.number != 0);
-    console.log('filtro',resultRequest);
     setEvents(resultRequest);
+    fillCalendarEvents();
   }
 
   const fillCalendarEvents = () => {
-    CalendarEvents.splice(0);
+    let calendarEvent;
     if (events) {
-      events.map(event => {
-        CalendarEvents.push(
-          {
-            title: String(event.number),
-            start: event.day,
-            end: event.day,
-            allDay: true
-          }
-        );
-      }
+      const newCalendarEvent = events.map((event,i) => {
+        calendarEvent = {
+          id: i,
+          title: String(event.number),
+          start: event.day,
+          end: event.day,
+          allDay: true
+        }
+        return calendarEvent;
+      } 
       );
+      setCalendarEvents(newCalendarEvent);
     }
   }
 
   React.useEffect(() => {
-    const today = new Date(2022,10,1);
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    fillEvents(year,month);
-    
-    
-  }, []);
+    let date;
+    if (dates != undefined) {
+      date = dates;
+    }else{
+      date = new Date();
+    }
+    fillEvents(date);
+  }, [events]);
 
   const onNavigate = (date: moment.MomentInput, view: string) => {
-    console.log('date',date);
-    let start, end;
-  
-    if (view === 'month') {
-      start = moment(date).startOf('month').startOf('week')
-      console.log(start)
-      end = moment(date).endOf('month').endOf('week')
-    }
-    console.log(start, end);
-    fillCalendarEvents();
-    return console.log({ start, end });
+    setDates(date);
   }
   
   return(
@@ -71,7 +75,7 @@ export const Calendar = () => {
       <BigCalendar
         selectable
         localizer={localizer}
-        events={CalendarEvents}
+        events={calendarEvents}
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
         defaultDate={new Date()}
         onNavigate = {(date,view) => onNavigate(date,view)}
@@ -79,3 +83,4 @@ export const Calendar = () => {
     </div>
   );
 }
+

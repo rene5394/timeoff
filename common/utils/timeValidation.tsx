@@ -1,3 +1,5 @@
+import { differenceInBusinessDays } from "date-fns";
+
 export function daysBetweenDates(startDate: Date, endDate: Date): Date[] {
   
   let dates = [];
@@ -36,24 +38,13 @@ export function daysBetweenDatesNoWeekends(startDate: Date, endDate: Date): Date
 export function diffrenceBetweenDates(startDate: Date, endDate: Date) {
   var newStartDate = new Date(startDate);
   var newEndDate = new Date(endDate);
-  return ((newEndDate.getTime() - newStartDate.getTime()) / 86400000) + 1;
+  return ((newEndDate.getTime() - newStartDate.getTime()) / (1000*60*60*24))+1;
 }
   
 export function diffrenceBetweenDatesNoWeekends(startDate: Date, endDate: Date) {
   var newStartDate = new Date(startDate);
   var newEndDate = new Date(endDate);
-  let weekdays = 0;
-  const copyStartDate = new Date(newStartDate.getTime());
-
-  while (newEndDate >= copyStartDate) {
-    if (copyStartDate.getDay() !== 5 && copyStartDate.getDay() !== 6) {
-      weekdays++;
-  }
-
-  copyStartDate.setDate(copyStartDate.getDate() + 1);
-}
-
-  return weekdays;
+  return differenceInBusinessDays(newEndDate,newStartDate)+1;
 }
 
 export function getCurrentDate(separator=''){

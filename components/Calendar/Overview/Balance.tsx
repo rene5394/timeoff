@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Styles from './Balance.module.css';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
-import { findAllRequestByUserJWT } from '../../../lib/api/timeoff/request';
+import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/request';
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { showRequests } from './Requests';
-
+import { format } from 'date-fns';
 
 export const Balance = () =>{
 
@@ -24,11 +24,33 @@ export const Balance = () =>{
 
   React.useEffect(() => {
     const fillRequests = async() => {
-      const result = await findAllRequestByUserJWT();
+      const result = await findAllRequestByUserJWTAndStatus('approved');
       setRequests(result);
     }
     fillRequests();
-  },[])
+  },[]);
+
+  const findNearestDate = () => {
+    var today = new Date();
+    var nearest = today;
+    var dateToCompare = today;
+    if (requests) {
+      nearest = new Date(requests[requests.length-1].startDate);
+      console.log('existen',requests);
+      requests.map((req,i) => { 
+        console.log('realmente funciono?',req.startDate);
+        if (new Date(req.startDate) > today) {
+          dateToCompare = new Date(req.startDate);
+          console.log('dateToCompare',dateToCompare);
+          if (dateToCompare < nearest) {
+            nearest = dateToCompare;
+            console.log('nearest',nearest);
+          }
+        }
+      });
+    }
+    return format(nearest,'d MMMM Y');
+  }
 
 
   return(
@@ -40,7 +62,7 @@ export const Balance = () =>{
         <p className={Styles.balances}>Pending Requests</p>
         <p>{ CountRequestsByStatus(1) }</p>
         <p className={Styles.balances}>Next Approved Leave</p>
-        <p>09/02/2023</p>
+        <p>{String(findNearestDate())}</p>
         <p className={Styles.balances}>Comp Day</p>
         <p>{balance?.compDays} d</p>
         <p className={Styles.balances}>Vacation</p>

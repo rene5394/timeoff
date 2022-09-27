@@ -28,16 +28,16 @@ export const Requests = () => {
       </ul>
       <div className="tab-content" id="myTabContent">
         <div className="tab-pane fade show active" id="Approved" role="tabpanel" aria-labelledby="home-tab">
-          {RequestSummaryByStatus(2)}
+          {RequestSummaryByStatus('approved')}
         </div>
         <div className="tab-pane fade" id="Pending" role="tabpanel" aria-labelledby="profile-tab">
-          {RequestSummaryByStatus(1)}
+          {RequestSummaryByStatus('pending')}
         </div>
         <div className="tab-pane fade" id="Rejected" role="tabpanel" aria-labelledby="contact-tab">
-          {RequestSummaryByStatus(3)}
+          {RequestSummaryByStatus('rejected')}
         </div>
         <div className="tab-pane fade" id="Cancelled" role="tabpanel" aria-labelledby="contact-tab">
-          {RequestSummaryByStatus(4)}
+          {RequestSummaryByStatus('cancelled')}
         </div>
       </div>
       </div>

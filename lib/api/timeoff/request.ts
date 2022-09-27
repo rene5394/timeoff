@@ -92,3 +92,9 @@ export const findNumberByYearMonth = async(year: number, month: number) => {
 
   return result.data;
 }
+export const findNumberByRange = async(start: Date, end: Date) => {
+  const url = `/requests/startDate/${start}/endDate/${end}`;
+  const result = await instance.get<IEvents[]>(url);
+
+  return result.data;
+}
