@@ -29,13 +29,25 @@ export const findAllUsers = async(page: number = 1, status: string = 'active') =
   }
 };
 
-export const findAllUsersEmployees = async(page: number = 1, status: string = 'active') => {
-  const url = `/users/employees?page=${page}&status=${status}`;
+export const findAllUsersEmployees = async(text: string = '', page: number = 1, status: string = 'active') => {
+  const url = `/users/employees?text=${text}&page=${page}&status=${status}`;
 
   try {
-    const result = await instance.get<IUser[]>(url);
+    const { data } = await instance.get<any>(url);
 
-    return result.data;
+    return data;
+  } catch (err) {
+    throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
+  }
+};
+
+export const findAllUsersEmployeesByTeam = async(teamId: number, text: string = '', page: number = 1, status: string = 'active') => {
+  const url = `/users/employees/team/${teamId}?text=${text}&page=${page}&status=${status}`;
+
+  try {
+    const { data } = await instance.get<any>(url);
+
+    return data;
   } catch (err) {
     throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
   }
