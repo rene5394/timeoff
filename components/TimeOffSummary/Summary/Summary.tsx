@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { getCurrentDate } from '../../../common/utils/timeValidation';
 import { MyAllocation } from '../../Commons/AllocationTable';
 import Styles from './Summary.module.css';
 

@@ -8,6 +8,7 @@ import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { showRequests } from './Requests';
 import { format } from 'date-fns';
+import { isEmpty } from 'rxjs';
 
 export const Balance = () =>{
 
@@ -35,6 +36,9 @@ export const Balance = () =>{
     var nearest = today;
     var dateToCompare = today;
     if (requests) {
+      if (requests.length < 1) {
+        return 'No approved requests';
+      }
       nearest = new Date(requests[requests.length-1].startDate);
       console.log('existen',requests);
       requests.map((req,i) => { 
