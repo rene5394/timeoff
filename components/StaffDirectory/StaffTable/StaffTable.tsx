@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { findAllUsersEmployees, findAllUsersEmployeesByTeam } from '../../../lib/api/team/user';
-import { findBalances } from '../../../lib/api/timeoff/balance';
+import { findBalances, findOneBalanceByUserId } from '../../../lib/api/timeoff/balance';
 import { findAllActiveTeams } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
 import { findMembers } from '../../../lib/api/team/member';
@@ -13,13 +13,17 @@ import { Team } from '../../../common/enums/team.enum';
 import AdvancedPagination from '../../Commons/AdvancedPagination';
 import Moment from 'moment';
 
+interface StaffTableProperties {
+  openEditBalanceModal: (balance: IBalance) => void;
+}
+
 interface IUserData extends IUser {
   compDays?: number;
   vacationDays?: number;
   teamName?: string;
 };
 
-export const StaffTable = () => {
+export const StaffTable: React.FC<StaffTableProperties> = ({ openEditBalanceModal }) => {
   const [usersData, setUsersData] = React.useState<any[]>();
   const [numberOfPages, setNumberOfPages] = React.useState<number>(1);
   const [activePage, setActivePage] = React.useState<number>(1);
@@ -103,6 +107,11 @@ export const StaffTable = () => {
     setActivePage(1);
   }
 
+  const editBalance = async(userId: number) => {
+    const balance = await findOneBalanceByUserId(userId);
+    openEditBalanceModal(balance);
+  }
+
   return(
     <>
       <SearchForm teams={teams} setTeams={setTeams} changeTeam={changeTeam} changeText={changeText} />
@@ -139,7 +148,7 @@ export const StaffTable = () => {
                   <td>{userData.vacationDays?.toString()}</td>
                   <td>{Moment(userData.hiredate).format('MM-DD-YYYY')}</td>
                   <td>
-                    <button type="button" className="btn btn-link btn-sm btn-rounded">
+                    <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
                       Edit
                     </button>
                   </td>
