@@ -1,5 +1,4 @@
 import axios from "axios";
-import { number } from "prop-types";
 import { Api } from "../../../common/constants/api";
 import { IBalance } from '../../domain/timeoff/IBalance';
 
@@ -65,6 +64,18 @@ export const findOneByUserJWT = async() => {
   try {
     const result = await instance.get<IBalance>(url);
 
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const findOneBalanceByUserId = async(userId: number) => {
+  const url = `/balances/user/${userId}`;
+
+  try {
+    const result = await instance.get<IBalance>(url);
+    
     return result.data;
   } catch (error: any) {
     return error.response.data;
