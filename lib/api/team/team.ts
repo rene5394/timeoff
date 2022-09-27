@@ -24,6 +24,14 @@ export const findAllTeams = async() => {
   return result.data;
 };
 
+
+export const findAllActiveTeams = async() => {
+  const url = '/teams?status=active';
+  const result = await instance.get<ITeam[]>(url);
+
+  return result.data;
+};
+
 export const findOneTeam = async(id: number) => {
   const url = `/teams/${id}`;
   const result = await instance.get<ITeam>(url);
