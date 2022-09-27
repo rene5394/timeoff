@@ -44,11 +44,11 @@ export const StaffTable = () => {
     if (teamSelected === Team.allTeams) {
       const data = await findAllUsersEmployees(searchText, page);
       users = data.list;
-      pages = Math.floor(data.count/10);
+      pages = Math.ceil(data.count/10);
     } else {
       const data = await findAllUsersEmployeesByTeam(teamSelected, searchText, page);
       users = data.list;
-      pages = Math.floor(data.count/10);
+      pages = Math.ceil(data.count/10);
     }
 
     users.map((user: IUser) => userIds.push(user.id));
