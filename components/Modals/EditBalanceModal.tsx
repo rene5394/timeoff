@@ -45,7 +45,7 @@ export const EditBalanceModal: React.FC<BalancePopupProps> = ({ balance, setBala
       <Modal.Header closeButton>
         <Modal.Title>Edit Balance</Modal.Title>
       </Modal.Header>
-        <Modal.Body className="py-4">
+        <Modal.Body className="pb-4">
           <Form id="editBalanceForm" onSubmit={balance?.id ? updateCurrentBalance : createNewBalance }>
             <Form.Group>
               <Form.Control id="balanceId" name="balanceId" type="hidden" value={balance?.id} />
