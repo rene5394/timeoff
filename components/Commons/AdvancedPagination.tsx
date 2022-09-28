@@ -65,5 +65,3 @@ export const AdvancedPagination: React.FC<Pagination> = ({ activePage, numberOfP
     </Pagination>
   );
 }
-
-export default AdvancedPagination;

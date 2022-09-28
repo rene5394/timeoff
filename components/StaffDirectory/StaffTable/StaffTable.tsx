@@ -4,18 +4,15 @@ import { findBalances, findOneBalanceByUserId } from '../../../lib/api/timeoff/b
 import { findAllActiveTeams } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
 import { findMembers } from '../../../lib/api/team/member';
-import { SearchForm } from '../SearchForm';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IUser } from '../../../lib/domain/team/IUser';
 import { IEmployee } from '../../../lib/domain/team/IEmployee';
 import { ITeam } from '../../../lib/domain/team/ITeam';
 import { Team } from '../../../common/enums/team.enum';
-import AdvancedPagination from '../../Commons/AdvancedPagination';
+import { SearchForm } from '../SearchForm';
+import { EditBalanceModal } from '../../Modals/EditBalanceModal';
+import { AdvancedPagination } from '../../Commons/AdvancedPagination';
 import Moment from 'moment';
-
-interface StaffTableProperties {
-  openEditBalanceModal: (userId: number, balance: IBalance) => void;
-}
 
 interface IUserData extends IUser {
   compDays?: number;
@@ -23,13 +20,22 @@ interface IUserData extends IUser {
   teamName?: string;
 };
 
-export const StaffTable: React.FC<StaffTableProperties> = ({ openEditBalanceModal }) => {
+export interface Balance {
+  id?: number;
+  userId?: number;
+  compDays?: string;
+  vacationDays?: string;
+}
+
+export const StaffTable = () => {
   const [usersData, setUsersData] = React.useState<any[]>();
   const [numberOfPages, setNumberOfPages] = React.useState<number>(1);
   const [activePage, setActivePage] = React.useState<number>(1);
   const [teams, setTeams] = React.useState<ITeam[]>();
   const [teamSelected, setTeamSelected] = React.useState<number>(0);
   const [searchText, setSearchText] = React.useState<string>('');
+  const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
+  const [balance, setBalance] = React.useState<Balance>();
 
   React.useEffect(() => {
     fillUserData(1);
@@ -107,6 +113,21 @@ export const StaffTable: React.FC<StaffTableProperties> = ({ openEditBalanceModa
     setActivePage(1);
   }
 
+  const openEditBalanceModal = (userId: number, balance: IBalance) => {
+    setBalance({
+      id: balance?.id,
+      userId: userId,
+      compDays: (balance?.compDays) ? balance.compDays.toString() : '0',
+      vacationDays: (balance?.vacationDays) ? balance.vacationDays.toString() : '0'
+    });
+
+    setEditBalanceModalVisibility(true);
+  }
+
+  const closeEditBalanceModal = () => {
+    setEditBalanceModalVisibility(false);
+  }
+
   const editBalance = async(userId: number) => {
     const balance = await findOneBalanceByUserId(userId);
     openEditBalanceModal(userId, balance);
@@ -157,6 +178,12 @@ export const StaffTable: React.FC<StaffTableProperties> = ({ openEditBalanceModa
           </tbody>
         </table>
         <AdvancedPagination activePage={activePage} numberOfPages={numberOfPages} changePage={changePage} />
+        <EditBalanceModal
+          balance = {balance}
+          setBalance = {setBalance}
+          visibility = {editBalanceModalVisibility}
+          closeModal = {closeEditBalanceModal}
+        />
       </div>
     </>
   );

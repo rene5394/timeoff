@@ -3,13 +3,19 @@ import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { createBalance, updateBalance } from '../../lib/api/timeoff/balance';
-import { Balance } from '../../pages/admin/staff-directory';
 
 export interface BalancePopupProps {
   balance?: Balance;
   setBalance(balance: Balance): void;
   visibility: boolean;
   closeModal: () => void;
+}
+
+export interface Balance {
+  id?: number;
+  userId?: number;
+  compDays?: string;
+  vacationDays?: string;
 }
 
 export const EditBalanceModal: React.FC<BalancePopupProps> = ({ balance, setBalance, visibility, closeModal }) => {
@@ -30,13 +36,11 @@ export const EditBalanceModal: React.FC<BalancePopupProps> = ({ balance, setBala
   const createNewBalance = async(form: any) => {
     form.preventDefault();
     const balance = await createBalance(form);
-    console.log("Balance Created", balance);
   }
   
   const updateCurrentBalance = async(form: any) => {
     form.preventDefault();
     const balance = await updateBalance(form);
-    console.log("Balance Updated", balance);
   }
 
   return (
