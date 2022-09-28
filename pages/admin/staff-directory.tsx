@@ -3,36 +3,9 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
-import { EditBalanceModal } from '../../components/Modals/EditBalanceModal';
 import { StaffTable } from '../../components/StaffDirectory/StaffTable';
-import { IBalance } from '../../lib/domain/timeoff/IBalance';
-
-export interface Balance {
-  id?: number;
-  userId?: number;
-  compDays?: string;
-  vacationDays?: string;
-}
 
 const StaffDirectory: NextPage = () => {
-  const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
-  const [balance, setBalance] = React.useState<Balance>();
-
-  const openEditBalanceModal = (userId: number, balance: IBalance) => {
-    setBalance({
-      id: balance?.id,
-      userId: userId,
-      compDays: (balance?.compDays) ? balance.compDays.toString() : '0',
-      vacationDays: (balance?.vacationDays) ? balance.vacationDays.toString() : '0'
-    });
-
-    setEditBalanceModalVisibility(true);
-  }
-
-  const closeEditBalanceModal = () => {
-    setEditBalanceModalVisibility(false);
-  }
-
   return (
     <div className='container'>
       <Head>
@@ -45,13 +18,7 @@ const StaffDirectory: NextPage = () => {
         <SideBarAdmin />
         <div className="col-8">
           <div className="content">
-            <StaffTable openEditBalanceModal={openEditBalanceModal} />
-            <EditBalanceModal
-              balance = {balance}
-              setBalance = {setBalance}
-              visibility = {editBalanceModalVisibility}
-              closeModal = {closeEditBalanceModal}
-            />
+            <StaffTable />
           </div>
         </div>
       </div>
