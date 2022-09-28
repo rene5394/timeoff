@@ -3,17 +3,27 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
-import { BalanceDays, EditBalanceModal } from '../../components/Modals/EditBalanceModal';
+import { EditBalanceModal } from '../../components/Modals/EditBalanceModal';
 import { StaffTable } from '../../components/StaffDirectory/StaffTable';
+import { IBalance } from '../../lib/domain/timeoff/IBalance';
+
+export interface Balance {
+  id?: number;
+  userId?: number;
+  compDays?: string;
+  vacationDays?: string;
+}
 
 const StaffDirectory: NextPage = () => {
   const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
-  const [balanceDays, setBalanceDays] = React.useState<BalanceDays>({compDays: 0, vacationDays: 0});
+  const [balance, setBalance] = React.useState<Balance>();
 
-  const openEditBalanceModal = (balance: BalanceDays) => {
-    setBalanceDays({
-      compDays: (balance?.compDays) ? balance.compDays : 0,
-      vacationDays: (balance?.vacationDays) ? balance.vacationDays : 0
+  const openEditBalanceModal = (userId: number, balance: IBalance) => {
+    setBalance({
+      id: balance?.id,
+      userId: userId,
+      compDays: (balance?.compDays) ? balance.compDays.toString() : '0',
+      vacationDays: (balance?.vacationDays) ? balance.vacationDays.toString() : '0'
     });
 
     setEditBalanceModalVisibility(true);
@@ -36,7 +46,12 @@ const StaffDirectory: NextPage = () => {
         <div className="col-8">
           <div className="content">
             <StaffTable openEditBalanceModal={openEditBalanceModal} />
-            <EditBalanceModal balance={balanceDays} visibility={editBalanceModalVisibility} closeModal={closeEditBalanceModal} />
+            <EditBalanceModal
+              balance = {balance}
+              setBalance = {setBalance}
+              visibility = {editBalanceModalVisibility}
+              closeModal = {closeEditBalanceModal}
+            />
           </div>
         </div>
       </div>

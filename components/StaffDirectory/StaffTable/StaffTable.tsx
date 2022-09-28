@@ -14,7 +14,7 @@ import AdvancedPagination from '../../Commons/AdvancedPagination';
 import Moment from 'moment';
 
 interface StaffTableProperties {
-  openEditBalanceModal: (balance: IBalance) => void;
+  openEditBalanceModal: (userId: number, balance: IBalance) => void;
 }
 
 interface IUserData extends IUser {
@@ -109,7 +109,7 @@ export const StaffTable: React.FC<StaffTableProperties> = ({ openEditBalanceModa
 
   const editBalance = async(userId: number) => {
     const balance = await findOneBalanceByUserId(userId);
-    openEditBalanceModal(balance);
+    openEditBalanceModal(userId, balance);
   }
 
   return(
