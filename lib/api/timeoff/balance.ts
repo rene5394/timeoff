@@ -81,3 +81,50 @@ export const findOneBalanceByUserId = async(userId: number) => {
     return error.response.data;
   }
 };
+
+export const createBalance = async(form: any) => {
+  const url = '/balances';
+
+  try {
+    const result = await instance.post<IBalance>(url, {
+      userId: parseInt(form.target.elements.userId.value),
+      compDays: parseInt(form.target.elements.compDays.value),
+      vacationDays: parseInt(form.target.elements.vacationDays.value)
+    }, {withCredentials: true});
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const updateBalance = async(form: any) => {
+  const id = form.target.elements.balanceId.value;
+  const url = `/balances/${id}`;
+
+  try {
+    const result = await instance.patch<IBalance>(url, {
+      compDays: parseInt(form.target.elements.compDays.value),
+      vacationDays: parseInt(form.target.elements.vacationDays.value)
+    }, {withCredentials: true});
+
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const updateBalanceByUserId = async(form: any) => {
+  const userId = form.target.elements.userId.value;
+  const url = `/balances/user/${userId}`;
+
+  try {
+    const result = await instance.patch<IBalance>(url, {
+      userId: userId,
+      compDays: form.target.elements.compDays.value,
+      vacationDays: form.target.elements.vacationDays.value
+    }, {withCredentials: true});
+
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
