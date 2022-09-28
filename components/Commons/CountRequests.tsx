@@ -1,24 +1,24 @@
 import * as React from 'react';
-import { findAllRequestByUserJWT } from '../../lib/api/timeoff/request';
+import { findAllRequestByUserJWTAndStatus } from '../../lib/api/timeoff/request';
 import { IRequest } from '../../lib/domain/timeoff/IRequest';
 
-export const CountRequestsByStatus = (id: number) => {
-  const [Requests,setRequests] = React.useState<IRequest[]>();
+export const CountRequestsByStatus = (status: string,year:number) => {
+  const [requests,setRequests] = React.useState<IRequest[]>();
 
   React.useEffect( () => {
     const fillRequests = async() => {
-      const result = await findAllRequestByUserJWT();
-      const resultRequest = result.filter(type => type.statusId == id);
+      const result = await findAllRequestByUserJWTAndStatus(status);
+      const resultRequest = result.filter(req => new Date(req.startDate).getFullYear() == year);
       setRequests(resultRequest);
     }
 
     fillRequests();
-  }, []);
+  }, [requests]);
 
   var amountRequests = 0;
 
-  if (Requests) {
-    amountRequests = Requests.length;
+  if (requests) {
+    amountRequests = requests.length;
   }
 
   return amountRequests;

@@ -61,3 +61,9 @@ nav {
   width: 45px; 
   height: 45px;
 }
+.summaryDiv{
+  background: #FFFFFF;
+  box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.07);
+  border-radius: 33px;
+  padding: 20px;
+}

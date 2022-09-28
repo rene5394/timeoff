@@ -64,7 +64,7 @@ export const Balance = () =>{
         <p>Quick Stats and Balances</p>
         <br />
         <p className={Styles.balances}>Pending Requests</p>
-        <p>{ CountRequestsByStatus(1) }</p>
+        <p>{ CountRequestsByStatus('pending', new Date().getFullYear()) }</p>
         <p className={Styles.balances}>Next Approved Leave</p>
         <p>{String(findNearestDate())}</p>
         <p className={Styles.balances}>Comp Day</p>
