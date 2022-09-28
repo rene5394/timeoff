@@ -56,8 +56,8 @@ const TimeOffRequest: NextPage = () => {
         <SuccessModal text={modalSuccessText} visibility={successModalVisibility} closeModal={closeSuccessModal} />
         <ErrorModal text={modalErrorText} visibility={errorModalVisibility} closeModal={closeErrorModal} />
       </div>
-      
     </div>
   )
 }
+
 export default TimeOffRequest;
