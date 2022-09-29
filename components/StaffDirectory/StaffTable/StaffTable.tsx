@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { findAllUsersEmployees, findAllUsersEmployeesByTeam } from '../../../lib/api/team/user';
-import { findBalances, findOneBalanceByUserId } from '../../../lib/api/timeoff/balance';
+import { createBalance, findBalances, findOneBalanceByUserId, updateBalance } from '../../../lib/api/timeoff/balance';
 import { findAllActiveTeams } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
 import { findMembers } from '../../../lib/api/team/member';
@@ -11,6 +11,8 @@ import { ITeam } from '../../../lib/domain/team/ITeam';
 import { Team } from '../../../common/enums/team.enum';
 import { SearchForm } from '../SearchForm';
 import { EditBalanceModal } from '../../Modals/EditBalanceModal';
+import { SuccessModalTextProps } from '../../Modals/SucessModal';
+import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { AdvancedPagination } from '../../Commons/AdvancedPagination';
 import Moment from 'moment';
 
@@ -27,7 +29,12 @@ export interface Balance {
   vacationDays?: string;
 }
 
-export const StaffTable = () => {
+interface StaffTableProps {
+  openSuccessModal: (textProps: SuccessModalTextProps) => void;
+  openErrorModal: (textProps: ErrorModalTextProps) => void;
+}
+
+export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openErrorModal }) => {
   const [usersData, setUsersData] = React.useState<any[]>();
   const [numberOfPages, setNumberOfPages] = React.useState<number>(1);
   const [activePage, setActivePage] = React.useState<number>(1);
@@ -133,6 +140,46 @@ export const StaffTable = () => {
     openEditBalanceModal(userId, balance);
   }
 
+  const createNewBalance = async(form: any) => {
+    form.preventDefault();
+    const result = await createBalance(form);
+    
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeEditBalanceModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Balance created successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
+  }
+  
+  const updateCurrentBalance = async(form: any) => {
+    form.preventDefault();
+    const result = await updateBalance(form);
+
+    if (result.status === 200) {
+      fillUserData(activePage);
+      closeEditBalanceModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Balance updated successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
+  }
+
   return(
     <>
       <SearchForm teams={teams} setTeams={setTeams} changeTeam={changeTeam} changeText={changeText} />
@@ -183,6 +230,8 @@ export const StaffTable = () => {
           setBalance = {setBalance}
           visibility = {editBalanceModalVisibility}
           closeModal = {closeEditBalanceModal}
+          createNewBalance = {createNewBalance}
+          updateCurrentBalance = {updateCurrentBalance}
         />
       </div>
     </>
