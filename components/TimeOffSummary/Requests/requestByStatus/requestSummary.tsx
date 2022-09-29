@@ -6,7 +6,7 @@ import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
 import { countDaysbyType } from '../../../Commons/type';
 
-export const RequestSummaryByStatus = (status: string) => {
+export const RequestSummaryByStatus = (status: string, year:number) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [types, setTypes] = React.useState<IType[]>();
 
@@ -19,7 +19,8 @@ export const RequestSummaryByStatus = (status: string) => {
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWTAndStatus(status);
-      setRequests(result);
+      var resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year)
+      setRequests(resultFilter);
     }
     const fillTypes = async() => {
       const result = await findAllTypes();
@@ -27,7 +28,7 @@ export const RequestSummaryByStatus = (status: string) => {
     }
     fillRequests();
     fillTypes();
-  },[]);
+  },[requests]);
   
 
   return(
