@@ -52,7 +52,7 @@ const StaffDirectory: NextPage = () => {
         <SideBarAdmin />
         <div className="col-8">
           <div className="content">
-            <StaffTable />
+            <StaffTable openSuccessModal={openSuccessModal} openErrorModal={openErrorModal} />
           </div>
         </div>
         <SuccessModal text={modalSuccessText} visibility={successModalVisibility} closeModal={closeSuccessModal} />
