@@ -14,7 +14,7 @@ instance.interceptors.response.use((response) => {
     window.location.href = '/login';
   }
 
-  return Promise.resolve({ error });
+  return Promise.reject(error);
 });
 
 export const findAllBalances = async() => {
@@ -90,9 +90,11 @@ export const createBalance = async(form: any) => {
       userId: parseInt(form.target.elements.userId.value),
       compDays: parseInt(form.target.elements.compDays.value),
       vacationDays: parseInt(form.target.elements.vacationDays.value)
-    }, {withCredentials: true});
+    });
+
+    return result;
   } catch (error: any) {
-    return error.response.data;
+    return error.response;
   }
 }
 
@@ -104,11 +106,11 @@ export const updateBalance = async(form: any) => {
     const result = await instance.patch<IBalance>(url, {
       compDays: parseInt(form.target.elements.compDays.value),
       vacationDays: parseInt(form.target.elements.vacationDays.value)
-    }, {withCredentials: true});
+    });
 
-    return result.data;
+    return result;
   } catch (error: any) {
-    return error.response.data;
+    return error.response;
   }
 }
 
@@ -118,13 +120,13 @@ export const updateBalanceByUserId = async(form: any) => {
 
   try {
     const result = await instance.patch<IBalance>(url, {
-      userId: userId,
-      compDays: form.target.elements.compDays.value,
-      vacationDays: form.target.elements.vacationDays.value
+      userId: parseInt(userId),
+      compDays: parseInt(form.target.elements.compDays.value),
+      vacationDays: parseInt(form.target.elements.vacationDays.value)
     }, {withCredentials: true});
 
-    return result.data;
+    return result;
   } catch (error: any) {
-    return error.response.data;
+    return error.response;
   }
 }
