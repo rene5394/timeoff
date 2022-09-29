@@ -27,6 +27,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
   const submitForm = async(form: any) => {
     form.preventDefault();
     const result  = await createRequestByUserJWT(form);
+    console.log('Request created', result, result.status);
 
     if (result.status === 201) {
       const data = result.data;
@@ -46,7 +47,6 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
       });
     } if (result.status === 400) {
       const messages = result.data.message;
-      console.log(messages);
       openErrorModal({
         title: 'Error',
         body: messages
