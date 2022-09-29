@@ -44,7 +44,7 @@ export const SideBarCoach = () => {
         </li>
 
         <li className={`list-group-item ${router.pathname == '/coach/team-directory' ? 'sidebar-item-active' : ''}`}>
-          <Link href={'./time-off-summary'} >
+          <Link href={'./team-directory'} >
             <a className='linkItem light-gray-text'>
               <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Team Directory
             </a>
@@ -52,7 +52,7 @@ export const SideBarCoach = () => {
         </li>
 
         <li className={`list-group-item ${router.pathname == '/coach/request-overview' ? 'sidebar-item-active' : ''}`}>
-          <Link href={'./time-off-summary'} >
+          <Link href={'./request-overview'} >
             <a className='linkItem light-gray-text'>
               <FontAwesomeIcon icon={['fas', 'chart-pie']} /> Request Overview
             </a>
