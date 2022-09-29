@@ -86,14 +86,27 @@ export const findOneRequest = async(id: number) => {
   return result.data;
 };
 
-export const findNumberByYearMonth = async(year: number, month: number) => {
+export const findRequestsByYearMonth = async(year: number, month: number) => {
   const url = `/requests/year/${year}/month/${month}`;
   const result = await instance.get<IEvents[]>(url);
 
   return result.data;
 }
-export const findNumberByRange = async(start: Date, end: Date) => {
+export const findRequestsByRange = async(start: Date, end: Date) => {
   const url = `/requests/startDate/${start}/endDate/${end}`;
+  const result = await instance.get<IEvents[]>(url);
+
+  return result.data;
+}
+
+export const findNumberOfRequestsByYearMonth = async(year: number, month: number) => {
+  const url = `/requests/count/year/${year}/month/${month}`;
+  const result = await instance.get<IEvents[]>(url);
+
+  return result.data;
+}
+export const findNumberOfRequestsByRange = async(start: Date, end: Date) => {
+  const url = `/requests/count/startDate/${start}/endDate/${end}`;
   const result = await instance.get<IEvents[]>(url);
 
   return result.data;
