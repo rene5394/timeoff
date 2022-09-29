@@ -2,13 +2,14 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { createBalance, updateBalance } from '../../lib/api/timeoff/balance';
 
 export interface BalancePopupProps {
   balance?: Balance;
   setBalance(balance: Balance): void;
   visibility: boolean;
   closeModal: () => void;
+  createNewBalance: (form: any) => void;
+  updateCurrentBalance: (form: any) => void;
 }
 
 export interface Balance {
@@ -18,7 +19,7 @@ export interface Balance {
   vacationDays?: string;
 }
 
-export const EditBalanceModal: React.FC<BalancePopupProps> = ({ balance, setBalance, visibility, closeModal }) => {
+export const EditBalanceModal: React.FC<BalancePopupProps> = ({ balance, setBalance, visibility, closeModal, createNewBalance, updateCurrentBalance }) => {
   const inputChange = () => {
     const balanceId: number = parseInt((document.getElementById('balanceId') as HTMLInputElement).value);
     const userId: number = parseInt((document.getElementById('userId') as HTMLInputElement).value);
@@ -31,16 +32,6 @@ export const EditBalanceModal: React.FC<BalancePopupProps> = ({ balance, setBala
       compDays: compDays,
       vacationDays: vacationDays
     });
-  }
-  
-  const createNewBalance = async(form: any) => {
-    form.preventDefault();
-    const balance = await createBalance(form);
-  }
-  
-  const updateCurrentBalance = async(form: any) => {
-    form.preventDefault();
-    const balance = await updateBalance(form);
   }
 
   return (
