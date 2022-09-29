@@ -15,7 +15,7 @@ instance.interceptors.response.use((response) => {
     window.location.href = '/login';
   }
 
-  return Promise.resolve({ error });
+  return Promise.reject(error);
 });
 
 export const createRequest = async (form: any) =>{
@@ -35,7 +35,7 @@ export const createRequest = async (form: any) =>{
   }
 }
 
-export const createRequestByUserJWT = async (form:any) =>{
+export const createRequestByUserJWT = async (form:any) => {
   const url = '/requests/user/me';
 
   try {

@@ -14,7 +14,7 @@ instance.interceptors.response.use((response) => {
     window.location.href = '/login';
   }
 
-  return Promise.resolve({ error });
+  return Promise.reject(error);
 });
 
 export const createBalanceTransaction = async () =>{
