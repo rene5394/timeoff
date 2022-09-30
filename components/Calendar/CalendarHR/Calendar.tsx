@@ -10,7 +10,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEvents } from '../../../lib/domain/timeoff/IEvents';
-import { findNumberOfRequestsByYearMonth, findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
+import { findNumberOfRequestsByYearMonth } from '../../../lib/api/timeoff/request';
 
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);

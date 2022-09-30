@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import * as React from 'react';
 import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
@@ -6,6 +7,11 @@ import { Summary } from '../../components/TimeOffSummary/Summary';
 import { Requests } from '../../components/TimeOffSummary/Requests';
 
 const TimeOffSummary: NextPage = () => {
+  const [year,setYear] = React.useState<number>();
+  React.useEffect(() => {
+    var thisYear = new Date().getFullYear();
+    setYear(thisYear);
+  },[]);
   return(
     <div className="container">
       <Head>
@@ -17,9 +23,27 @@ const TimeOffSummary: NextPage = () => {
       <div className="body row mx-0">
         <SideBarAdmin />
         <div className="col-8">
-          <Summary />
-          <Requests />
-        </div>    
+          <div className={"col summaryDiv"}>
+            <div className="row">
+              <div className="col-5">
+                <h3>Time-Off Summary</h3>
+                <label htmlFor="Start">START DATE</label>
+                <select className="form-select" 
+                  value={year} 
+                  onChange={(e) => {
+                    setYear(parseInt(e.target.value));
+                  }}>
+                  <option selected value={year}>{year}</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                </select>
+              </div>
+              <Summary />
+            </div>
+          </div>
+          {Requests(year)}
+        </div>     
       </div>
     </div>
   );

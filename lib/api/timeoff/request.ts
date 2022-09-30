@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Api } from "../../../common/constants/api";
-import { IEvents } from "../../domain/timeoff/IEvents";
+import { IEvents, IEventsDetails } from "../../domain/timeoff/IEvents";
 import { IRequest } from '../../domain/timeoff/IRequest';
 
 const instance = axios.create({
@@ -88,13 +88,13 @@ export const findOneRequest = async(id: number) => {
 
 export const findRequestsByYearMonth = async(year: number, month: number) => {
   const url = `/requests/year/${year}/month/${month}`;
-  const result = await instance.get<IEvents[]>(url);
+  const result = await instance.get<IEventsDetails[]>(url);
 
   return result.data;
 }
 export const findRequestsByRange = async(start: Date, end: Date) => {
   const url = `/requests/startDate/${start}/endDate/${end}`;
-  const result = await instance.get<IEvents[]>(url);
+  const result = await instance.get<IEventsDetails[]>(url);
 
   return result.data;
 }
