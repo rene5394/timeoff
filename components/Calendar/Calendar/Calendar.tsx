@@ -23,19 +23,22 @@ interface ICalendarEvent {
   allDay:boolean;
 } 
 
-export const Calendar = () => {
+export const Calendar = (roleId: number) => {
   const [events, setEvents] = React.useState<IEvents[]>();
   const [calendarEvents,setCalendarEvents]= React.useState<ICalendarEvent[]>();
   const [dates,setDates] = React.useState<any>();
 
   const fillEvents = async(compDates:Date) => {
-    let year, month;
-    month = compDates.getMonth()+1;
-    year = compDates.getFullYear();
-    const result = await findNumberByYearMonth(year,month);
-    const resultRequest = result.filter(ev => ev.number != 0);
-    setEvents(resultRequest);
-    fillCalendarEvents();
+    if (roleId == 1)
+    {
+      let year, month;
+      month = compDates.getMonth()+1;
+      year = compDates.getFullYear();
+      const result = await findNumberByYearMonth(year,month);
+      const resultRequest = result.filter(ev => ev.number != 0);
+      setEvents(resultRequest);
+      fillCalendarEvents();
+    }
   }
 
   const fillCalendarEvents = () => {
