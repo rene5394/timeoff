@@ -5,7 +5,7 @@ import Image from 'next/future/image';
 export const Banner = () => {
   return (
     <div className={styles.banner}>
-      <Image src='/assets/img/avatar.png' alt='Profile Banner' height={70} width={70} className= {styles.profilePic} priority/>
+      <Image src='/assets/img/avatar.jpg' alt='Profile Banner' height={70} width={70} className= {styles.profilePic} priority/>
     </div>
   );
 }

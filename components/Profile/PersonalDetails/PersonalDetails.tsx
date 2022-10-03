@@ -28,8 +28,7 @@ export const PersonalDetails = () => {
   return (
     <>
       <div className='row ps-5'>
-        <h3 className='ps-0 mt-4'>{user?.firstname} {user?.secondname} {user?.lastname} {user?.secondlastname}</h3>
-        <p className='ps-0'>{user?.role_id}</p>
+        <h3 className='ps-0 my-4'>{user?.firstname} {user?.secondname} {user?.lastname} {user?.secondlastname}</h3>
 
         <h5 className='ps-0 pb-2 mt-3'><b>Personal</b> Details</h5>
       </div>

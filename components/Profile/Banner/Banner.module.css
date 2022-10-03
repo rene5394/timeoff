@@ -13,9 +13,7 @@
 
 .profilePic {
   margin-top: 6%;
-  border: solid;
   border-radius: 50%;
-  border-color: white;
   border-width: 2px;
   margin-left: 5%;
   display: flexbox;
