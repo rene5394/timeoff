@@ -53,6 +53,18 @@ export const findAllUsersEmployeesByTeam = async(teamId: number, text: string = 
   }
 };
 
+export const findAllTeamUsersEmployeesByJWT = async(text: string = '', page: number = 1, status: string = 'active') => {
+  const url = `/users/employees/user/me?text=${text}&page=${page}&status=${status}`;
+
+  try {
+    const { data } = await instance.get<any>(url);
+
+    return data;
+  } catch (err) {
+    throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
+  }
+};
+
 export const findOneUserByJWT = async() => {
   const url = '/users/me';
   const result = await instance.get<IUser>(url)

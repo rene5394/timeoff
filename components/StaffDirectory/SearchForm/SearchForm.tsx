@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { findAllTeams } from '../../../lib/api/team/team';
 import { ITeam } from '../../../lib/domain/team/ITeam';
 
 export interface SearchForm {

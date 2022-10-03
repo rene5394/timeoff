@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { findAllUsersEmployees, findAllUsersEmployeesByTeam } from '../../../lib/api/team/user';
+import { findAllTeamUsersEmployeesByJWT } from '../../../lib/api/team/user';
 import { createBalance, findBalances, findOneBalanceByUserId, updateBalance } from '../../../lib/api/timeoff/balance';
-import { findAllActiveTeams } from '../../../lib/api/team/team';
+import { findOneTeamByUserJWT } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
 import { findMembers } from '../../../lib/api/team/member';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IUser } from '../../../lib/domain/team/IUser';
 import { IEmployee } from '../../../lib/domain/team/IEmployee';
 import { ITeam } from '../../../lib/domain/team/ITeam';
-import { Team } from '../../../common/enums/team.enum';
 import { SearchForm } from '../SearchForm';
 import { EditBalanceModal } from '../../Modals/EditBalanceModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
@@ -38,15 +37,14 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
   const [usersData, setUsersData] = React.useState<any[]>();
   const [numberOfPages, setNumberOfPages] = React.useState<number>(1);
   const [activePage, setActivePage] = React.useState<number>(1);
-  const [teams, setTeams] = React.useState<ITeam[]>();
-  const [teamSelected, setTeamSelected] = React.useState<number>(0);
+  const [team, setTeam] = React.useState<ITeam>();
   const [searchText, setSearchText] = React.useState<string>('');
   const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
   const [balance, setBalance] = React.useState<Balance>();
 
   React.useEffect(() => {
     fillUserData(1);
-  }, [teamSelected, searchText])
+  }, [searchText])
 
   const fillUserData = async(page: number = 1) => {
     let users: IUser[];
@@ -55,18 +53,13 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
     const employeesIds: any = [];
     const objs: IUserData[] = [];
 
-    const teams = await findAllActiveTeams();
-    setTeams(teams);
+    const team = await findOneTeamByUserJWT();
+    setTeam(team);
 
-    if (teamSelected === Team.allTeams) {
-      const data = await findAllUsersEmployees(searchText, page);
-      users = data.list;
-      pages = Math.ceil(data.count/10);
-    } else {
-      const data = await findAllUsersEmployeesByTeam(teamSelected, searchText, page);
-      users = data.list;
-      pages = Math.ceil(data.count/10);
-    }
+    const data = await findAllTeamUsersEmployeesByJWT(searchText, page);
+    
+    users = data.list;
+    pages = Math.ceil(data.count/10);
 
     users.map((user: IUser) => userIds.push(user.id));
     const balances = await findBalances(userIds);
@@ -85,17 +78,6 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
         }
       });
 
-      employees.map((employee: IEmployee) => {
-        if (user.id === employee.user_id) {
-          members.map((member) => {
-            if (member.employee_id === employee.id) {                
-              const team = teams.find(team => team.id === member.team_id);
-              obj.teamName = (team) ? team.name : '';
-            }
-          });
-        }
-      });
-
       objs.push(obj);
     });
     
@@ -108,36 +90,14 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
     fillUserData(page);
   }
 
-  const changeTeam = (e: any) => {
-    const teamId = (e.target.value !== '') ? parseInt(e.target.value) : 0;
-    setTeamSelected(teamId);
-    setActivePage(1);
-  }
-
   const changeText = (e: any) => {
     const text = e.target.value;
     setSearchText(text);
     setActivePage(1);
   }
 
-  const openEditBalanceModal = (userId: number, balance: IBalance) => {
-    setBalance({
-      id: balance?.id,
-      userId: userId,
-      compDays: (balance?.compDays) ? balance.compDays.toString() : '0',
-      vacationDays: (balance?.vacationDays) ? balance.vacationDays.toString() : '0'
-    });
-
-    setEditBalanceModalVisibility(true);
-  }
-
   const closeEditBalanceModal = () => {
     setEditBalanceModalVisibility(false);
-  }
-
-  const editBalance = async(userId: number) => {
-    const balance = await findOneBalanceByUserId(userId);
-    openEditBalanceModal(userId, balance);
   }
 
   const createNewBalance = async(form: any) => {
@@ -182,17 +142,15 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
 
   return(
     <>
-      <SearchForm teams={teams} setTeams={setTeams} changeTeam={changeTeam} changeText={changeText} />
+      <SearchForm changeText={changeText} />
       <div className="row px-5 pt-4">
         <table className="table align-middle mb-4 bg-white">
           <thead className="bg-light">
             <tr>
               <th>Employee</th>
-              <th>Team</th>
               <th>Comp days</th>
               <th>Vacations</th>
               <th>Hire date</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -211,15 +169,9 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
                       </div>
                     </div>
                   </td>
-                  <td>{userData.teamName}</td>
                   <td>{userData.compDays?.toString()}</td>
                   <td>{userData.vacationDays?.toString()}</td>
                   <td>{Moment(userData.hiredate).format('MM-DD-YYYY')}</td>
-                  <td>
-                    <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
-                      Edit
-                    </button>
-                  </td>
                 </tr>
               )}
           </tbody>

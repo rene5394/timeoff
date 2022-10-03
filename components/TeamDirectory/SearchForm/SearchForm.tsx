@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { findAllTeams } from '../../../lib/api/team/team';
-import { ITeam } from '../../../lib/domain/team/ITeam';
 
 export interface SearchForm {
-  teams: ITeam[] | undefined;
-  setTeams: (teams: ITeam[]) => void;
-  changeTeam: (e: any) => void;
   changeText: (e: any) => void;
 }
 
-export const SearchForm: React.FC<SearchForm> = ({ teams, setTeams, changeTeam, changeText }) => {
+export const SearchForm: React.FC<SearchForm> = ({ changeText }) => {
   const submitForm = async(form: any) => {
     form.preventDefault();
   }
