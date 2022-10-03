@@ -42,7 +42,7 @@ export const MyAllocation = () => {
 
   return(
     <>
-      <table className="table">
+      <table className = "table">
         <thead>
           <tr>
             <th scope="col">Time-Off Type</th>

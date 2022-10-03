@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import {
   Calendar as BigCalendar,
@@ -27,11 +26,11 @@ interface ICalendarEvent {
 
 export const Calendar = () => {
   const [events, setEvents] = React.useState<IEventsDetails[]>();
-  const [calendarEvents,setCalendarEvents]= React.useState<ICalendarEvent[]>();
+  const [calendarEvents,setCalendarEvents] = React.useState<ICalendarEvent[]>();
   const [dates,setDates] = React.useState<any>();
   const [users, setUsers] = React.useState<IUser[]>();
 
-  const fillEvents = async(compDates:Date) => {
+  const fillEvents = async(compDates: Date) => {
     let year, month;
     month = compDates.getMonth()+1;
     year = compDates.getFullYear();
@@ -60,7 +59,7 @@ export const Calendar = () => {
     console.log('usuarios devueltos',result);
   }
 
-  const findName = (id:number) => {
+  const findName = (id: number) => {
     if (users) {
       console.log('findName',users);
       console.log('id',id);
@@ -102,7 +101,7 @@ export const Calendar = () => {
     fillEvents(date);
   }, [events]);
 
-  const onNavigate = (date: moment.MomentInput, view: string) => {
+  const onNavigate = (date: moment.MomentInput) => {
     setDates(date);
   }
   
@@ -110,11 +109,11 @@ export const Calendar = () => {
     <div className={`col-8 ${Styles.calendar}`}>
       <BigCalendar
         selectable
-        localizer={localizer}
-        events={calendarEvents}
-        views={[Views.MONTH, Views.WEEK, Views.DAY]}
-        defaultDate={new Date()}
-        onNavigate = {(date,view) => onNavigate(date,view)}
+        localizer = {localizer}
+        events = {calendarEvents}
+        views = {[Views.MONTH]}
+        defaultDate = {new Date()}
+        onNavigate = {(date) => onNavigate(date)}
       />
     </div>
   );

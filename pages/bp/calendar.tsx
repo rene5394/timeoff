@@ -18,7 +18,7 @@ const Calendar: NextPage = () => {
         <SideBarBP />
         <div className="content col-8">
           <div className="row">
-            {CalendarComponent(3)} 
+            {CalendarComponent()} 
             <Balance />
           </div>
           

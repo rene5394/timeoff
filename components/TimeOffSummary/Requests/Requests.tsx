@@ -3,11 +3,11 @@ import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { RequestSummaryByStatus } from './requestByStatus/requestSummary';
 import Styles from './Requests.module.css';
 
-export const Requests = (year:number | any) => {
-  const amountPending = CountRequestsByStatus('pending',year);
-  const amountApproved = CountRequestsByStatus('approved',year);
-  const amountDenied = CountRequestsByStatus('denied',year);
-  const amountCancelled = CountRequestsByStatus('canceled',year);
+export const Requests = (year: number | any) => {
+  const amountPending = CountRequestsByStatus('pending', year);
+  const amountApproved = CountRequestsByStatus('approved', year);
+  const amountDenied = CountRequestsByStatus('denied', year);
+  const amountCancelled = CountRequestsByStatus('canceled', year);
 
   return(
     <div className={'col ' + Styles.RequestsDiv}>
@@ -28,16 +28,16 @@ export const Requests = (year:number | any) => {
       </ul>
       <div className="tab-content" id="myTabContent">
         <div className="tab-pane fade show active" id="Approved" role="tabpanel" aria-labelledby="home-tab">
-          {RequestSummaryByStatus('approved',year)}
+          {RequestSummaryByStatus('approved', year)}
         </div>
         <div className="tab-pane fade" id="Pending" role="tabpanel" aria-labelledby="profile-tab">
-          {RequestSummaryByStatus('pending',year)}
+          {RequestSummaryByStatus('pending', year)}
         </div>
         <div className="tab-pane fade" id="Rejected" role="tabpanel" aria-labelledby="contact-tab">
-          {RequestSummaryByStatus('denied',year)}
+          {RequestSummaryByStatus('denied', year)}
         </div>
         <div className="tab-pane fade" id="Cancelled" role="tabpanel" aria-labelledby="contact-tab">
-          {RequestSummaryByStatus('canceled',year)}
+          {RequestSummaryByStatus('canceled', year)}
         </div>
       </div>
       </div>

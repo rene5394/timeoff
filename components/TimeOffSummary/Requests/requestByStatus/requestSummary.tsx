@@ -6,7 +6,7 @@ import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
 import { countDaysbyType } from '../../../Commons/type';
 
-export const RequestSummaryByStatus = (status: string, year:number) => {
+export const RequestSummaryByStatus = (status: string, year: number) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [types, setTypes] = React.useState<IType[]>();
 
