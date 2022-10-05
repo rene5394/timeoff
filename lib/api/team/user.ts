@@ -31,7 +31,6 @@ export const findAllUsers = async(page: number = 1, status: string = 'active') =
 
 export const findUsers = async(usersId: any[]) => {
   const url = '/users/employees?status=active';
-  console.log('api',usersId);
   const request = {
     params: {
       userIds: usersId

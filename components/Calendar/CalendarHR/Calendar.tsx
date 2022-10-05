@@ -10,7 +10,6 @@ import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
-import { IUser } from '../../../lib/domain/team/IUser';
 import { findUsers } from '../../../lib/api/team/user';
 
 moment.tz.setDefault('America/El_Salvador');
@@ -18,7 +17,7 @@ const localizer = momentLocalizer(moment);
 
 interface ICalendarEvent {
   id:number;
-  title:String;
+  title:String | undefined;
   start:Date;
   end:Date;
   allDay:boolean;
@@ -28,7 +27,7 @@ export const Calendar = () => {
   const [events, setEvents] = React.useState<IEventsDetails[]>();
   const [calendarEvents,setCalendarEvents] = React.useState<ICalendarEvent[]>();
   const [dates,setDates] = React.useState<any>();
-  const [users, setUsers] = React.useState<IUser[]>();
+  const [users, setUsers] = React.useState<any[]>();
 
   const fillEvents = async(compDates: Date) => {
     let year, month;
@@ -52,21 +51,32 @@ export const Calendar = () => {
         
       });
     }
-    console.log('Id de usuarios desde events',usersId);
-    let result = await findUsers(usersId);
+    let usersIdsUniques = usersId.filter((element, index) => {
+      return usersId.indexOf(element) === index;
+    });
+    console.log('Ids unicos',usersIdsUniques);
+    let result = await findUsers(usersIdsUniques);
+    let result2 = result.list;
     
-    setUsers(result);
-    console.log('usuarios devueltos',result);
+    setUsers(result2);
   }
 
-  const findName = (id: number) => {
+  const findName = (id:number) => {
+    let name = '';
     if (users) {
       console.log('findName',users);
       console.log('id',id);
-      let user = users.find(us => us.id = id);
-      console.log('usuario',user);
-      return String(user?.firstname+' '+user?.lastname);
+      users.map(async user => {
+        
+        if (user.id === id) {
+          name = `${user.firstname} ${user.lastname}`;
+          console.log('entra',user.id);
+        }
+      });
+
+      return name;
     }
+
     return 'Not found';
   }
 
@@ -109,11 +119,12 @@ export const Calendar = () => {
     <div className={`col-8 ${Styles.calendar}`}>
       <BigCalendar
         selectable
-        localizer = {localizer}
-        events = {calendarEvents}
-        views = {[Views.MONTH]}
-        defaultDate = {new Date()}
+        localizer={localizer}
+        events={calendarEvents}
+        views={[Views.MONTH]}
+        defaultDate={new Date()}
         onNavigate = {(date) => onNavigate(date)}
+        popup
       />
     </div>
   );
