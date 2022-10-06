@@ -1,0 +1,20 @@
+.title {
+  color: #F4C14B;
+  font-weight: bold;
+}
+
+.balances {
+  font-weight: bold;
+}
+
+.compDay {
+  background-color: #F6F6F6;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comp {
+  color: #E75755;
+  font-size: 14px;
+}
