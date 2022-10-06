@@ -17,7 +17,7 @@ instance.interceptors.response.use((response) => {
   return Promise.resolve({ error });
 });
 
-export const findAllUsers = async(page: number = 1, status: string = 'active') => {
+export const findAllUsers = async(page: number = -1, status: string = 'active') => {
   const url = `/users?page=${page}&status=${status}`;
 
   try {
@@ -46,7 +46,7 @@ export const findUsers = async(usersId: any[]) => {
   }
 }
 
-export const findAllUsersEmployees = async(text: string = '', page: number = 1, status: string = 'active') => {
+export const findAllUsersEmployees = async(text: string = '', page: number = -1, status: string = 'active') => {
   const url = `/users/employees?text=${text}&page=${page}&status=${status}`;
 
   try {
@@ -58,7 +58,7 @@ export const findAllUsersEmployees = async(text: string = '', page: number = 1, 
   }
 };
 
-export const findAllUsersEmployeesByTeam = async(teamId: number, text: string = '', page: number = 1, status: string = 'active') => {
+export const findAllUsersEmployeesByTeam = async(teamId: number, text: string = '', page: number = -1, status: string = 'active') => {
   const url = `/users/employees/team/${teamId}?text=${text}&page=${page}&status=${status}`;
 
   try {
@@ -70,7 +70,7 @@ export const findAllUsersEmployeesByTeam = async(teamId: number, text: string = 
   }
 };
 
-export const findAllTeamUsersEmployeesByJWT = async(text: string = '', page: number = 1, status: string = 'active') => {
+export const findAllTeamUsersEmployeesByJWT = async(text: string = '', page: number = -1, status: string = 'active') => {
   const url = `/users/employees/user/me?text=${text}&page=${page}&status=${status}`;
 
   try {

@@ -8,7 +8,7 @@ export interface Pagination {
 }
 
 export const AdvancedPagination: React.FC<Pagination> = ({ activePage, numberOfPages, changePage }) => {
-  if (numberOfPages === 1) {
+  if (numberOfPages === 0 || numberOfPages === 1) {
     return (
       <Pagination className="mb-4">
         <Pagination.Prev />

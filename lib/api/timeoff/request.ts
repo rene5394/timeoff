@@ -51,9 +51,9 @@ export const createRequestByUserJWT = async (form:any) => {
   }
 }
 
-export const findAll = async() => {
-  const url = '/requests';
-  const result = await instance.get<IRequest[]>(url);
+export const findAllRequests = async(page: number = -1, status: string = '', starDate: string = '', endDate: string = '') => {
+  const url = `/requests?page=${page}&status=${status}&starDate=${starDate}&endDate=${endDate}`;
+  const result = await instance.get<any>(url);
 
   return result.data;
 };
