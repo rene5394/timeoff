@@ -75,13 +75,10 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     if (teamSelected === Team.allTeams) {
       const requestsData = await findAllRequests(page);
       requests = requestsData.list;
-      console.log('count requests', requestsData.count, requestsData.count / 10);
-      
-      pages = Math.ceil(requestsData.count / 10);
-
       requests.map((request: IRequest) => userIds.push(request.userId));
-      const userData = await findUsers(userIds);
+      pages = Math.ceil(requestsData.count / 10);
       
+      const userData = await findUsers(userIds);
       users = userData.list;
     } else {
       const data = await findAllUsersEmployeesByTeam(teamSelected, searchText, page);
