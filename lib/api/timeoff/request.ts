@@ -51,7 +51,7 @@ export const createRequestByUserJWT = async (form:any) => {
   }
 }
 
-export const findAllRequests = async(page: number = 1, status: string = '', starDate: string = '', endDate: string = '') => {
+export const findAllRequests = async(page: number = -1, status: string = '', starDate: string = '', endDate: string = '') => {
   const url = `/requests?page=${page}&status=${status}&starDate=${starDate}&endDate=${endDate}`;
   const result = await instance.get<any>(url);
 

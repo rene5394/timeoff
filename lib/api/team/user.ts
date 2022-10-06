@@ -17,7 +17,7 @@ instance.interceptors.response.use((response) => {
   return Promise.resolve({ error });
 });
 
-export const findAllUsers = async(page: number = 1, status: string = 'active') => {
+export const findAllUsers = async(page: number = -1, status: string = 'active') => {
   const url = `/users?page=${page}&status=${status}`;
 
   try {
