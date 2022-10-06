@@ -3,12 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Styles from './Balance.module.css';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
-import { findAllRequestByUserJWTAndStatus, findAllRequests } from '../../../lib/api/timeoff/request';
-import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
-import { CountRequestsByStatus } from '../../Commons/CountRequests';
+import { findAllRequests, findOneRequest, findRequestsByRange } from '../../../lib/api/timeoff/request';
 import { showRequests } from './Requests';
 import { endOfWeek, format, startOfWeek } from 'date-fns';
-import { addDays, nextSunday } from 'date-fns/esm';
+import { addDays } from 'date-fns';
+import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IRequest[]>();
@@ -16,26 +15,13 @@ export const Balance = () => {
   const [pendingRequests, setPendingRequests] = React.useState<number>();
 
   React.useEffect(() => {
-    const fillBalanceCards = async() => {
-      const result = await findOneByUserJWT();
-      setBalance(result);
-    };
     const allPendingRequests = async() => {
       const result = await findAllRequests(-1,'pending');
+      console.log('requests pending',result.list);
       setPendingRequests(result.length);
     };
     allPendingRequests();
-    fillBalanceCards();
-
   }, []);
-
-  React.useEffect(() => {
-    const fillRequests = async() => {
-      const result = await findAllRequestByUserJWTAndStatus('approved');
-      setRequests(result);
-    }
-    fillRequests();
-  },[]);
 
   const employeesOffByRange = async(range: string) => {
     let today = new Date();
@@ -46,31 +32,45 @@ export const Balance = () => {
     let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
 
     if (range === 'thisWeek'){
-      
+      let result = await findRequestsByRange(new Date(startThisWeek),new Date(endThisWeek));
+      let count=0;
+      if(result){
+        count = countEmployeesOff(result);
+      }
+      return count;
+    }
+    if (range === 'today') {
+      let result = await findRequestsByRange(today,today);
+      let count=0;
+      if(result){
+        count = countEmployeesOff(result);
+      }
+      return count;
+    }
+    if (range === 'nextWeek') {
+      let result = await findRequestsByRange(new Date(startNextWeek), new Date(endNextWeek));
+      let count=0;
+      if(result){
+        count = countEmployeesOff(result);
+      }
+      return count;
     }
   }
 
-  const findNearestDate = () => {
-    var today = new Date();
-    var nearest = today;
-    var dateToCompare = today;
-    if (requests) {
-      if (requests.length < 1) {
-        return 'No approved requests';
-      }
-      nearest = new Date(requests[requests.length-1].startDate);
-      requests.map((req,i) => { 
-        if (new Date(req.startDate) > today) {
-          dateToCompare = new Date(req.startDate);
-          if (dateToCompare < nearest) {
-            nearest = dateToCompare;
-          }
+  const countEmployeesOff = (request:IEventsDetails[]) => {
+    let count = 0;
+    request.map(req => {
+      let result;
+      req.requests.map(async reqs => {
+        result = await findOneRequest(reqs.requestId);
+        if (result.statusId === 2) {
+          count++;
         }
       });
-    }
-    return format(nearest,'d MMMM Y');
-  }
+    });
 
+    return count;
+  }
 
   return(
     <div className = "col-4">
@@ -79,13 +79,13 @@ export const Balance = () => {
         <p>Quick Stats and Balances</p>
         <br />
         <p className = {Styles.balances}>Pending Requests</p>
-        <p>{ CountRequestsByStatus('pending', new Date().getFullYear()) }</p>
+        <p>{ pendingRequests }</p>
         <p className = {Styles.balances}>Employees Off Today</p>
-        <p>{String(findNearestDate())}</p>
+        <p>{String(employeesOffByRange('today'))}</p>
         <p className = {Styles.balances}>Employees Off this Weekend</p>
-        <p>{balance?.compDays} d</p>
+        <p>{String(employeesOffByRange('thisWeek'))}</p>
         <p className = {Styles.balances}>Employees Off Next Week</p>
-        <p>{balance?.vacationDays} d</p>
+        <p>{String(employeesOffByRange('nextWeek'))}</p>
       </div>
       <div>
         <h3>My Pending</h3>

@@ -48,13 +48,11 @@ export const Calendar = () => {
         event.requests.map(req => {
           usersId.push(req.userId);
         });
-        
       });
     }
     let usersIdsUniques = usersId.filter((element, index) => {
       return usersId.indexOf(element) === index;
     });
-    console.log('Ids unicos',usersIdsUniques);
     let result = await findUsers(usersIdsUniques);
     let result2 = result.list;
     
@@ -64,13 +62,9 @@ export const Calendar = () => {
   const findName = (id:number) => {
     let name = '';
     if (users) {
-      console.log('findName',users);
-      console.log('id',id);
       users.map(async user => {
-        
         if (user.id === id) {
           name = `${user.firstname} ${user.lastname}`;
-          console.log('entra',user.id);
         }
       });
 

@@ -3,7 +3,7 @@ import Head from "next/head";
 import { NavHeader } from "../../components/Layout/NavHeader";
 import { SideBarAdmin } from "../../components/Layout/Sidebars/SidebarAdmin";
 import { Calendar as CalendarComponent } from "../../components/Calendar/CalendarHR/Calendar";
-import { Balance } from "../../components/Calendar/Overview";
+import { Balance } from "../../components/Calendar/OverviewAdmin";
 
 const Calendar: NextPage = () => {
   return(
