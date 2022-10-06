@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Styles from './Balance.module.css';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
-import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/request';
+import { findAllRequestByUserJWTAndStatus, findAllRequests } from '../../../lib/api/timeoff/request';
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { showRequests } from './Requests';
@@ -13,13 +13,20 @@ import { addDays, nextSunday } from 'date-fns/esm';
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [balance, setBalance] = React.useState<IBalance>();
+  const [pendingRequests, setPendingRequests] = React.useState<number>();
 
   React.useEffect(() => {
     const fillBalanceCards = async() => {
       const result = await findOneByUserJWT();
       setBalance(result);
     };
+    const allPendingRequests = async() => {
+      const result = await findAllRequests(-1,'pending');
+      setPendingRequests(result.length);
+    };
+    allPendingRequests();
     fillBalanceCards();
+
   }, []);
 
   React.useEffect(() => {
