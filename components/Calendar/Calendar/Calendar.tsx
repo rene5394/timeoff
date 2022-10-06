@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import {
   Calendar as BigCalendar,
@@ -10,7 +9,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEvents } from '../../../lib/domain/timeoff/IEvents';
-import { findNumberOfRequestsByYearMonth, findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
+import { findNumberOfRequestsByYearMonth } from '../../../lib/api/timeoff/request';
 
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
@@ -25,10 +24,10 @@ interface ICalendarEvent {
 
 export const Calendar = () => {
   const [events, setEvents] = React.useState<IEvents[]>();
-  const [calendarEvents,setCalendarEvents]= React.useState<ICalendarEvent[]>();
+  const [calendarEvents,setCalendarEvents] = React.useState<ICalendarEvent[]>();
   const [dates,setDates] = React.useState<any>();
 
-  const fillEvents = async(compDates:Date) => {
+  const fillEvents = async(compDates: Date) => {
     let year, month;
     month = compDates.getMonth()+1;
     year = compDates.getFullYear();
@@ -67,7 +66,7 @@ export const Calendar = () => {
     fillEvents(date);
   }, [events]);
 
-  const onNavigate = (date: moment.MomentInput, view: string) => {
+  const onNavigate = (date: moment.MomentInput) => {
     setDates(date);
   }
   
@@ -75,11 +74,11 @@ export const Calendar = () => {
     <div className={`col-8 ${Styles.calendar}`}>
       <BigCalendar
         selectable
-        localizer={localizer}
-        events={calendarEvents}
-        views={[Views.MONTH, Views.WEEK, Views.DAY]}
-        defaultDate={new Date()}
-        onNavigate = {(date,view) => onNavigate(date,view)}
+        localizer = {localizer}
+        events = {calendarEvents}
+        views = {[Views.MONTH]}
+        defaultDate = {new Date()}
+        onNavigate = {(date) => onNavigate(date)}
       />
     </div>
   );

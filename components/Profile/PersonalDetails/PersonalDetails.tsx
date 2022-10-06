@@ -6,8 +6,8 @@ import { findOneTeamByUserJWT } from '../../../lib/api/team/team';
 import { ITeam } from '../../../lib/domain/team/ITeam';
 
 export const PersonalDetails = () => {
-  const [user, setUser]=React.useState<IUser>();
-  const [team, setTeam]=React.useState<ITeam>();
+  const [user, setUser] = React.useState<IUser>();
+  const [team, setTeam] = React.useState<ITeam>();
 
   React.useEffect(() => {
     const FillUser = async() => {
