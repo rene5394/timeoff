@@ -58,6 +58,23 @@ export const findAllRequests = async(page: number = -1, status: string = '', sta
   return result.data;
 };
 
+export const findAllRequestsByUsers = async(userIds: any[]) => {
+  const url = '/requests';
+  const request = {
+    params: {
+      userIds: userIds
+    }
+  };
+
+  try {
+    const result = await instance.get<any>(url, request);
+
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
 export const findAllRequestByUserJWT = async() => {
   const url = '/requests/user/me';
   const result = await instance.get<IRequest[]>(url);
