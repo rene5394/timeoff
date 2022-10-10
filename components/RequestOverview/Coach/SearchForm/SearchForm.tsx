@@ -1,14 +1,10 @@
 import * as React from 'react';
-import { ITeam } from '../../../lib/domain/team/ITeam';
 
 export interface SearchForm {
-  teams: ITeam[] | undefined;
-  setTeams: (teams: ITeam[]) => void;
-  changeTeam: (e: any) => void;
   changeText: (e: any) => void;
 }
 
-export const SearchForm: React.FC<SearchForm> = ({ teams, setTeams, changeTeam, changeText }) => {
+export const SearchForm: React.FC<SearchForm> = ({ changeText }) => {
   const submitForm = async(form: any) => {
     form.preventDefault();
   }
@@ -20,24 +16,17 @@ export const SearchForm: React.FC<SearchForm> = ({ teams, setTeams, changeTeam, 
       <form onSubmit={submitForm}>
       <div className="row g-3">
         <div className="col">
-          <label htmlFor="team" className="light-gray-text-2 mt-3 mb-2">Team</label>
-          <select onChange={changeTeam} className="form-select rounded" id='team' name="team" required>
-            <option value="">Select option</option>
-            { teams?.map((team) => <option value={team.id}>{team.name}</option>) }
-          </select>
-        </div>
-        <div className="col">
           <label htmlFor="name" className="light-gray-text-2 mt-3 mb-2">Name</label>
           <input onKeyUp={changeText} type="text" className="form-control" name="name" />
         </div>
       </div>
       <div className="row g-3">
         <div className="col">
-          <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">Start Date</label>
+          <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">Submit initial date</label>
           <input className="form-control rounded" type="date" name="start" id="start" required />
         </div>
         <div className="col">
-          <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>End Date</label>
+          <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>Submit final date</label>
           <input className="form-control rounded" type="date" name="end" id="end" required />
         </div>
       </div>
