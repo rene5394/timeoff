@@ -58,8 +58,8 @@ export const findAllRequests = async(page: number = -1, status: string = '', sta
   return result.data;
 };
 
-export const findAllRequestsByUsers = async(userIds: any[]) => {
-  const url = '/requests';
+export const findAllRequestsByUsers = async(userIds: any[], starDate: string = '', endDate: string = '') => {
+  const url = `/requests?startDate=${starDate}&endDate=${endDate}`;
   const request = {
     params: {
       userIds: userIds

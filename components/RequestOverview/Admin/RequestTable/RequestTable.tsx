@@ -74,7 +74,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users.map((user: IUser) => userIds.push(user.id));
 
       if (users.length > 0) {
-        const requestsData = await findAllRequestsByUsers(userIds);
+        const requestsData = await findAllRequestsByUsers(userIds, startDate, endDate);
         requests = requestsData.list;
         pages = Math.ceil(requestsData.count / 10);
       } else {
@@ -86,7 +86,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users = data.list;
       users.map((user: IUser) => userIds.push(user.id));
 
-      const requestsData = await findAllRequestsByUsers(userIds);
+      const requestsData = await findAllRequestsByUsers(userIds, startDate, endDate);
       requests = requestsData.list;
       pages = Math.ceil(requestsData.count / 10);
     }
