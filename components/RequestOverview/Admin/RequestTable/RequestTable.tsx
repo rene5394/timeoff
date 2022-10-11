@@ -131,7 +131,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const changeDate = (e: any) => {
     const inputId = e.target.id;
     if (inputId === 'startDate') {
-      setStartDate(e.target.value);      
+      setStartDate(e.target.value);  
 
       if (e.target.value > endDate && endDate !== '') {
         openErrorModal({

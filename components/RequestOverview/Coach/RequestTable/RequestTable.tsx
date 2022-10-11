@@ -33,12 +33,14 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [numberOfPages, setNumberOfPages] = React.useState<number>(1);
   const [activePage, setActivePage] = React.useState<number>(1);
   const [searchText, setSearchText] = React.useState<string>('');
+  const [startDate, setStartDate] = React.useState<string>('');
+  const [endDate, setEndDate] = React.useState<string>('');
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
   const [cancelRequestModalVisibility, setCancelRequestModalVisibility] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     fillUserData(1);
-  }, [searchText])
+  }, [searchText, startDate, endDate])
 
   const fillUserData = async(page: number = 1) => {
     let requests: IRequest[];
@@ -51,7 +53,6 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     const requestStatuses = await findAllRequestStatuses();
 
     const data = await findAllTeamUsersEmployeesByJWT(searchText);
-    console.log('users: ', data);
     users = data.list;
     
     users.map((user: IUser) => userIds.push(user.id));
@@ -91,6 +92,29 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     setActivePage(1);
   }
 
+  const changeDate = (e: any) => {
+    const inputId = e.target.id;
+    if (inputId === 'startDate') {
+      setStartDate(e.target.value);      
+
+      if (e.target.value > endDate && endDate !== '') {
+        openErrorModal({
+          title: 'Error',
+          body: ['Start date can\'t be lower than start date']
+        });
+      }
+    } if (inputId === 'endDate') {
+      setEndDate(e.target.value);
+
+      if (e.target.value < startDate) {
+        openErrorModal({
+          title: 'Error',
+          body: ['End date can\'t be lower than start date']
+        });
+      }
+    }
+  }
+
   const openApproveRequestModal = (requestData: IRequestData) => {
     setRequestData(requestData);
     setApproveRequestModalVisibility(true);
@@ -111,7 +135,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
   return(
     <>
-      <SearchForm changeText={changeText} />
+      <SearchForm changeText={changeText} changeDate={changeDate} />
       <div className="row px-5 pt-4">
         <table className="table align-middle mb-4 bg-white">
           <thead className="bg-light">
