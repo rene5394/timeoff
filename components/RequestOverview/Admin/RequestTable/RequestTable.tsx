@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { findAllUsersEmployeesByTeam, findUsers } from '../../../../lib/api/team/user';
+import { findAllUsersEmployees, findAllUsersEmployeesByTeam, findUsers } from '../../../../lib/api/team/user';
 import { findAllActiveTeams } from '../../../../lib/api/team/team';
 import { IUser } from '../../../../lib/domain/team/IUser';
 import { ITeam } from '../../../../lib/domain/team/ITeam';
@@ -48,7 +48,6 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   }, [teamSelected, searchText, startDate, endDate])
 
   const fillUserData = async(page: number = 1) => {
-    console.log('Function triggered');
     let requests: IRequest[];
     let users: IUser[];
     let pages: number;
@@ -61,9 +60,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     const requestTypes = await findAllTypes();
     const requestStatuses = await findAllRequestStatuses();
 
-    if (teamSelected === Team.allTeams) {
-      console.log('Dates', startDate, endDate);
-      
+    if (teamSelected === Team.allTeams && searchText === '') {
       const requestsData = await findAllRequests(page, '', startDate, endDate);
       requests = requestsData.list;
       requests.map((request: IRequest) => userIds.push(request.userId));
@@ -71,6 +68,19 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       
       const userData = await findUsers(userIds);
       users = userData.list;
+    } else if (teamSelected === Team.allTeams && searchText !== '') {
+      const data = await findAllUsersEmployees(searchText);
+      users = data.list;
+      users.map((user: IUser) => userIds.push(user.id));
+
+      if (users.length > 0) {
+        const requestsData = await findAllRequestsByUsers(userIds);
+        requests = requestsData.list;
+        pages = Math.ceil(requestsData.count / 10);
+      } else {
+        requests = [];
+        pages = 1;
+      }
     } else {
       const data = await findAllUsersEmployeesByTeam(teamSelected, searchText);
       users = data.list;
@@ -121,12 +131,24 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const changeDate = (e: any) => {
     const inputId = e.target.id;
     if (inputId === 'startDate') {
-      setStartDate(e.target.value);
+      setStartDate(e.target.value);      
+
+      if (e.target.value > endDate && endDate !== '') {
+        openErrorModal({
+          title: 'Error',
+          body: ['Start date can\'t be lower than start date']
+        });
+      }
     } if (inputId === 'endDate') {
       setEndDate(e.target.value);
-    }
 
-    setActivePage(1);
+      if (e.target.value < startDate) {
+        openErrorModal({
+          title: 'Error',
+          body: ['End date can\'t be lower than start date']
+        });
+      }
+    }
   }
 
   const openApproveRequestModal = (requestData: IRequestData) => {
