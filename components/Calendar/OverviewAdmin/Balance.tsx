@@ -9,68 +9,104 @@ import { endOfWeek, format, startOfWeek } from 'date-fns';
 import { addDays } from 'date-fns';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 
+interface newRequests extends IRequest {
+  day: Date;
+}
+
 export const Balance = () => {
-  const [requests, setRequests] = React.useState<IRequest[]>();
-  const [balance, setBalance] = React.useState<IBalance>();
+  const [requests, setRequests] = React.useState<IEventsDetails[]>();
+  const [requestsDetails, setRequestsDetails] = React.useState<newRequests[]>();
   const [pendingRequests, setPendingRequests] = React.useState<number>();
+  const [employeesOffThisWeek, setEmployeesOffThisWeek] = React.useState<number>(0);
 
   React.useEffect(() => {
     const allPendingRequests = async() => {
       const result = await findAllRequests(-1,'pending');
-      console.log('requests pending',result.list);
-      setPendingRequests(result.length);
+      const list = result.list;
+      setPendingRequests(list.length);
     };
+
+    const callAllRequests = async() => {
+      let today = new Date();
+      let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
+      let endThisWeek = endOfWeek(today,{weekStartsOn:1});
+      let nextWeek = addDays(endThisWeek,2);
+      let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
+
+      const result = await findRequestsByRange(startThisWeek,endNextWeek);
+      const dataFilter = result.filter(value => value.requests.length > 0);
+      setRequests(dataFilter);
+    };
+
+    callAllRequests();
     allPendingRequests();
   }, []);
 
-  const employeesOffByRange = async(range: string) => {
-    let today = new Date();
-    let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
-    let endThisWeek = endOfWeek(today,{weekStartsOn:1});
-    let nextWeek = addDays(endThisWeek,2);
-    let startNextWeek = startOfWeek(nextWeek,{weekStartsOn:1});
-    let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
-
-    if (range === 'thisWeek'){
-      let result = await findRequestsByRange(new Date(startThisWeek),new Date(endThisWeek));
-      let count=0;
-      if(result){
-        count = countEmployeesOff(result);
+  React.useEffect(() => {
+    const employeesOffByRange = () => {
+      let today = new Date();
+      let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
+      let endThisWeek = endOfWeek(today,{weekStartsOn:1});
+      let nextWeek = addDays(endThisWeek,1);
+      let startNextWeek = startOfWeek(nextWeek,{weekStartsOn:1});
+      let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
+      let count = 0;
+      console.log('Detalles de request', requestsDetails);
+      console.log('startWeek',new Date(startThisWeek));
+      
+      if (requestsDetails) {
+        requestsDetails.map((req) => {
+          
+          console.log('day',new Date(req.day));
+          if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day) ){
+            console.log('detro de if', req);
+            count++;
+          }
+        });
+        console.log('contador de requests this week',count);
       }
-      return count;
+      setEmployeesOffThisWeek(count);
     }
-    if (range === 'today') {
-      let result = await findRequestsByRange(today,today);
-      let count=0;
-      if(result){
-        count = countEmployeesOff(result);
-      }
-      return count;
-    }
-    if (range === 'nextWeek') {
-      let result = await findRequestsByRange(new Date(startNextWeek), new Date(endNextWeek));
-      let count=0;
-      if(result){
-        count = countEmployeesOff(result);
-      }
-      return count;
-    }
-  }
 
-  const countEmployeesOff = (request:IEventsDetails[]) => {
-    let count = 0;
-    request.map(req => {
-      let result;
-      req.requests.map(async reqs => {
-        result = await findOneRequest(reqs.requestId);
-        if (result.statusId === 2) {
-          count++;
-        }
-      });
-    });
+    const callRequestsDetails = () => {
+      if (requests) {
+        let requestArray = new Array();
+        console.log('Call Requests Details', requests);
+        requests.map((data) => {
+          data.requests.map(async(request) => {
+            let result = await findOneRequest(request.requestId);
+            
+            if (result.statusId === 2) {
+              let newReq = {
+                amount: result.amount,
+                coachApproval: result.coachApproval,
+                createdAt: result.createdAt,
+                createdBy: result.createdBy,
+                endDate: result.endDate,
+                hrApproval: result.hrApproval,
+                id: result.id,
+                startDate: result.startDate,
+                statusId: result.statusId,
+                typeId: result.typeId,
+                updatedAt: result.updatedAt,
+                userId: result.userId,
+                day: request.day
+              }
+              requestArray.push(newReq);
+            }
+          });
+        });
+        console.log('array', requestArray);
+        setRequestsDetails(requestArray);
+        employeesOffByRange();
+      }
+    };
 
-    return count;
-  }
+    callRequestsDetails();
+  },[requests]);
+
+  React.useEffect(() => {
+  },[requestsDetails]);
 
   return(
     <div className = "col-4">
@@ -81,27 +117,13 @@ export const Balance = () => {
         <p className = {Styles.balances}>Pending Requests</p>
         <p>{ pendingRequests }</p>
         <p className = {Styles.balances}>Employees Off Today</p>
-        <p>{String(employeesOffByRange('today'))}</p>
+        <p>{employeesOffThisWeek}</p>
         <p className = {Styles.balances}>Employees Off this Weekend</p>
-        <p>{String(employeesOffByRange('thisWeek'))}</p>
+        <p>{employeesOffThisWeek}</p>
         <p className = {Styles.balances}>Employees Off Next Week</p>
-        <p>{String(employeesOffByRange('nextWeek'))}</p>
+        <p>{employeesOffThisWeek}</p>
       </div>
-      <div>
-        <h3>My Pending</h3>
-        <div className = {Styles.compDay}>
-          {showRequests()}
-        </div>
-
-        <div>
-          <form action="">
-            <div className = "input-group mb-3">
-              <span className ='input-group-text' ><FontAwesomeIcon icon = {['fas', 'envelope']} /></span>
-              <input type = "text" className = 'form-control' placeholder = 'Inbox my manager' />
-            </div>
-          </form>
-        </div>
-      </div>
+      
     </div>
   );
 }
