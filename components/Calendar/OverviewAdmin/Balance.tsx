@@ -105,11 +105,8 @@ export const Balance = () => {
     callRequestsDetails();
   },[requests]);
 
-  
-
   React.useEffect(() => {
   },[requestsDetails]);
-
 
   return(
     <div className = "col-4">
