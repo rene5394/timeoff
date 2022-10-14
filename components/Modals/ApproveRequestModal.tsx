@@ -4,14 +4,17 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { IRequestData } from '../RequestOverview/Admin/RequestTable/RequestTable';
 import Moment from 'moment';
+import { TransactionStatus } from '../../common/enums/transaction-status.enum';
 
-export interface BalancePopupProps {
+export interface ApproveRequestModalProps {
   requestData: IRequestData;
   visibility: boolean;
+  transactionStatus: number;
+  approveRequest: (form: any) => void;
   closeModal: () => void;
 }
 
-export const ApproveRequestModal: React.FC<BalancePopupProps> = ({ requestData, visibility, closeModal }) => {
+export const ApproveRequestModal: React.FC<ApproveRequestModalProps> = ({ requestData, visibility, transactionStatus, approveRequest, closeModal }) => {
   return (
     <>
       <Modal show={visibility} onHide={closeModal}>
@@ -29,7 +32,11 @@ export const ApproveRequestModal: React.FC<BalancePopupProps> = ({ requestData, 
         </Modal.Body>
         <Modal.Footer className="border-0">
           <Button variant="secondary" className="px-4" onClick={closeModal}>No</Button>
-          <Button variant="primary" className="px-4">Yes</Button>
+          <Form onSubmit={approveRequest}>
+            <Form.Control id="requestId" name="requestId" type="hidden" value={requestData?.id} />
+            <Form.Control id="transactionStatusId" name="transactionStatusId" type="hidden" value={transactionStatus} />
+            <Button variant="primary" className="px-4" type="submit">Yes</Button>
+          </Form>
         </Modal.Footer>
       </Modal>
     </>
