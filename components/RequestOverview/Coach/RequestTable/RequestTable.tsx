@@ -15,8 +15,8 @@ import { TransactionStatus } from '../../../../common/enums/transaction-status.e
 import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
 import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
-import Moment from 'moment';
 import { createTransaction } from '../../../../lib/api/timeoff/transaction';
+import Moment from 'moment';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -65,7 +65,6 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
     const requestsData = await findAllRequestsByUsers(page, userIds, startDate, endDate);
     requests = requestsData.list;
-    console.log('Requests: ', requests);
     
     pages = Math.ceil(requestsData.count / 10);
 
