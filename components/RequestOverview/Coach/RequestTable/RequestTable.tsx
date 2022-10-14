@@ -146,18 +146,48 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     setApproveRequestModalVisibility(false);
   }
 
-  const closeDeniedRequestModal = () => {
+  const closeDenyRequestModal = () => {
     setDenyRequestModalVisibility(false);
   }
 
   const approveRequest = async(form: any) => {
     form.preventDefault();
     const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeApproveRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Approve request successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
   }
 
   const denyRequest = async(form: any) => {
     form.preventDefault();
     const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeDenyRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Deny request successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
   }
 
   return(
@@ -216,7 +246,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
           visibility = {denyRequestModalVisibility}
           transactionStatus = {TransactionStatus.deniedByCoach}
           denyRequest = {denyRequest}
-          closeModal = {closeDeniedRequestModal}
+          closeModal = {closeDenyRequestModal}
         />
       </div>
     </>

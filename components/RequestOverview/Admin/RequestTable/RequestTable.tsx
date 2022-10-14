@@ -170,7 +170,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     setApproveRequestModalVisibility(true);
   }
 
-  const openCancelRequestModal = (requestData: IRequestData) => {
+  const openDenyRequestModal = (requestData: IRequestData) => {
     setRequestData(requestData);
     setDenyRequestModalVisibility(true);
   }
@@ -179,18 +179,48 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     setApproveRequestModalVisibility(false);
   }
 
-  const closeCancelRequestModal = () => {
+  const closeDenyRequestModal = () => {
     setDenyRequestModalVisibility(false);
   }
 
   const approveRequest = async(form: any) => {
     form.preventDefault();
     const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeApproveRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Approve request successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
   }
 
   const denyRequest = async(form: any) => {
     form.preventDefault();
     const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeDenyRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Deny request successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
   }
 
   return(
@@ -234,7 +264,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                     <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
                     <i className="bi bi-check"></i>Approve
                     </button>
-                    <button onClick={() => openCancelRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
+                    <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
                     <i className="bi bi-x"></i>Cancel
                     </button>
                   </td>
@@ -256,7 +286,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
           visibility = {denyRequestModalVisibility}
           transactionStatus = {TransactionStatus.deniedByHR}
           denyRequest = {denyRequest}
-          closeModal = {closeCancelRequestModal}
+          closeModal = {closeDenyRequestModal}
         />
       </div>
     </>
