@@ -15,8 +15,10 @@ import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { RequestType } from '../../../../common/enums/request-type.enum';
 import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
-import { CancelRequestModal } from '../../../Modals/CancelRequestModal';
+import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
 import Moment from 'moment';
+import { createTransaction } from '../../../../lib/api/timeoff/transaction';
+import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -41,7 +43,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [startDate, setStartDate] = React.useState<string>('');
   const [endDate, setEndDate] = React.useState<string>('');
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
-  const [cancelRequestModalVisibility, setCancelRequestModalVisibility] = React.useState<boolean>(false);
+  const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     fillUserData(1);
@@ -74,7 +76,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users.map((user: IUser) => userIds.push(user.id));
 
       if (users.length > 0) {
-        const requestsData = await findAllRequestsByUsers(userIds, startDate, endDate);
+        const requestsData = await findAllRequestsByUsers(page, userIds, startDate, endDate);
         requests = requestsData.list;
         pages = Math.ceil(requestsData.count / 10);
       } else {
@@ -86,7 +88,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users = data.list;
       users.map((user: IUser) => userIds.push(user.id));
 
-      const requestsData = await findAllRequestsByUsers(userIds, startDate, endDate);
+      const requestsData = await findAllRequestsByUsers(page, userIds, startDate, endDate);
       requests = requestsData.list;
       pages = Math.ceil(requestsData.count / 10);
     }
@@ -158,7 +160,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
   const openCancelRequestModal = (requestData: IRequestData) => {
     setRequestData(requestData);
-    setCancelRequestModalVisibility(true);
+    setDenyRequestModalVisibility(true);
   }
 
   const closeApproveRequestModal = () => {
@@ -166,7 +168,17 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   }
 
   const closeCancelRequestModal = () => {
-    setCancelRequestModalVisibility(false);
+    setDenyRequestModalVisibility(false);
+  }
+
+  const approveRequest = async(form: any) => {
+    form.preventDefault();
+    const result = await createTransaction(form);
+  }
+
+  const denyRequest = async(form: any) => {
+    form.preventDefault();
+    const result = await createTransaction(form);
   }
 
   return(
@@ -218,11 +230,15 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
         <ApproveRequestModal
           requestData =  {requestData}
           visibility = {approveRequestModalVisibility}
+          transactionStatus = {TransactionStatus.approvedByHR}
+          approveRequest = {approveRequest}
           closeModal = {closeApproveRequestModal}
         />
-        <CancelRequestModal
+        <DenyRequestModal
           requestData =  {requestData}
-          visibility = {cancelRequestModalVisibility}
+          visibility = {denyRequestModalVisibility}
+          transactionStatus = {TransactionStatus.deniedByHR}
+          denyRequest = {denyRequest}
           closeModal = {closeCancelRequestModal}
         />
       </div>
