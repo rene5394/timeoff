@@ -16,15 +16,18 @@ import { RequestType } from '../../../../common/enums/request-type.enum';
 import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
 import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
-import Moment from 'moment';
 import { createTransaction } from '../../../../lib/api/timeoff/transaction';
 import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
+import Moment from 'moment';
+import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
 
 export interface IRequestData extends IRequest {
   name?: string;
   status?: string;
   type?: string;
   duration?: number;
+  lastTransaction?: string;
+  lastTransactionId?: number;
 };
 
 interface RequestTableProps {
@@ -61,6 +64,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
     const requestTypes = await findAllTypes();
     const requestStatuses = await findAllRequestStatuses();
+    const transactionStatuses = await findAllTransactionStatuses();
 
     if (teamSelected === Team.allTeams && searchText === '') {
       const requestsData = await findAllRequests(page, '', startDate, endDate);
@@ -105,6 +109,14 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       daysBetweenDatesNoWeekends(request.startDate, request.endDate) :
       daysBetweenDates(request.startDate, request.endDate);
       obj.duration = dates.length;
+
+      const transactions = request.transactions;
+      const numberOfTransactions = transactions.length;
+      const transactionStatus = transactionStatuses.find(transactionStatus =>
+        transactionStatus.id === transactions[numberOfTransactions - 1].transactionStatusId);
+
+      obj.lastTransactionId = transactionStatus?.id;
+      obj.lastTransaction = transactionStatus?.name;
 
       objs.push(obj);
     });
@@ -214,6 +226,8 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   <td>{requestData.duration.toString()}</td>
                   <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
                   <td>{requestData.status.toString()}</td>
+                  {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
+                    || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
                   <td>
                     <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
                     <i className="bi bi-check"></i>Approve
@@ -222,6 +236,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                     <i className="bi bi-x"></i>Cancel
                     </button>
                   </td>
+                }
                 </tr>
               )}
           </tbody>
