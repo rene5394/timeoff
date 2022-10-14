@@ -159,7 +159,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       closeApproveRequestModal();
       openSuccessModal({
         title: 'Success',
-        body: 'Approve request successfully'
+        body: 'Request approved successfully'
       });
     } if (result.status === 400) {
       const messages = result.data.message;
@@ -179,7 +179,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       closeDenyRequestModal();
       openSuccessModal({
         title: 'Success',
-        body: 'Deny request successfully'
+        body: 'Request denied successfully'
       });
     } if (result.status === 400) {
       const messages = result.data.message;
