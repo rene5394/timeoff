@@ -213,6 +213,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
               <th>Duration</th>
               <th>Submit date</th>
               <th>Status</th>
+              <th>Last transaction</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -226,6 +227,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   <td>{requestData.duration.toString()}</td>
                   <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
                   <td>{requestData.status.toString()}</td>
+                  <td>{requestData.lastTransaction}</td>
                   {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
                     || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
                   <td>
