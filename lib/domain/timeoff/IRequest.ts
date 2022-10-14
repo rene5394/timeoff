@@ -1,3 +1,5 @@
+import { ITransaction } from "./ITransaction";
+
 export interface IRequest {
   id: number;
   userId: number;
@@ -9,6 +11,7 @@ export interface IRequest {
   endDate: Date;
   coachApproval: number;
   hrApproval: number;
+  transactions: ITransaction[];
   createdAt: Date;
   updatedAt: Date;
 }
