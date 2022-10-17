@@ -2,9 +2,27 @@ import * as React from 'react';
 import { login } from '../../lib/api/auth/auth';
 import { Role } from '../../common/enums/role.enum';
 import { AppUrl } from '../../common/constants/app';
+import { findOneUserByJWT } from '../../lib/api/auth/auth';
 
 export const LoginForm = () => {
   const [error, setError] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const checkIfUserIsLogged = async() => {
+      const user = await findOneUserByJWT();
+
+      if (user) {
+        if (user.role_id === Role.admin) {
+          window.location.href = `${AppUrl}/admin/profile`;
+        } if (user.role_id === Role.coach || user.role_id === Role.jrCoach) {
+          window.location.href = `${AppUrl}/coach/profile`;
+        } if (user.role_id === Role.va) {
+          window.location.href = `${AppUrl}/bp/profile`;
+        }
+      }
+    }
+    checkIfUserIsLogged();
+  }, []);
 
   const submitForm = async(form: any) => {
     form.preventDefault();
