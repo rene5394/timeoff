@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { findAllUsersEmployees, findAllUsersEmployeesByTeam, findUsers } from '../../../../lib/api/team/user';
+import { findAllUsersEmployees, findAllUsersEmployeesByTeam, findOneUserByJWT, findUsers } from '../../../../lib/api/team/user';
 import { findAllActiveTeams } from '../../../../lib/api/team/team';
 import { IUser } from '../../../../lib/domain/team/IUser';
 import { ITeam } from '../../../../lib/domain/team/ITeam';
@@ -15,14 +15,19 @@ import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { RequestType } from '../../../../common/enums/request-type.enum';
 import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
-import { CancelRequestModal } from '../../../Modals/CancelRequestModal';
+import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
+import { createTransaction } from '../../../../lib/api/timeoff/transaction';
+import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
 import Moment from 'moment';
+import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
 
 export interface IRequestData extends IRequest {
   name?: string;
   status?: string;
   type?: string;
   duration?: number;
+  lastTransaction?: string;
+  lastTransactionId?: number;
 };
 
 interface RequestTableProps {
@@ -41,11 +46,22 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [startDate, setStartDate] = React.useState<string>('');
   const [endDate, setEndDate] = React.useState<string>('');
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
-  const [cancelRequestModalVisibility, setCancelRequestModalVisibility] = React.useState<boolean>(false);
+  const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
+  const [hr, setHr] = React.useState<number>();
 
   React.useEffect(() => {
     fillUserData(1);
   }, [teamSelected, searchText, startDate, endDate])
+
+  React.useEffect(() => {
+    const getUserRoleId = async() => {
+      const user = await findOneUserByJWT();
+      console.log('HR', user.hr);
+      
+      setHr(user.hr);
+    }
+    getUserRoleId();
+  }, [])
 
   const fillUserData = async(page: number = 1) => {
     let requests: IRequest[];
@@ -59,6 +75,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
     const requestTypes = await findAllTypes();
     const requestStatuses = await findAllRequestStatuses();
+    const transactionStatuses = await findAllTransactionStatuses();
 
     if (teamSelected === Team.allTeams && searchText === '') {
       const requestsData = await findAllRequests(page, '', startDate, endDate);
@@ -74,7 +91,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users.map((user: IUser) => userIds.push(user.id));
 
       if (users.length > 0) {
-        const requestsData = await findAllRequestsByUsers(userIds, startDate, endDate);
+        const requestsData = await findAllRequestsByUsers(page, userIds, startDate, endDate);
         requests = requestsData.list;
         pages = Math.ceil(requestsData.count / 10);
       } else {
@@ -86,7 +103,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users = data.list;
       users.map((user: IUser) => userIds.push(user.id));
 
-      const requestsData = await findAllRequestsByUsers(userIds, startDate, endDate);
+      const requestsData = await findAllRequestsByUsers(page, userIds, startDate, endDate);
       requests = requestsData.list;
       pages = Math.ceil(requestsData.count / 10);
     }
@@ -103,6 +120,14 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       daysBetweenDatesNoWeekends(request.startDate, request.endDate) :
       daysBetweenDates(request.startDate, request.endDate);
       obj.duration = dates.length;
+
+      const transactions = request.transactions;
+      const numberOfTransactions = transactions.length;
+      const transactionStatus = transactionStatuses.find(transactionStatus =>
+        transactionStatus.id === transactions[numberOfTransactions - 1].transactionStatusId);
+
+      obj.lastTransactionId = transactionStatus?.id;
+      obj.lastTransaction = transactionStatus?.name;
 
       objs.push(obj);
     });
@@ -156,17 +181,57 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     setApproveRequestModalVisibility(true);
   }
 
-  const openCancelRequestModal = (requestData: IRequestData) => {
+  const openDenyRequestModal = (requestData: IRequestData) => {
     setRequestData(requestData);
-    setCancelRequestModalVisibility(true);
+    setDenyRequestModalVisibility(true);
   }
 
   const closeApproveRequestModal = () => {
     setApproveRequestModalVisibility(false);
   }
 
-  const closeCancelRequestModal = () => {
-    setCancelRequestModalVisibility(false);
+  const closeDenyRequestModal = () => {
+    setDenyRequestModalVisibility(false);
+  }
+
+  const approveRequest = async(form: any) => {
+    form.preventDefault();
+    const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeApproveRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Request approved successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
+  }
+
+  const denyRequest = async(form: any) => {
+    form.preventDefault();
+    const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeDenyRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Request denied successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
   }
 
   return(
@@ -189,7 +254,10 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
               <th>Duration</th>
               <th>Submit date</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>Last transaction</th>
+              {(hr === 1) &&
+                <th>Actions</th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -202,14 +270,22 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   <td>{requestData.duration.toString()}</td>
                   <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
                   <td>{requestData.status.toString()}</td>
-                  <td>
-                    <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
-                    <i className="bi bi-check"></i>Approve
-                    </button>
-                    <button onClick={() => openCancelRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
-                    <i className="bi bi-x"></i>Cancel
-                    </button>
-                  </td>
+                  <td>{requestData.lastTransaction}</td>
+                  {(hr === 1) &&
+                    <td>
+                    {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
+                      || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
+                      <>
+                        <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
+                        <i className="bi bi-check"></i>Approve
+                        </button>
+                        <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
+                        <i className="bi bi-x"></i>Cancel
+                        </button>
+                      </>
+                    }
+                    </td>
+                  }
                 </tr>
               )}
           </tbody>
@@ -218,12 +294,16 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
         <ApproveRequestModal
           requestData =  {requestData}
           visibility = {approveRequestModalVisibility}
+          transactionStatus = {TransactionStatus.approvedByHR}
+          approveRequest = {approveRequest}
           closeModal = {closeApproveRequestModal}
         />
-        <CancelRequestModal
+        <DenyRequestModal
           requestData =  {requestData}
-          visibility = {cancelRequestModalVisibility}
-          closeModal = {closeCancelRequestModal}
+          visibility = {denyRequestModalVisibility}
+          transactionStatus = {TransactionStatus.deniedByHR}
+          denyRequest = {denyRequest}
+          closeModal = {closeDenyRequestModal}
         />
       </div>
     </>

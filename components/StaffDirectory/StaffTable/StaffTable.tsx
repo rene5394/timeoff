@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { findAllUsersEmployees, findAllUsersEmployeesByTeam } from '../../../lib/api/team/user';
+import { findAllUsersEmployees, findAllUsersEmployeesByTeam, findOneUserByJWT } from '../../../lib/api/team/user';
 import { createBalance, findBalances, findOneBalanceByUserId, updateBalance } from '../../../lib/api/timeoff/balance';
 import { findAllActiveTeams } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
@@ -43,10 +43,19 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
   const [searchText, setSearchText] = React.useState<string>('');
   const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
   const [balance, setBalance] = React.useState<Balance>();
+  const [hr, setHr] = React.useState<number>();
 
   React.useEffect(() => {
     fillUserData(1);
   }, [teamSelected, searchText])
+
+  React.useEffect(() => {
+    const getUserRoleId = async() => {
+      const user = await findOneUserByJWT();
+      setHr(user.hr);
+    }
+    getUserRoleId();
+  }, [])
 
   const fillUserData = async(page: number = 1) => {
     let users: IUser[];
@@ -192,7 +201,9 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
               <th>Comp days</th>
               <th>Vacations</th>
               <th>Hire date</th>
-              <th>Actions</th>
+              {(hr === 1) &&
+                <th>Actions</th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -215,11 +226,13 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   <td>{userData.compDays?.toString()}</td>
                   <td>{userData.vacationDays?.toString()}</td>
                   <td>{Moment(userData.hiredate).format('MM-DD-YYYY')}</td>
-                  <td>
-                    <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
-                      Edit
-                    </button>
-                  </td>
+                  {(hr === 1) &&
+                    <td>
+                      <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
+                        Edit
+                      </button>
+                    </td>
+                  }
                 </tr>
               )}
           </tbody>

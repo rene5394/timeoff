@@ -5,20 +5,15 @@ import Modal from 'react-bootstrap/Modal';
 import { IRequestData } from '../RequestOverview/Admin/RequestTable/RequestTable';
 import Moment from 'moment';
 
-export interface BalancePopupProps {
+export interface DenyRequestModalProps {
   requestData: IRequestData;
   visibility: boolean;
+  transactionStatus: number;
+  denyRequest: (form: any) => void;
   closeModal: () => void;
 }
 
-export const CancelRequestModal: React.FC<BalancePopupProps> = ({ requestData, visibility, closeModal }) => {
-  const inputChange = () => {
-    const balanceId: number = parseInt((document.getElementById('balanceId') as HTMLInputElement).value);
-    const userId: number = parseInt((document.getElementById('userId') as HTMLInputElement).value);
-    const compDays: string = (document.getElementById('compDays') as HTMLInputElement).value;
-    const vacationDays: string = (document.getElementById('vacationDays') as HTMLInputElement).value;
-  }
-
+export const DenyRequestModal: React.FC<DenyRequestModalProps> = ({ requestData, visibility, transactionStatus, denyRequest, closeModal }) => {
   return (
     <>
       <Modal show={visibility} onHide={closeModal}>
@@ -35,8 +30,12 @@ export const CancelRequestModal: React.FC<BalancePopupProps> = ({ requestData, v
           <p className="mx-5"><b>To:</b> {Moment(requestData?.endDate).format('MM-DD-YYYY')}</p>
         </Modal.Body>
         <Modal.Footer className="border-0">
-        <Button variant="secondary" className="px-4" onClick={closeModal}>No</Button>
-          <Button variant="primary" className="px-4">Yes</Button>
+          <Button variant="secondary" className="px-4" onClick={closeModal}>No</Button>
+          <Form onSubmit={denyRequest}>
+          <Form.Control id="requestId" name="requestId" type="hidden" value={requestData?.id} />
+            <Form.Control id="transactionStatusId" name="transactionStatusId" type="hidden" value={transactionStatus} />
+            <Button variant="primary" className="px-4" type="submit">Yes</Button>
+          </Form>
         </Modal.Footer>
       </Modal>
     </>

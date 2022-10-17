@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Api } from '../../../common/constants/api';
+import { IUser } from '../../domain/team/IUser';
 
 const instance = axios.create({
   baseURL: `${Api.AUTH}`,
@@ -31,4 +32,13 @@ export const logout = async() => {
   const result = await instance.post<any>(url, {withCredentials: true});
 
   return result;
+};
+
+export const findOneUserByJWT = async() => {
+  const url = `${Api.TEAM}/users/me`;
+  const result = await axios.get<IUser>(url, {
+    withCredentials: true
+  });
+
+  return result.data;
 };
