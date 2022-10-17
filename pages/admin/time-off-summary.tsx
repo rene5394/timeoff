@@ -5,12 +5,22 @@ import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
 import { Summary } from '../../components/TimeOffSummary/Summary';
 import { Requests } from '../../components/TimeOffSummary/Requests';
+import { ITeam } from '../../lib/domain/team/ITeam';
+import { findAllActiveTeams } from '../../lib/api/team/team';
 
 const TimeOffSummary: NextPage = () => {
   const [year,setYear] = React.useState<number>();
+  const [teams,setTeams] = React.useState<ITeam[]>();
   React.useEffect(() => {
     var thisYear = new Date().getFullYear();
     setYear(thisYear);
+
+    const callAllTeams = async() => {
+      const result = await findAllActiveTeams();
+
+      setTeams(result);
+    };
+    callAllTeams();
   },[]);
   return(
     <div className="container">
@@ -27,17 +37,12 @@ const TimeOffSummary: NextPage = () => {
             <div className="row">
               <div className="col-5">
                 <h3>Time-Off Summary</h3>
-                <label htmlFor="Start">START DATE</label>
-                <select className="form-select" 
-                  value={year} 
-                  onChange={(e) => {
-                    setYear(parseInt(e.target.value));
-                  }}>
+                <label htmlFor="Start">TEAM</label>
+                {teams?.map(team => 
+                <select className="form-select" onChange={ (e) => {setYear(parseInt(e.target.value)); }}>
                   <option selected value={year}>{year}</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                  <option value="2024">2024</option>
                 </select>
+                )}
               </div>
               <Summary />
             </div>

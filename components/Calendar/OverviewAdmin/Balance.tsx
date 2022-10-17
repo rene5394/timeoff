@@ -1,23 +1,17 @@
-import * as React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as React from 'react';
 import Styles from './Balance.module.css';
-import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequests, findOneRequest, findRequestsByRange } from '../../../lib/api/timeoff/request';
-import { showRequests } from './Requests';
-import { endOfWeek, format, startOfWeek } from 'date-fns';
+import { endOfWeek, startOfWeek } from 'date-fns';
 import { addDays } from 'date-fns';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 
-interface newRequests extends IRequest {
-  day: Date;
-}
-
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IEventsDetails[]>();
-  const [requestsDetails, setRequestsDetails] = React.useState<newRequests[]>();
   const [pendingRequests, setPendingRequests] = React.useState<number>();
   const [employeesOffThisWeek, setEmployeesOffThisWeek] = React.useState<number>(0);
+  const [employeesOffNextWeek, setEmployeesOffNextWeek] = React.useState<number>(0);
+  const [employeesOffToday, setEmployeesOffToday] = React.useState<number>(0);
 
   React.useEffect(() => {
     const allPendingRequests = async() => {
@@ -43,70 +37,84 @@ export const Balance = () => {
   }, []);
 
   React.useEffect(() => {
-    const employeesOffByRange = () => {
-      let today = new Date();
-      let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
-      let endThisWeek = endOfWeek(today,{weekStartsOn:1});
-      let nextWeek = addDays(endThisWeek,1);
-      let startNextWeek = startOfWeek(nextWeek,{weekStartsOn:1});
-      let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
-      let count = 0;
-      console.log('Detalles de request', requestsDetails);
-      console.log('startWeek',new Date(startThisWeek));
-      
-      if (requestsDetails) {
-        requestsDetails.map((req) => {
-          
-          console.log('day',new Date(req.day));
-          if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day) ){
-            console.log('detro de if', req);
-            count++;
+    const callRequestsDetails = async() => {
+      if (requests) {
+        let newRequests: any[] = [];
+        requests.map(result => {
+          result.requests.map(data => {
+            newRequests.push(data);
+          })
+        });
+
+        let newRequestsDetails = await Promise.all(
+          newRequests.map(async(req) => {
+          let result = await findOneRequest(req.requestId);
+          let newReq = {
+            amount: result.amount,
+            coachApproval: result.coachApproval,
+            createdAt: result.createdAt,
+            createdBy: result.createdBy,
+            endDate: result.endDate,
+            hrApproval: result.hrApproval,
+            id: result.id,
+            startDate: result.startDate,
+            statusId: result.statusId,
+            typeId: result.typeId,
+            updatedAt: result.updatedAt,
+            userId: result.userId,
+            day: req.day
+          }
+
+          return newReq;  
+        }));
+
+        let today = new Date();
+        let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
+        let endThisWeek = endOfWeek(today,{weekStartsOn:1});
+        let nextWeek = addDays(endThisWeek,1);
+        let startNextWeek = startOfWeek(nextWeek,{weekStartsOn:1});
+        let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
+        let countThisWeek = 0;
+        let countNextWeek = 0;
+        let countToday = 0;
+        let usersRepetidosThisWeek: any[] = [];
+        let usersRepetidosNextWeek: any[] = [];
+        let usersRepetidosToday: any[] = [];
+
+        newRequestsDetails.map(req => {
+          if (req.statusId === 2) {
+            //This week
+            if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day)) {
+              if (!usersRepetidosThisWeek.includes(req.userId)) {
+                countThisWeek++;
+                usersRepetidosThisWeek.push(req.userId);
+              }
+            }
+            //Next week
+            if (new Date(startNextWeek) <= new Date(req.day) && new Date(endNextWeek) >= new Date(req.day)) {
+              if (!usersRepetidosNextWeek.includes(req.userId)) {
+                countNextWeek++;
+                usersRepetidosNextWeek.push(req.userId);
+              }
+            }
+            //Today
+            if (today === new Date(req.day)) {
+              if (!usersRepetidosToday.includes(req.userId)) {
+                countToday++;
+                usersRepetidosToday.push(req.userId);
+              }
+            }
           }
         });
-        console.log('contador de requests this week',count);
-      }
-      setEmployeesOffThisWeek(count);
-    }
 
-    const callRequestsDetails = () => {
-      if (requests) {
-        let requestArray = new Array();
-        console.log('Call Requests Details', requests);
-        requests.map((data) => {
-          data.requests.map(async(request) => {
-            let result = await findOneRequest(request.requestId);
-            
-            if (result.statusId === 2) {
-              let newReq = {
-                amount: result.amount,
-                coachApproval: result.coachApproval,
-                createdAt: result.createdAt,
-                createdBy: result.createdBy,
-                endDate: result.endDate,
-                hrApproval: result.hrApproval,
-                id: result.id,
-                startDate: result.startDate,
-                statusId: result.statusId,
-                typeId: result.typeId,
-                updatedAt: result.updatedAt,
-                userId: result.userId,
-                day: request.day
-              }
-              requestArray.push(newReq);
-            }
-          });
-        });
-        console.log('array', requestArray);
-        setRequestsDetails(requestArray);
-        employeesOffByRange();
+        setEmployeesOffThisWeek(countThisWeek);
+        setEmployeesOffNextWeek(countNextWeek);
+        setEmployeesOffToday(countToday);
       }
     };
 
     callRequestsDetails();
   },[requests]);
-
-  React.useEffect(() => {
-  },[requestsDetails]);
 
   return(
     <div className = "col-4">
@@ -117,11 +125,11 @@ export const Balance = () => {
         <p className = {Styles.balances}>Pending Requests</p>
         <p>{ pendingRequests }</p>
         <p className = {Styles.balances}>Employees Off Today</p>
-        <p>{employeesOffThisWeek}</p>
-        <p className = {Styles.balances}>Employees Off this Weekend</p>
+        <p>{employeesOffToday}</p>
+        <p className = {Styles.balances}>Employees Off this Week</p>
         <p>{employeesOffThisWeek}</p>
         <p className = {Styles.balances}>Employees Off Next Week</p>
-        <p>{employeesOffThisWeek}</p>
+        <p>{employeesOffNextWeek}</p>
       </div>
       
     </div>
