@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Styles from './Balance.module.css';
-import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequests, findOneRequest, findRequestsByRange } from '../../../lib/api/timeoff/request';
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { addDays } from 'date-fns';
@@ -12,6 +11,12 @@ export const Balance = () => {
   const [employeesOffThisWeek, setEmployeesOffThisWeek] = React.useState<number>(0);
   const [employeesOffNextWeek, setEmployeesOffNextWeek] = React.useState<number>(0);
   const [employeesOffToday, setEmployeesOffToday] = React.useState<number>(0);
+  const today = new Date();
+  const startThisWeek = startOfWeek(today,{weekStartsOn: 1});
+  const endThisWeek = endOfWeek(today,{weekStartsOn:1});
+  const nextWeek = addDays(endThisWeek,1);
+  const startNextWeek = startOfWeek(nextWeek,{weekStartsOn:1});
+  const endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
 
   React.useEffect(() => {
     const allPendingRequests = async() => {
@@ -21,12 +26,6 @@ export const Balance = () => {
     };
 
     const callAllRequests = async() => {
-      let today = new Date();
-      let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
-      let endThisWeek = endOfWeek(today,{weekStartsOn:1});
-      let nextWeek = addDays(endThisWeek,2);
-      let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
-
       const result = await findRequestsByRange(startThisWeek,endNextWeek);
       const dataFilter = result.filter(value => value.requests.length > 0);
       setRequests(dataFilter);
@@ -68,12 +67,6 @@ export const Balance = () => {
           return newReq;  
         }));
 
-        let today = new Date();
-        let startThisWeek = startOfWeek(today,{weekStartsOn: 1});
-        let endThisWeek = endOfWeek(today,{weekStartsOn:1});
-        let nextWeek = addDays(endThisWeek,1);
-        let startNextWeek = startOfWeek(nextWeek,{weekStartsOn:1});
-        let endNextWeek = endOfWeek(nextWeek,{weekStartsOn:1});
         let countThisWeek = 0;
         let countNextWeek = 0;
         let countToday = 0;
