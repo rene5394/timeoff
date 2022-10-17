@@ -258,17 +258,19 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
                   <td>{requestData.status.toString()}</td>
                   <td>{requestData.lastTransaction}</td>
+                  <td>
                   {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
                     || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
-                  <td>
-                    <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
-                    <i className="bi bi-check"></i>Approve
-                    </button>
-                    <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
-                    <i className="bi bi-x"></i>Cancel
-                    </button>
+                    <>
+                      <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
+                      <i className="bi bi-check"></i>Approve
+                      </button>
+                      <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
+                      <i className="bi bi-x"></i>Cancel
+                      </button>
+                    </>
+                  }
                   </td>
-                }
                 </tr>
               )}
           </tbody>
