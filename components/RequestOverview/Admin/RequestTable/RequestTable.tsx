@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { findAllUsersEmployees, findAllUsersEmployeesByTeam, findUsers } from '../../../../lib/api/team/user';
+import { findAllUsersEmployees, findAllUsersEmployeesByTeam, findOneUserByJWT, findUsers } from '../../../../lib/api/team/user';
 import { findAllActiveTeams } from '../../../../lib/api/team/team';
 import { IUser } from '../../../../lib/domain/team/IUser';
 import { ITeam } from '../../../../lib/domain/team/ITeam';
@@ -47,10 +47,21 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [endDate, setEndDate] = React.useState<string>('');
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
   const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
+  const [hr, setHr] = React.useState<number>();
 
   React.useEffect(() => {
     fillUserData(1);
   }, [teamSelected, searchText, startDate, endDate])
+
+  React.useEffect(() => {
+    const getUserRoleId = async() => {
+      const user = await findOneUserByJWT();
+      console.log('HR', user.hr);
+      
+      setHr(user.hr);
+    }
+    getUserRoleId();
+  }, [])
 
   const fillUserData = async(page: number = 1) => {
     let requests: IRequest[];
@@ -244,7 +255,9 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
               <th>Submit date</th>
               <th>Status</th>
               <th>Last transaction</th>
-              <th>Actions</th>
+              {(hr === 1) &&
+                <th>Actions</th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -258,19 +271,21 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
                   <td>{requestData.status.toString()}</td>
                   <td>{requestData.lastTransaction}</td>
-                  <td>
-                  {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
-                    || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
-                    <>
-                      <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
-                      <i className="bi bi-check"></i>Approve
-                      </button>
-                      <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
-                      <i className="bi bi-x"></i>Cancel
-                      </button>
-                    </>
+                  {(hr === 1) &&
+                    <td>
+                    {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
+                      || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
+                      <>
+                        <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
+                        <i className="bi bi-check"></i>Approve
+                        </button>
+                        <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
+                        <i className="bi bi-x"></i>Cancel
+                        </button>
+                      </>
+                    }
+                    </td>
                   }
-                  </td>
                 </tr>
               )}
           </tbody>
