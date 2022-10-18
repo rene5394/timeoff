@@ -26,8 +26,8 @@ const TimeOffSummary: NextPage = () => {
           <div className={"col summaryDiv"}>
             <div className="row">
               <div className="col-5">
-                <h3>Time-Off Summary</h3>
-                <label htmlFor="Start">START DATE</label>
+                <h4 className="mb-3">Time-Off Summary</h4>
+                <label className="light-gray-text-2 mb-2" htmlFor="Start">START DATE</label>
                 <select className="form-select" 
                   value={year} 
                   onChange={(e) => {
