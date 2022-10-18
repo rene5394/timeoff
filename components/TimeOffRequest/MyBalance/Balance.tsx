@@ -5,7 +5,7 @@ import { MyAllocation } from '../../Commons/AllocationTable';
 export const MyBalance = () => {
   return(
     <div className={`col-5 ${Styles.balance}`}>
-      <h3>Your current allowance/balance</h3>
+      <h4>Your current allowance/balance</h4>
       <MyAllocation />
     </div>
   );

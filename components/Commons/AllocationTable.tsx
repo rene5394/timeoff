@@ -53,13 +53,13 @@ export const MyAllocation = () => {
         </thead>
         <tbody>
           <tr>
-            <th>Comp Day</th>
+            <td>Comp Day</td>
             <td>15 d</td>
             <td>{String(balance?.compDays)} d</td>
             <td>{String(pendingBalance?.compDays)} d</td>
           </tr>
           <tr>
-            <th>Vacation</th>
+            <td>Vacation</td>
             <td>15 d</td>
             <td>{String(balance?.vacationDays)} d</td>
             <td>{String(pendingBalance?.vacationDays)} d</td>
