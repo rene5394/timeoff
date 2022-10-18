@@ -47,8 +47,8 @@ const TimeOffSummary: NextPage = () => {
           <div className={"col summaryDiv"}>
             <div className="row">
               <div className="col-5">
-                <h3>Time-Off Summary</h3>
-                <label htmlFor="Start">TEAM</label>
+                <h4 className="mb-3">Time-Off Summary</h4>
+                <label className="light-gray-text-2 mb-2" htmlFor="Start">TEAM</label>
                  
                 <select className="form-select" onChange={ (e) => {callTeamMembers(parseInt(e.target.value));}}>
                 {teams?.map(team =>
@@ -56,7 +56,7 @@ const TimeOffSummary: NextPage = () => {
                 )}
                 </select>
 
-                <label htmlFor="Start">TEAM MEMBERS</label>
+                <label className="light-gray-text-2 mt-3 mb-2" htmlFor="Start">TEAM MEMBERS</label>
                  
                 <select className="form-select" onChange={ (e) => { }}>
                 {users?.map(user =>
