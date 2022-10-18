@@ -24,7 +24,11 @@ export const Requests = (userId: number) => {
   return(
     <div className={'col ' + Styles.RequestsDiv}>
       <div className="row">
-        <h3>{`${user?.firstname} ${user?.lastname}'s Summary`}</h3>
+        {user ? (
+          <h4>{`${user?.firstname} ${user?.lastname}'s Summary`}</h4>
+        ) : (
+          <h4>User's Summary</h4>
+        )}
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
             <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#Approved" type="button" role="tab" aria-controls="home" aria-selected="true">Approved ({amountApproved})</button>
