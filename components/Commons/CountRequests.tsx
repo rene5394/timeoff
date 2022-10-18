@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { findAllRequestByUserId, findAllRequestByUserJWTAndStatus } from '../../lib/api/timeoff/request';
-import { IUser } from '../../lib/domain/team/IUser';
 import { IRequest } from '../../lib/domain/timeoff/IRequest';
 
 export const CountRequestsByStatus = (status: string, year: number) => {

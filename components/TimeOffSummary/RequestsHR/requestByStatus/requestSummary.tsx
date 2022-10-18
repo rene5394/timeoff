@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import * as React from 'react';
-import { findAllRequestByUserId, findAllRequestByUserJWTAndStatus } from '../../../../lib/api/timeoff/request';
+import { findAllRequestByUserId } from '../../../../lib/api/timeoff/request';
 import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
