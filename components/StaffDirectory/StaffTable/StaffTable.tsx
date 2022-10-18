@@ -212,8 +212,8 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   <td>
                     <div className="d-flex align-items-center">
                       <img
-                          src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                          alt=""
+                          src="/assets/img/avatar.jpg"
+                          alt="UAM Avatar"
                           className="rounded-circle avatar-table"
                           />
                       <div className="ms-3">

@@ -159,8 +159,8 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
                   <td>
                     <div className="d-flex align-items-center">
                       <img
-                          src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                          alt=""
+                          src="/assets/img/avatar.jpg"
+                          alt="UAM Avatar"
                           className="rounded-circle avatar-table"
                           />
                       <div className="ms-3">
