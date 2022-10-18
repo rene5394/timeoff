@@ -56,7 +56,7 @@ const TimeOffSummary: NextPage = () => {
                 <label className="light-gray-text-2 mb-2" htmlFor="Start">TEAM</label>
                  
                 <select className="form-select" onChange={ (e) => {callTeamMembers(parseInt(e.target.value));}}>
-                  <option defaultChecked value=''>--Choose a team--</option>
+                  <option defaultChecked value=''>Choose a team</option>
                 {teams?.map(team =>
                   <option key={team.id} value={team.id}>{team.name}</option>
                 )}
@@ -67,7 +67,7 @@ const TimeOffSummary: NextPage = () => {
                 <select className="form-select" disabled={disabled} onChange={ 
                   (e) => { changeUserSelected(parseInt(e.target.value)) }
                 }>
-                  <option defaultChecked value=''>--Choose an user--</option> 
+                  <option defaultChecked value=''>Choose an user</option> 
                 {users?.map(user =>
                   <option key={user.id} value={user.id}>{`${user.firstname} ${user.secondname} ${user.lastname} ${user.secondlastname}`}</option>
                 )}
