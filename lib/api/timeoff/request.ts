@@ -89,8 +89,8 @@ export const findAllRequestByUserJWTAndStatus = async(status: string) => {
   return result.data;
 };
 
-export const findAllRequestByUserId = async(userId: number) => {
-  const url = `/requests/user/${userId}`;
+export const findAllRequestByUserId = async(userId: number, status: string) => {
+  const url = `/requests/user/${userId}?status=${status}`;
   const result = await instance.get<IRequest[]>(url);
 
   return result.data;

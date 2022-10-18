@@ -23,7 +23,7 @@ export const NavHeader = () => {
       setUser(result);
     };
     fillUser();
-  })
+  },[])
 
   return (
     <nav className="navbar navbar-expand-lg">

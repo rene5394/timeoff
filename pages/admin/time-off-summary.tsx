@@ -4,20 +4,19 @@ import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
 import { Summary } from '../../components/TimeOffSummary/Summary';
-import { Requests } from '../../components/TimeOffSummary/Requests';
+import { Requests } from '../../components/TimeOffSummary/RequestsHR';
 import { ITeam } from '../../lib/domain/team/ITeam';
 import { findAllActiveTeams } from '../../lib/api/team/team';
 import { findAllUsersEmployeesByTeam } from '../../lib/api/team/user';
 import { IUser } from '../../lib/domain/team/IUser';
 
 const TimeOffSummary: NextPage = () => {
-  const [year,setYear] = React.useState<number>();
   const [teams,setTeams] = React.useState<ITeam[]>();
   const [users,setUsers] = React.useState<IUser[]>();
-  React.useEffect(() => {
-    var thisYear = new Date().getFullYear();
-    setYear(thisYear);
+  const [disabled,setDisabled] = React.useState<boolean>(true);
+  const [userSelected,setUserSelected] = React.useState<number>(0);
 
+  React.useEffect(() => {
     const callAllTeams = async() => {
       const result = await findAllActiveTeams();
 
@@ -27,12 +26,18 @@ const TimeOffSummary: NextPage = () => {
   },[]);
 
   const callTeamMembers = async(id:number) => {
-    users?.splice(0);
+    if (disabled) {
+      setDisabled(false);
+    }
     let result  = await findAllUsersEmployeesByTeam(id);
     let resultList = result.list;
-    console.log('resultado ya solo lista',resultList);
     setUsers(resultList);
   };
+
+  const changeUserSelected = (userId:number) => {
+    setUserSelected(userId);
+  };
+
   return(
     <div className="container">
       <Head>
@@ -51,23 +56,27 @@ const TimeOffSummary: NextPage = () => {
                 <label className="light-gray-text-2 mb-2" htmlFor="Start">TEAM</label>
                  
                 <select className="form-select" onChange={ (e) => {callTeamMembers(parseInt(e.target.value));}}>
+                  <option defaultChecked value=''>--Choose a team--</option>
                 {teams?.map(team =>
-                  <option selected value={team.id}>{team.name}</option>
+                  <option key={team.id} value={team.id}>{team.name}</option>
                 )}
                 </select>
 
                 <label className="light-gray-text-2 mt-3 mb-2" htmlFor="Start">TEAM MEMBERS</label>
                  
-                <select className="form-select" onChange={ (e) => { }}>
+                <select className="form-select" disabled={disabled} onChange={ 
+                  (e) => { changeUserSelected(parseInt(e.target.value)) }
+                }>
+                  <option defaultChecked value=''>--Choose an user--</option> 
                 {users?.map(user =>
-                  <option selected value={user.id}>{`${user.firstname} ${user.secondname} ${user.lastname} ${user.secondlastname}`}</option>
+                  <option key={user.id} value={user.id}>{`${user.firstname} ${user.secondname} ${user.lastname} ${user.secondlastname}`}</option>
                 )}
                 </select>
               </div>
               <Summary />
             </div>
           </div>
-          {Requests(year)}
+          {Requests(userSelected)}
         </div>     
       </div>
     </div>
