@@ -5,6 +5,10 @@ import { endOfWeek, startOfWeek } from 'date-fns';
 import { addDays } from 'date-fns';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { RequestStatus } from '../../../common/enums/request-status.enum';
+import { ITeam } from '../../../lib/domain/team/ITeam';
+import { findOneTeamByUserJWT } from '../../../lib/api/team/team';
+import { findAllTeamUsersEmployeesByJWT, findAllUsersEmployeesByTeam } from '../../../lib/api/team/user';
+import { IUser } from '../../../lib/domain/team/IUser';
 
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IEventsDetails[]>();
@@ -12,6 +16,7 @@ export const Balance = () => {
   const [employeesOffThisWeek, setEmployeesOffThisWeek] = React.useState<number>(0);
   const [employeesOffNextWeek, setEmployeesOffNextWeek] = React.useState<number>(0);
   const [employeesOffToday, setEmployeesOffToday] = React.useState<number>(0);
+  const [teamUsers, setTeamUsers] = React.useState<IUser[]>();
   const today = new Date();
   const startThisWeek = startOfWeek(today,{weekStartsOn: 1});
   const endThisWeek = endOfWeek(today,{weekStartsOn:1});
@@ -31,9 +36,15 @@ export const Balance = () => {
       const dataFilter = result.filter(value => value.requests.length > 0);
       setRequests(dataFilter);
     };
-
+    const findThisTeam = async() => {
+      let result = await findAllTeamUsersEmployeesByJWT();
+      let resultList = result.list;
+      console.log('lista de usuarios del team',resultList);
+      setTeamUsers(resultList);
+    };
     callAllRequests();
     allPendingRequests();
+    findThisTeam();
   }, []);
 
   React.useEffect(() => {
@@ -77,6 +88,9 @@ export const Balance = () => {
 
         newRequestsDetails.map(req => {
           if (req.statusId === RequestStatus.approved) {
+            let newTeamUser = teamUsers?.find(user => user.id === req.createdBy);
+            if (newTeamUser) {
+              console.log('nuevo usuario',newTeamUser);
             //This week
             if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day)) {
               if (!usersRepetidosThisWeek.includes(req.userId)) {
@@ -99,6 +113,7 @@ export const Balance = () => {
               }
             }
           }
+        }
         });
 
         setEmployeesOffThisWeek(countThisWeek);
