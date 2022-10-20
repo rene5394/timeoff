@@ -10,7 +10,7 @@ import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
-import { findUsers } from '../../../lib/api/team/user';
+import { findAllTeamUsersEmployeesByJWT, findUsers } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
 
 moment.tz.setDefault('America/El_Salvador');
@@ -43,18 +43,7 @@ export const Calendar = () => {
   }
 
   const callUsers = async() => {
-    let usersId: any[] = [];
-    if (events) {
-      events.map(event => {
-        event.requests.map(req => {
-          usersId.push(req.userId);
-        });
-      });
-    }
-    let usersIdsUniques = usersId.filter((element, index) => {
-      return usersId.indexOf(element) === index;
-    });
-    let result = await findUsers(usersIdsUniques);
+    let result = await findAllTeamUsersEmployeesByJWT();
     let result2 = result.list;
     
     setUsers(result2);

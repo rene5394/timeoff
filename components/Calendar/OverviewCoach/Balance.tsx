@@ -39,7 +39,6 @@ export const Balance = () => {
     const findThisTeam = async() => {
       let result = await findAllTeamUsersEmployeesByJWT();
       let resultList = result.list;
-      console.log('lista de usuarios del team',resultList);
       setTeamUsers(resultList);
     };
     callAllRequests();
