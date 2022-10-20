@@ -10,7 +10,8 @@ import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
-import { findUsers } from '../../../lib/api/team/user';
+import { findAllTeamUsersEmployeesByJWT, findUsers } from '../../../lib/api/team/user';
+import { IUser } from '../../../lib/domain/team/IUser';
 
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
@@ -27,7 +28,7 @@ export const Calendar = () => {
   const [events, setEvents] = React.useState<IEventsDetails[]>();
   const [calendarEvents,setCalendarEvents] = React.useState<ICalendarEvent[]>();
   const [dates,setDates] = React.useState<any>();
-  const [users, setUsers] = React.useState<any[]>();
+  const [users, setUsers] = React.useState<IUser[]>();
 
   const fillEvents = async(compDates: Date) => {
     let year, month;
@@ -42,18 +43,7 @@ export const Calendar = () => {
   }
 
   const callUsers = async() => {
-    let usersId: any[] = [];
-    if (events) {
-      events.map(event => {
-        event.requests.map(req => {
-          usersId.push(req.userId);
-        });
-      });
-    }
-    let usersIdsUniques = usersId.filter((element, index) => {
-      return usersId.indexOf(element) === index;
-    });
-    let result = await findUsers(usersIdsUniques);
+    let result = await findAllTeamUsersEmployeesByJWT();
     let result2 = result.list;
     
     setUsers(result2);
@@ -79,15 +69,21 @@ export const Calendar = () => {
     if (events) {
       const newCalendarEvent: ICalendarEvent[] = [];
       events.map((event) => {
+        
         event.requests.map(req => {
-          calendarEvent = {
-            id: req.id,
-            title: findName(req.userId),
-            start: req.day,
-            end: req.day,
-            allDay: true
+          if (users) {
+            let findUser = users.find(user => user.id === req.userId);
+            if (findUser) {
+              calendarEvent = {
+                id: req.id,
+                title: findName(req.userId),
+                start: req.day,
+                end: req.day,
+                allDay: true
+              }
+              newCalendarEvent.push(calendarEvent);
+            }
           }
-          newCalendarEvent.push(calendarEvent);
         });
       } 
       );
