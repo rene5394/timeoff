@@ -20,6 +20,7 @@ import { createTransaction } from '../../../../lib/api/timeoff/transaction';
 import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
 import Moment from 'moment';
 import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
+import { RequestStatus } from '../../../../common/enums/request-status.enum';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -254,7 +255,6 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
               <th>Duration</th>
               <th>Submit date</th>
               <th>Status</th>
-              <th>Last transaction</th>
               {(hr === 1) &&
                 <th>Actions</th>
               }
@@ -269,8 +269,15 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   <td>{Moment(requestData.endDate).format('MM-DD-YYYY')}</td>
                   <td>{requestData.duration.toString()}</td>
                   <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
-                  <td>{requestData.status.toString()}</td>
-                  <td>{requestData.lastTransaction}</td>
+                  <td>
+                    {requestData.statusId === RequestStatus.approved &&
+                      <button className="btn btn-success">{requestData.lastTransaction}</button>
+                    } {requestData.statusId === RequestStatus.pending &&
+                      <button className="btn btn-warning">{requestData.lastTransaction}</button>
+                    } {requestData.statusId === RequestStatus.denied &&
+                      <button className="btn btn-danger">{requestData.lastTransaction}</button>
+                    }
+                  </td>
                   {(hr === 1) &&
                     <td>
                     {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
