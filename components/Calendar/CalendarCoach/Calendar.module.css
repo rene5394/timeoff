@@ -1,0 +1,9 @@
+.calendar {
+  height: 500px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  border: 0;
+  border-right: 1px;
+  border-color: #000;
+  border-style: solid;
+}
