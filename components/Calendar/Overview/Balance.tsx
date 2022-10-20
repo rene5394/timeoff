@@ -52,35 +52,30 @@ export const Balance = () => {
 
 
   return(
-    <div className = "col-4">
-      <div>
-        <h3 className = {Styles.title}>Overview</h3>
-        <p>Quick Stats and Balances</p>
-        <br />
-        <p className = {Styles.balances}>Pending Requests</p>
-        <p>{ CountRequestsByStatus('pending', new Date().getFullYear()) }</p>
-        <p className = {Styles.balances}>Next Approved Leave</p>
-        <p>{String(findNearestDate())}</p>
-        <p className = {Styles.balances}>Comp Day</p>
-        <p>{balance?.compDays} d</p>
-        <p className = {Styles.balances}>Vacation</p>
-        <p>{balance?.vacationDays} d</p>
-      </div>
-      <div>
-        <h3>My Pending</h3>
-        <div className = {Styles.compDay}>
-          {showRequests()}
+    <div className = {`col ${Styles.overview}`}>
+      <div className="row">
+        <div className='col'>
+          <h3 className = {Styles.title}>Overview</h3>
+          <p>Quick Stats and Balances</p>
+          <br />
+          <p className = {Styles.balances}>Pending Requests</p>
+          <p>{ CountRequestsByStatus('pending', new Date().getFullYear()) }</p>
+          <p className = {Styles.balances}>Next Approved Leave</p>
+          <p>{String(findNearestDate())}</p>
+          <p className = {Styles.balances}>Comp Day</p>
+          <p>{balance?.compDays} d</p>
+          <p className = {Styles.balances}>Vacation</p>
+          <p>{balance?.vacationDays} d</p>
         </div>
-
-        <div>
-          <form action="">
-            <div className = "input-group mb-3">
-              <span className ='input-group-text' ><FontAwesomeIcon icon = {['fas', 'envelope']} /></span>
-              <input type = "text" className = 'form-control' placeholder = 'Inbox my manager' />
-            </div>
-          </form>
+        <div className='col'>
+          <h3>My Pending</h3>
+          <div className = {Styles.compDay}>
+            {showRequests()}
+          </div>
         </div>
       </div>
+      
+      
     </div>
   );
 }

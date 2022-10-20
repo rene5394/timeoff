@@ -5,10 +5,9 @@ import { endOfWeek, startOfWeek } from 'date-fns';
 import { addDays } from 'date-fns';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { RequestStatus } from '../../../common/enums/request-status.enum';
-import { ITeam } from '../../../lib/domain/team/ITeam';
-import { findOneTeamByUserJWT } from '../../../lib/api/team/team';
-import { findAllTeamUsersEmployeesByJWT, findAllUsersEmployeesByTeam } from '../../../lib/api/team/user';
+import { findAllTeamUsersEmployeesByJWT } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
+import { showRequests } from './Requests';
 
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IEventsDetails[]>();
@@ -17,6 +16,7 @@ export const Balance = () => {
   const [employeesOffNextWeek, setEmployeesOffNextWeek] = React.useState<number>(0);
   const [employeesOffToday, setEmployeesOffToday] = React.useState<number>(0);
   const [teamUsers, setTeamUsers] = React.useState<IUser[]>();
+  const [userIdArray, setUserIdArray] = React.useState<any[]>([]);
   const today = new Date();
   const startThisWeek = startOfWeek(today,{weekStartsOn: 1});
   const endThisWeek = endOfWeek(today,{weekStartsOn:1});
@@ -87,32 +87,32 @@ export const Balance = () => {
 
         newRequestsDetails.map(req => {
           if (req.statusId === RequestStatus.approved) {
-            let newTeamUser = teamUsers?.find(user => user.id === req.createdBy);
+            let newTeamUser = teamUsers?.find(user => user.id === req.userId);
             if (newTeamUser) {
               console.log('nuevo usuario',newTeamUser);
-            //This week
-            if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day)) {
-              if (!usersRepetidosThisWeek.includes(req.userId)) {
-                countThisWeek++;
-                usersRepetidosThisWeek.push(req.userId);
+              //This week
+              if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day)) {
+                if (!usersRepetidosThisWeek.includes(req.userId)) {
+                  countThisWeek++;
+                  usersRepetidosThisWeek.push(req.userId);
+                }
               }
-            }
-            //Next week
-            if (new Date(startNextWeek) <= new Date(req.day) && new Date(endNextWeek) >= new Date(req.day)) {
-              if (!usersRepetidosNextWeek.includes(req.userId)) {
-                countNextWeek++;
-                usersRepetidosNextWeek.push(req.userId);
+              //Next week
+              if (new Date(startNextWeek) <= new Date(req.day) && new Date(endNextWeek) >= new Date(req.day)) {
+                if (!usersRepetidosNextWeek.includes(req.userId)) {
+                  countNextWeek++;
+                  usersRepetidosNextWeek.push(req.userId);
+                }
               }
-            }
-            //Today
-            if (today === new Date(req.day)) {
-              if (!usersRepetidosToday.includes(req.userId)) {
-                countToday++;
-                usersRepetidosToday.push(req.userId);
+              //Today
+              if (today === new Date(req.day)) {
+                if (!usersRepetidosToday.includes(req.userId)) {
+                  countToday++;
+                  usersRepetidosToday.push(req.userId);
+                }
               }
             }
           }
-        }
         });
 
         setEmployeesOffThisWeek(countThisWeek);
@@ -121,25 +121,42 @@ export const Balance = () => {
       }
     };
 
+    const createUsersIdsArray = () => {
+      if (teamUsers) {
+        let newUsersArray = teamUsers.map(user => {
+          return user.id;
+        });
+        setUserIdArray(newUsersArray);
+      }
+    }; 
+
     callRequestsDetails();
+    createUsersIdsArray();
   },[requests]);
 
   return(
-    <div className = "col-4">
-      <div>
-        <h3 className = {Styles.title}>Time Off Information</h3>
-        <p>Quick Stats and Balances</p>
-        <br />
-        <p className = {Styles.balances}>Pending Requests</p>
-        <p>{ pendingRequests }</p>
-        <p className = {Styles.balances}>Employees Off Today</p>
-        <p>{employeesOffToday}</p>
-        <p className = {Styles.balances}>Employees Off this Week</p>
-        <p>{employeesOffThisWeek}</p>
-        <p className = {Styles.balances}>Employees Off Next Week</p>
-        <p>{employeesOffNextWeek}</p>
+    <div className = {`col ${Styles.overview}`}>
+      <div className="row">
+        <div className='col-4'>
+          <h3 className = {Styles.title}>Time Off Information</h3>
+          <p>Quick Stats and Balances</p>
+          <br />
+          <p className = {Styles.balances}>Pending Requests</p>
+          <p>{ pendingRequests }</p>
+          <p className = {Styles.balances}>Employees Off Today</p>
+          <p>{employeesOffToday}</p>
+          <p className = {Styles.balances}>Employees Off this Week</p>
+          <p>{employeesOffThisWeek}</p>
+          <p className = {Styles.balances}>Employees Off Next Week</p>
+          <p>{employeesOffNextWeek}</p>
+        </div>
+        <div className='col-8'>
+          <h3>Team pending requests</h3>
+          <div className = {`${Styles.compDay}`}>
+            {showRequests(userIdArray)}
+          </div>
+        </div>
       </div>
-      
     </div>
   );
 }

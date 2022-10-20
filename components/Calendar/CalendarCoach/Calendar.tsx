@@ -106,7 +106,7 @@ export const Calendar = () => {
   }
   
   return(
-    <div className={`col-8 ${Styles.calendar}`}>
+    <div className={`col ${Styles.calendar}`}>
       <BigCalendar
         selectable
         localizer={localizer}
@@ -114,7 +114,7 @@ export const Calendar = () => {
         views={[Views.MONTH]}
         defaultDate={new Date()}
         onNavigate = {(date) => onNavigate(date)}
-        popup
+        popup = {true}
       />
     </div>
   );

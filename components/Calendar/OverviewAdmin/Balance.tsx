@@ -111,19 +111,26 @@ export const Balance = () => {
   },[requests]);
 
   return(
-    <div className = "col-4">
-      <div>
-        <h3 className = {Styles.title}>Time Off Information</h3>
-        <p>Quick Stats and Balances</p>
-        <br />
-        <p className = {Styles.balances}>Pending Requests</p>
-        <p>{ pendingRequests }</p>
-        <p className = {Styles.balances}>Employees Off Today</p>
-        <p>{employeesOffToday}</p>
-        <p className = {Styles.balances}>Employees Off this Week</p>
-        <p>{employeesOffThisWeek}</p>
-        <p className = {Styles.balances}>Employees Off Next Week</p>
-        <p>{employeesOffNextWeek}</p>
+    <div className = {`col ${Styles.overview}`}>
+      <div className="row">
+        <div className="col">
+          <h3 className = {Styles.title}>Time Off Information</h3>
+          <p>Quick Stats and Balances</p>
+        </div>
+      </div>
+      <div className='row'>
+        <div className="col">
+          <p className = {Styles.balances}>Pending Requests</p>
+          <p>{ pendingRequests }</p>
+          <p className = {Styles.balances}>Employees Off Today</p>
+          <p>{employeesOffToday}</p>
+        </div>
+        <div className="col">
+          <p className = {Styles.balances}>Employees Off this Week</p>
+          <p>{employeesOffThisWeek}</p>
+          <p className = {Styles.balances}>Employees Off Next Week</p>
+          <p>{employeesOffNextWeek}</p>
+        </div>        
       </div>
       
     </div>
