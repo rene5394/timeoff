@@ -14,6 +14,8 @@ import { EditBalanceModal } from '../../Modals/EditBalanceModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { AdvancedPagination } from '../../Commons/AdvancedPagination';
+import { CreateRequestModal } from '../../Modals/CreateRequestModal';
+import { createRequest } from '../../../lib/api/timeoff/request';
 import Moment from 'moment';
 
 interface IUserData extends IUser {
@@ -42,7 +44,9 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
   const [teamSelected, setTeamSelected] = React.useState<number>(0);
   const [searchText, setSearchText] = React.useState<string>('');
   const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
+  const [createRequestModalVisibility, setCreateRequestModalVisibility] = React.useState<boolean>(false);
   const [balance, setBalance] = React.useState<Balance>();
+  const [userId, setUserId] = React.useState<number>();
   const [hr, setHr] = React.useState<number>();
 
   React.useEffect(() => {
@@ -189,6 +193,41 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
     }
   }
 
+  const openCreateRequestModal = async() => {
+    setCreateRequestModalVisibility(true);
+  }
+
+  const closeCreateRequestModal = () => {
+    setCreateRequestModalVisibility(false);
+  }
+
+  const createANewRequest = async(userId: number) => {
+    setUserId(userId);
+    openCreateRequestModal();
+  }
+
+  const createNewRequest = async(form: any) => {
+    form.preventDefault();
+    const result = await createRequest(form);
+    
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeCreateRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Request created successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      console.log('Error xxxx', messages);
+      
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
+  }
+
   return(
     <>
       <SearchForm teams={teams} setTeams={setTeams} changeTeam={changeTeam} changeText={changeText} />
@@ -229,7 +268,10 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   {(hr === 1) &&
                     <td>
                       <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
-                        Edit
+                        Edit Balance
+                      </button>
+                      <button onClick={() => createANewRequest(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
+                        Create Request
                       </button>
                     </td>
                   }
@@ -245,6 +287,12 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
           closeModal = {closeEditBalanceModal}
           createNewBalance = {createNewBalance}
           updateCurrentBalance = {updateCurrentBalance}
+        />
+        <CreateRequestModal
+        userId= {userId}
+        visibility = {createRequestModalVisibility}
+        closeModal = {closeCreateRequestModal}
+        createNewRequest ={createNewRequest}
         />
       </div>
     </>
