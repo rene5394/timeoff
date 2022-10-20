@@ -23,7 +23,7 @@ export const createRequest = async (form: any) =>{
 
   try {
     const result = await instance.post<any>(url, {
-      userId: parseInt(form.target.elements.user.value),
+      userId: parseInt(form.target.elements.userId.value),
       typeId: parseInt(form.target.elements.type.value),
       startDate: form.target.elements.start.value,
       endDate: form.target.elements.end.value
@@ -31,7 +31,7 @@ export const createRequest = async (form: any) =>{
     
     return result;
   } catch (error: any) {
-    return error.response.data;
+    return error.response;
   }
 }
 
