@@ -267,10 +267,10 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   <td>{Moment(userData.hiredate).format('MM-DD-YYYY')}</td>
                   {(hr === 1) &&
                     <td>
-                      <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
+                      <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-warning btn-sm btn-rounded mb-2">
                         Edit Balance
                       </button>
-                      <button onClick={() => createANewRequest(userData.id)} type="button" className="btn btn-link btn-sm btn-rounded">
+                      <button onClick={() => createANewRequest(userData.id)} type="button" className="btn btn-success btn-sm btn-rounded">
                         Create Request
                       </button>
                     </td>
