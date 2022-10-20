@@ -19,9 +19,12 @@ const Calendar: NextPage = () => {
         <div className="content col-8">
           <div className="row">
             <CalendarComponent />
-            <Balance />
           </div>
-          
+        </div>
+        <div className="row">
+          <div className="col-3">
+          </div>
+          <Balance />
         </div>
       </div>
     </div>

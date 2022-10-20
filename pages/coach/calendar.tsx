@@ -3,7 +3,7 @@ import Head from "next/head";
 import { NavHeader } from "../../components/Layout/NavHeader";
 import { SideBarCoach } from "../../components/Layout/Sidebars/SidebarCoach";
 import { Calendar as CalendarComponent } from "../../components/Calendar/CalendarCoach/Calendar";
-import { Balance } from "../../components/Calendar/OverviewCoach";
+import { Balance } from "../../components/Calendar/OverviewCoach/Balance";
 
 const Calendar: NextPage = () => {
   return(
@@ -19,9 +19,10 @@ const Calendar: NextPage = () => {
         <div className="content col-8">
           <div className="row">
             <CalendarComponent />
-            <Balance />
           </div>
-          
+        </div>
+        <div className="row">
+          <Balance />
         </div>
       </div>
     </div>

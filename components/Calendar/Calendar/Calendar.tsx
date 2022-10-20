@@ -71,7 +71,7 @@ export const Calendar = () => {
   }
   
   return(
-    <div className={`col-8 ${Styles.calendar}`}>
+    <div className={`col ${Styles.calendar}`}>
       <BigCalendar
         selectable
         localizer = {localizer}
