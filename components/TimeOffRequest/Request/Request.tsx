@@ -15,6 +15,8 @@ interface RequestProps {
 
 export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorModal }) => {
   const [types, setTypes] = React.useState<IType[]>();
+  const startDate = React.useRef<HTMLInputElement>(null);
+  const endDate = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     const fillTypes = async() => {
@@ -26,6 +28,20 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
   
   const submitForm = async(form: any) => {
     form.preventDefault();
+
+    if (startDate.current !== null && endDate.current !== null
+      && (startDate.current.value > endDate.current.value)) {
+        
+        openErrorModal({
+          title: 'Error',
+          body: ['Start date can\'t be lower than start date']
+        });
+
+        return ;
+    }
+
+    console.log('Pass to request');
+
     const result  = await createRequestByUserJWT(form);
 
     if (result.status === 201) {
@@ -64,10 +80,10 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
           <option value="">Select option</option>
           { types?.map((type) => <option value={type.id}>{type.name}</option>) }
         </select>
-        <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
-        <input className="form-control rounded" type="date" name="start" id="start" required />
-        <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
-        <input className="form-control rounded" type="date" name="end" id="end" required />
+        <label htmlFor="startDate" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
+        <input ref={startDate} className="form-control rounded" type="date" name="startDate" id="startDate" required />
+        <label htmlFor="endDate" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
+        <input ref={endDate} className="form-control rounded" type="date" name="endDate" id="endDate" required />
         <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
       </form>
     </div>

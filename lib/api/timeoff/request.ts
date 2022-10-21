@@ -41,8 +41,8 @@ export const createRequestByUserJWT = async (form:any) => {
   try {
     const result = await instance.post<any>(url, {
       typeId: parseInt(form.target.elements.type.value),
-      startDate: form.target.elements.start.value,
-      endDate: form.target.elements.end.value
+      startDate: form.target.elements.startDate.value,
+      endDate: form.target.elements.endDate.value
     });
 
     return result;
