@@ -8,7 +8,7 @@ import { IRequest } from "../../../lib/domain/timeoff/IRequest";
 import { countDaysbyType } from "../../Commons/type";
 import { IType } from '../../../lib/domain/timeoff/IType';
 
-export const showRequests = (usersIds: any[]) => {
+export const ShowRequests = (usersIds: any[]) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [types, setTypes] = React.useState<IType[]>();
 
