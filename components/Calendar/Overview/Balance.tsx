@@ -6,7 +6,7 @@ import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/request';
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
-import { showRequests } from './Requests';
+import { ShowRequests } from './Requests';
 import { format } from 'date-fns';
 
 export const Balance = () => {
@@ -70,7 +70,7 @@ export const Balance = () => {
         <div className='col'>
           <h3>My Pending</h3>
           <div className = {Styles.compDay}>
-            {showRequests()}
+            {ShowRequests()}
           </div>
         </div>
       </div>
