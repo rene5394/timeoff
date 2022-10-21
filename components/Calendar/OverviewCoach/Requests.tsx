@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format } from "date-fns";
 import React from "react";
-import { findAllRequestByUserJWTAndStatus } from "../../../lib/api/timeoff/request";
+import Styles from './Balance.module.css';
+import { findAllRequestByUserJWTAndStatus, findAllRequestsByUsers } from "../../../lib/api/timeoff/request";
 import { findAllTypes } from "../../../lib/api/timeoff/type";
 import { IRequest } from "../../../lib/domain/timeoff/IRequest";
 import { countDaysbyType } from "../../Commons/type";
 import { IType } from '../../../lib/domain/timeoff/IType';
 
-export const showRequests = () => {
+export const showRequests = (usersIds: any[]) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [types, setTypes] = React.useState<IType[]>();
 
@@ -18,8 +19,9 @@ export const showRequests = () => {
   }
   React.useEffect(() => {
     const fillRequests = async() => {
-      let result = await findAllRequestByUserJWTAndStatus('pending');
-      setRequests(result);
+      let result = await findAllRequestsByUsers(-1, usersIds,'pending');
+      let resultList = result.list;
+      setRequests(resultList);
     }
     const fillTypes = async() => {
       const result = await findAllTypes();
@@ -35,7 +37,7 @@ export const showRequests = () => {
       {
         requests?.map((request) =>
           <div>
-            <h3><FontAwesomeIcon icon = {['fas','warning']} />{typeSearch(request.typeId)}</h3>
+            <h3 className={Styles.Comp}><FontAwesomeIcon  icon = {['fas','warning']} />{typeSearch(request.typeId)}</h3>
             <p>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</p>
             <p>{format(new Date(request.startDate), 'd MMMM Y')}</p>
           </div>

@@ -83,17 +83,14 @@ export const Calendar = () => {
         
         event.requests.map(req => {
           if (users) {
-            let findUser = users.find(user => user.id === req.userId);
-            if (findUser) {
-              calendarEvent = {
-                id: req.id,
-                title: findName(req.userId),
-                start: req.day,
-                end: req.day,
-                allDay: true
-              }
-              newCalendarEvent.push(calendarEvent);
+            calendarEvent = {
+              id: req.id,
+              title: findName(req.userId),
+              start: req.day,
+              end: req.day,
+              allDay: true
             }
+            newCalendarEvent.push(calendarEvent);
           }
         });
       } 
@@ -117,7 +114,7 @@ export const Calendar = () => {
   }
   
   return(
-    <div className={`col-8 ${Styles.calendar}`}>
+    <div className={`col ${Styles.calendar}`}>
       <BigCalendar
         selectable
         localizer={localizer}
@@ -125,7 +122,7 @@ export const Calendar = () => {
         views={[Views.MONTH]}
         defaultDate={new Date()}
         onNavigate = {(date) => onNavigate(date)}
-        popup
+        popup = {true}
       />
     </div>
   );

@@ -12,9 +12,21 @@
   border-radius: 15px;
   padding: 10px;
   margin-bottom: 10px;
+  height: 400px;
+  overflow-y: scroll;
 }
 
-.comp {
-  color: #E75755;
+.comp > svg{
+  color: #E75755 !important;
   font-size: 14px;
+}
+
+.overview {
+  background-color: #fff;
+  border-radius: 33px;
+  box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.07);
+  -webkit-box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.07);
+  -moz-box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  margin-top: 20px;
 }
