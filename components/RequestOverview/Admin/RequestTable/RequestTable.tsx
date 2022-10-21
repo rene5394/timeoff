@@ -13,14 +13,14 @@ import { findAllRequests, findAllRequestsByUsers } from '../../../../lib/api/tim
 import { findAllRequestStatuses } from '../../../../lib/api/timeoff/requestStatus';
 import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { RequestType } from '../../../../common/enums/request-type.enum';
-import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
+import { daysBetweenDates, daysBetweenDatesNoWeekends, getFirstDayOfMonth, getLastDayOfMonth } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
 import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
 import { createTransaction } from '../../../../lib/api/timeoff/transaction';
 import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
-import Moment from 'moment';
 import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
 import { RequestStatus } from '../../../../common/enums/request-status.enum';
+import Moment from 'moment';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -44,8 +44,8 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [teams, setTeams] = React.useState<ITeam[]>();
   const [teamSelected, setTeamSelected] = React.useState<number>(0);
   const [searchText, setSearchText] = React.useState<string>('');
-  const [startDate, setStartDate] = React.useState<string>('');
-  const [endDate, setEndDate] = React.useState<string>('');
+  const [startDate, setStartDate] = React.useState<string>(getFirstDayOfMonth());
+  const [endDate, setEndDate] = React.useState<string>(getLastDayOfMonth());
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
   const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
   const [hr, setHr] = React.useState<number>();
@@ -236,6 +236,8 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   return(
     <>
       <SearchForm
+        startDate={startDate}
+        endDate={endDate}
         teams={teams}
         setTeams={setTeams}
         changeTeam={changeTeam}

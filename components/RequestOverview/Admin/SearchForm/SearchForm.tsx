@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ITeam } from '../../../../lib/domain/team/ITeam';
 
 export interface SearchForm {
+  startDate: string;
+  endDate: string;
   teams: ITeam[] | undefined;
   setTeams: (teams: ITeam[]) => void;
   changeTeam: (e: any) => void;
@@ -9,7 +11,7 @@ export interface SearchForm {
   changeDate: (e: any) => void;
 }
 
-export const SearchForm: React.FC<SearchForm> = ({ teams, setTeams, changeTeam, changeText, changeDate }) => {
+export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate, teams, setTeams, changeTeam, changeText, changeDate }) => {
   const submitForm = async(form: any) => {
     form.preventDefault();
   }
@@ -34,12 +36,13 @@ export const SearchForm: React.FC<SearchForm> = ({ teams, setTeams, changeTeam, 
       </div>
       <div className="row g-3">
         <div className="col">
+          {startDate}
           <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">Submit start date</label>
-          <input onChange={changeDate} className="form-control rounded" type="date" name="startDate" id="startDate" required />
+          <input onChange={changeDate} className="form-control rounded" type="date" name="startDate" id="startDate" value={startDate} required />
         </div>
         <div className="col">
           <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>Submit end date</label>
-          <input onChange={changeDate} className="form-control rounded" type="date" name="endDate" id="endDate" required />
+          <input onChange={changeDate} className="form-control rounded" type="date" name="endDate" id="endDate" value={endDate} required />
         </div>
       </div>
       </form>
