@@ -57,8 +57,6 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   React.useEffect(() => {
     const getUserRoleId = async() => {
       const user = await findOneUserByJWT();
-      console.log('HR', user.hr);
-      
       setHr(user.hr);
     }
     getUserRoleId();

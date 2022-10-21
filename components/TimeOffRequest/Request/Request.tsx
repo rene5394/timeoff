@@ -40,8 +40,6 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
         return ;
     }
 
-    console.log('Pass to request');
-
     const result  = await createRequestByUserJWT(form);
 
     if (result.status === 201) {

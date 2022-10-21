@@ -27,7 +27,6 @@ export const MyAllocation = () => {
       requests.map((request) => {
         if (request.typeId === RequestType.compDay) {
           const dates = daysBetweenDatesNoWeekends(request.startDate, request.endDate);
-          console.log(dates, dates.length);
           compDays += dates.length;
         } if (request.typeId === RequestType.vacation) {
           const dates = daysBetweenDates(request.startDate, request.endDate);

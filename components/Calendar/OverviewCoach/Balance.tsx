@@ -26,21 +26,26 @@ export const Balance = () => {
 
   React.useEffect(() => {
     const allPendingRequests = async() => {
-      const result = await findAllRequests(-1,'pending');
+      const result = await findAllRequests(-1, 'pending');
       const list = result.list;
+
       setPendingRequests(list.length);
     };
 
     const callAllRequests = async() => {
       const result = await findRequestsByRange(startThisWeek,endNextWeek);
       const dataFilter = result.filter(value => value.requests.length > 0);
+
       setRequests(dataFilter);
     };
+
     const findThisTeam = async() => {
       let result = await findAllTeamUsersEmployeesByJWT();
       let resultList = result.list;
+
       setTeamUsers(resultList);
     };
+
     callAllRequests();
     allPendingRequests();
     findThisTeam();
@@ -89,7 +94,6 @@ export const Balance = () => {
           if (req.statusId === RequestStatus.approved) {
             let newTeamUser = teamUsers?.find(user => user.id === req.userId);
             if (newTeamUser) {
-              console.log('nuevo usuario',newTeamUser);
               //This week
               if (new Date(startThisWeek) <= new Date(req.day) && new Date(endThisWeek) >= new Date(req.day)) {
                 if (!usersRepetidosThisWeek.includes(req.userId)) {

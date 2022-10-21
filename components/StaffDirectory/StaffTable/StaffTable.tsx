@@ -213,13 +213,13 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
     if (result.status === 201) {
       fillUserData(activePage);
       closeCreateRequestModal();
+
       openSuccessModal({
         title: 'Success',
         body: 'Request created successfully'
       });
     } if (result.status === 400) {
       const messages = result.data.message;
-      console.log('Error xxxx', messages);
       
       openErrorModal({
         title: 'Error',
