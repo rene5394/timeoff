@@ -12,12 +12,12 @@ import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transact
 import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { RequestType } from '../../../../common/enums/request-type.enum';
 import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
-import { daysBetweenDates, daysBetweenDatesNoWeekends } from '../../../../common/utils/timeValidation';
+import { daysBetweenDates, daysBetweenDatesNoWeekends, getFirstDayOfMonth, getLastDayOfMonth } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
 import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
 import { createTransaction } from '../../../../lib/api/timeoff/transaction';
-import Moment from 'moment';
 import { RequestStatus } from '../../../../common/enums/request-status.enum';
+import Moment from 'moment';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -39,8 +39,8 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [numberOfPages, setNumberOfPages] = React.useState<number>(1);
   const [activePage, setActivePage] = React.useState<number>(1);
   const [searchText, setSearchText] = React.useState<string>('');
-  const [startDate, setStartDate] = React.useState<string>('');
-  const [endDate, setEndDate] = React.useState<string>('');
+  const [startDate, setStartDate] = React.useState<string>(getFirstDayOfMonth());
+  const [endDate, setEndDate] = React.useState<string>(getLastDayOfMonth());
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
   const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
 
@@ -193,7 +193,12 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
   return(
     <>
-      <SearchForm changeText={changeText} changeDate={changeDate} />
+      <SearchForm
+        startDate={startDate}
+        endDate={endDate}
+        changeText={changeText}
+        changeDate={changeDate}
+      />
       <div className="row px-5 pt-4">
         <table className="table align-middle mb-4 bg-white">
           <thead className="bg-light">
