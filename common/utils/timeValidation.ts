@@ -1,4 +1,5 @@
 import { differenceInBusinessDays } from "date-fns";
+import Moment from 'moment';
 
 export function daysBetweenDates(startDate: Date, endDate: Date): Date[] {
   
@@ -55,4 +56,18 @@ export function getCurrentDate(separator=''){
   let year = newDate.getFullYear();
   
   return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date}`
+}
+
+export function getFirstDayOfMonth(): string {
+  const date = new Date();
+  const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
+
+  return Moment(firstDate).format('YYYY-MM-DD');
+}
+
+export function getLastDayOfMonth(): string {
+  const date = new Date();
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  return Moment(lastDay).format('YYYY-MM-DD');
 }
