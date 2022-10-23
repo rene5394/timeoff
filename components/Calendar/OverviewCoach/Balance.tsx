@@ -7,7 +7,7 @@ import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { RequestStatus } from '../../../common/enums/request-status.enum';
 import { findAllTeamUsersEmployeesByJWT } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
-import { showRequests } from './Requests';
+import { ShowRequests } from './Requests';
 
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IEventsDetails[]>();
@@ -157,7 +157,7 @@ export const Balance = () => {
         <div className='col-8'>
           <h3>Team pending requests</h3>
           <div className = {`${Styles.compDay}`}>
-            {showRequests(userIdArray)}
+            {ShowRequests(userIdArray)}
           </div>
         </div>
       </div>

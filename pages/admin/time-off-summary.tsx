@@ -73,7 +73,7 @@ const TimeOffSummary: NextPage = () => {
                 )}
                 </select>
               </div>
-              <Summary />
+              {Summary(userSelected)}
             </div>
           </div>
           {Requests(userSelected)}
