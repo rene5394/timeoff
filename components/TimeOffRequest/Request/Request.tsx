@@ -68,23 +68,23 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
   }
 
   return(
-    <>
-    <div className={`col-3 ${Styles.request}`}>
-      <h4 className='mb-2'>Time Off Request</h4>
-      <p>You are in the process of requesting a new time-off</p>
-      <form onSubmit={submitForm}>
-        <label htmlFor="type" className='light-gray-text-2 mt-4 mb-2'>TIME-OFF TYPE</label>
-        <select className="form-select rounded" id='type' name="type" required>
-          <option value="">Select option</option>
-          { types?.map((type) => <option value={type.id}>{type.name}</option>) }
-        </select>
-        <label htmlFor="startDate" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
-        <input ref={startDate} className="form-control rounded" type="date" name="startDate" id="startDate" required />
-        <label htmlFor="endDate" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
-        <input ref={endDate} className="form-control rounded" type="date" name="endDate" id="endDate" required />
-        <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
-      </form>
+    <div className="col-4">
+      <div className={`${Styles.request}`}>
+        <h4 className='mb-2'>Time Off Request</h4>
+        <p>You are in the process of requesting a new time-off</p>
+        <form onSubmit={submitForm}>
+          <label htmlFor="type" className='light-gray-text-2 mt-4 mb-2'>TIME-OFF TYPE</label>
+          <select className="form-select rounded" id='type' name="type" required>
+            <option value="">Select option</option>
+            { types?.map((type) => <option value={type.id}>{type.name}</option>) }
+          </select>
+          <label htmlFor="startDate" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
+          <input ref={startDate} className="form-control rounded" type="date" name="startDate" id="startDate" required />
+          <label htmlFor="endDate" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
+          <input ref={endDate} className="form-control rounded" type="date" name="endDate" id="endDate" required />
+          <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
+        </form>
+      </div>
     </div>
-    </>
   );
 }

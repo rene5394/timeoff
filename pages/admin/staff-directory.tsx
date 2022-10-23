@@ -48,9 +48,9 @@ const StaffDirectory: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className="body row mx-0">
+      <div className="body row mx-0 gx-6">
         <SideBarAdmin />
-        <div className="col-8">
+        <div className="col-9 pe-0">
           <div className="content">
             <StaffTable openSuccessModal={openSuccessModal} openErrorModal={openErrorModal} />
           </div>

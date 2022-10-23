@@ -111,7 +111,7 @@ export const Balance = () => {
   },[requests]);
 
   return(
-    <div className = {`col ${Styles.overview}`}>
+    <div className="col">
       <div className="row">
         <div className="col">
           <h3 className = {Styles.title}>Time Off Information</h3>

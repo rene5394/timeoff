@@ -9,7 +9,7 @@ export const SideBarAdmin = () => {
   
   return (
     <>
-    <div id="sidebar" className = "sidebar col-3">
+    <div id="sidebar" className = "sidebar col-3 px-2">
       <ul className = "list-group list-group-flush">
         <li className = {`list-group-item ${router.pathname == '/admin/profile' ? 'sidebar-item-active' : ''}`}>
         <Link href = {'./profile'} >
