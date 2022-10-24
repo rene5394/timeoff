@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import * as React from 'react';
 import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
-import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
+import { SideBarCoach } from '../../components/Layout/Sidebars/SidebarCoach';
 import { Summary } from '../../components/TimeOffSummary/Summary';
 import { Requests } from '../../components/TimeOffSummary/RequestsHR';
 import { ITeam } from '../../lib/domain/team/ITeam';
@@ -39,9 +39,9 @@ const TimeOffSummary: NextPage = () => {
       <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader/>
-      <div className="body row mx-0">
-        <SideBarAdmin />
-        <div className="col-8">
+      <div className="body row mx-0 gx-6">
+        <SideBarCoach />
+        <div className="col-9 pe-0">
           <div className={"col summaryDiv"}>
             <div className="row">
               <div className="col-5">
