@@ -232,7 +232,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                     }
                   </td>
                   <td>
-                  {requestData.lastTransactionId === TransactionStatus.createdByBP &&
+                  {requestData.coachApproval === 0 &&
                     <>
                       <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
                       <i className="bi bi-check"></i>Approve

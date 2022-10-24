@@ -280,8 +280,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                   </td>
                   {(hr === 1) &&
                     <td>
-                    {(requestData.lastTransactionId === TransactionStatus.approvedByCoach
-                      || requestData.lastTransactionId === TransactionStatus.createdByHR) &&
+                    {requestData.coachApproval === 1 &&
                       <>
                         <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
                         <i className="bi bi-check"></i>Approve
