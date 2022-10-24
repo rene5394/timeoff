@@ -286,6 +286,13 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                         <i className="bi bi-check"></i>Approve
                         </button>
                         <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
+                        <i className="bi bi-x"></i>Deny
+                        </button>
+                      </>
+                    }
+                    {requestData.hrApproval === 1 &&
+                      <>
+                        <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
                         <i className="bi bi-x"></i>Cancel
                         </button>
                       </>
