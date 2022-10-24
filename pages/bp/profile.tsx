@@ -15,12 +15,14 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className='body row mx-0'>
+      <div className="body row mx-0 gx-6">
         <SideBarBP />
-        <div className='content col-8 pb-5'>
-          <Banner />
-          <PersonalDetails />
-          <MyBalance />
+        <div className="col-9 pe-0">
+          <div className="content pb-5">
+            <Banner />
+            <PersonalDetails />
+            <MyBalance />
+          </div>
         </div>
       </div>
       

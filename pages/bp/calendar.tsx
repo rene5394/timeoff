@@ -14,15 +14,23 @@ const Calendar: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className="row body mx-0">
+      <div className="row body mx-0 mb-4 gx-6">
         <SideBarBP />
-        <div className="content col-8">
-          <div className="row">
-            <CalendarComponent />
+        <div className="col-9 pe-0">
+          <div className="content">
+            <div className="row px-5 py-4">
+              <Balance />
+            </div>
           </div>
         </div>
-        <div className="row">
-          <Balance />
+      </div>
+      <div className="row">
+        <div className="col-12">
+          <div className="content">
+            <div className="row">
+              <CalendarComponent />
+            </div>
+          </div>
         </div>
       </div>
     </div>

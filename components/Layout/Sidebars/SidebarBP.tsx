@@ -9,7 +9,7 @@ export const SideBarBP = () => {
   
   return (
     <>
-    <div id = "sidebar" className = "sidebar col-3">
+    <div id = "sidebar" className = "sidebar col-3 px-2">
       <ul className = "list-group list-group-flush">
         <li className = {`list-group-item ${router.pathname == '/bp/profile' ? 'sidebar-item-active' : ''}`}>
         <Link href = {'./profile'} >

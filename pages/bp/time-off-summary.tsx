@@ -21,9 +21,9 @@ const TimeOffSummary: NextPage = () => {
       <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavHeader />
-      <div className="body row mx-0">
+      <div className="body row mx-0 gx-6">
         <SideBarBP />
-        <div className="col-8">
+        <div className="col-9 pe-0">
           <div className={"col summaryDiv"}>
             <div className="row">
               <div className="col-5">
