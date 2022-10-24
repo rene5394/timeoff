@@ -4,7 +4,7 @@ import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
 import { Summary } from '../../components/TimeOffSummary/Summary';
-import { Requests } from '../../components/TimeOffSummary/RequestsHR';
+import { Requests } from '../../components/TimeOffSummary/RequestsAdmin';
 import { ITeam } from '../../lib/domain/team/ITeam';
 import { findAllActiveTeams } from '../../lib/api/team/team';
 import { findAllUsersEmployeesByTeam } from '../../lib/api/team/user';
