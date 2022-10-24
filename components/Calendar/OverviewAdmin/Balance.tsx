@@ -23,12 +23,14 @@ export const Balance = () => {
     const allPendingRequests = async() => {
       const result = await findAllRequests(-1,'pending');
       const list = result.list;
+
       setPendingRequests(list.length);
     };
 
     const callAllRequests = async() => {
       const result = await findRequestsByRange(startThisWeek,endNextWeek);
       const dataFilter = result.filter(value => value.requests.length > 0);
+
       setRequests(dataFilter);
     };
 
@@ -49,6 +51,7 @@ export const Balance = () => {
         let newRequestsDetails = await Promise.all(
           newRequests.map(async(req) => {
           let result = await findOneRequest(req.requestId);
+          
           let newReq = {
             amount: result.amount,
             coachApproval: result.coachApproval,

@@ -1,7 +1,7 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { format } from "date-fns";
 import React from "react";
-import { findAllRequestByUserJWTAndStatus } from "../../../lib/api/timeoff/request";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { format } from "date-fns";
+import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/request';
 import { findAllTypes } from "../../../lib/api/timeoff/type";
 import { IRequest } from "../../../lib/domain/timeoff/IRequest";
 import { countDaysbyType } from "../../Commons/type";
@@ -12,19 +12,23 @@ export const ShowRequests = () => {
   const [types, setTypes] = React.useState<IType[]>();
 
   const typeSearch = (id: number) => {
-    var type = types?.filter(val => val.id == id);
-    var name = type?.map(res => {return res.name})
+    const type = types?.filter(val => val.id == id);
+    const name = type?.map(res => {return res.name});
+
     return name;
   }
+
   React.useEffect(() => {
     const fillRequests = async() => {
       let result = await findAllRequestByUserJWTAndStatus('pending');
       setRequests(result);
     }
+
     const fillTypes = async() => {
       const result = await findAllTypes();
       setTypes(result);
     }
+
     fillRequests();
     fillTypes();
   }, []);

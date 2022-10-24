@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as React from 'react';
 import Styles from './Balance.module.css';
 import { IBalance } from '../../../lib/domain/timeoff/IBalance';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
@@ -18,6 +17,7 @@ export const Balance = () => {
       const result = await findOneByUserJWT();
       setBalance(result);
     };
+
     fillBalanceCards();
   }, [])
 
@@ -26,18 +26,22 @@ export const Balance = () => {
       const result = await findAllRequestByUserJWTAndStatus('approved');
       setRequests(result);
     }
+
     fillRequests();
   },[]);
 
   const findNearestDate = () => {
-    var today = new Date();
-    var nearest = today;
-    var dateToCompare = today;
+    const today = new Date();
+    let nearest = today;
+    let dateToCompare = today;
+
     if (requests) {
       if (requests.length < 1) {
         return 'No approved requests';
       }
+
       nearest = new Date(requests[requests.length-1].startDate);
+
       requests.map((req,i) => { 
         if (new Date(req.startDate) > today) {
           dateToCompare = new Date(req.startDate);
@@ -47,6 +51,7 @@ export const Balance = () => {
         }
       });
     }
+
     return format(nearest,'d MMMM Y');
   }
 
@@ -74,8 +79,6 @@ export const Balance = () => {
           </div>
         </div>
       </div>
-      
-      
     </div>
   );
 }

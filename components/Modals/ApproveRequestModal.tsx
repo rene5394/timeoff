@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { IRequestData } from '../RequestOverview/Admin/RequestTable/RequestTable';
 import Moment from 'moment';
-import { TransactionStatus } from '../../common/enums/transaction-status.enum';
 
 export interface ApproveRequestModalProps {
   requestData: IRequestData;

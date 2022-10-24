@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { findAllTeamUsersEmployeesByJWT } from '../../../lib/api/team/user';
-import { createBalance, findBalances, findOneBalanceByUserId, updateBalance } from '../../../lib/api/timeoff/balance';
+import { createBalance, findBalances, updateBalance } from '../../../lib/api/timeoff/balance';
 import { findOneTeamByUserJWT } from '../../../lib/api/team/team';
 import { findEmployees } from '../../../lib/api/team/employee';
 import { findMembers } from '../../../lib/api/team/member';

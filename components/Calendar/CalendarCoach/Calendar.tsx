@@ -26,31 +26,32 @@ interface ICalendarEvent {
 
 export const Calendar = () => {
   const [events, setEvents] = React.useState<IEventsDetails[]>();
-  const [calendarEvents,setCalendarEvents] = React.useState<ICalendarEvent[]>();
-  const [dates,setDates] = React.useState<any>();
+  const [calendarEvents, setCalendarEvents] = React.useState<ICalendarEvent[]>();
+  const [dates, setDates] = React.useState<any>();
   const [users, setUsers] = React.useState<IUser[]>();
 
   const fillEvents = async(compDates: Date) => {
-    let year, month;
-    month = compDates.getMonth()+1;
-    year = compDates.getFullYear();
-    let result, resultRequest;
-    result = await findRequestsByYearMonth(year,month);
-    resultRequest = result.filter(ev => ev.requests.length > 0);
+    const month = compDates.getMonth()+1;
+    const year = compDates.getFullYear();
+
+    const result = await findRequestsByYearMonth(year,month);
+    const resultRequest = result.filter(ev => ev.requests.length > 0);
+
     setEvents(resultRequest);
     callUsers();
     fillCalendarEvents();
   }
 
   const callUsers = async() => {
-    let result = await findAllTeamUsersEmployeesByJWT();
-    let result2 = result.list;
+    const result = await findAllTeamUsersEmployeesByJWT();
+    const result2 = result.list;
     
     setUsers(result2);
   }
 
   const findName = (id:number) => {
     let name = '';
+
     if (users) {
       users.map(async user => {
         if (user.id === id) {
@@ -66,13 +67,14 @@ export const Calendar = () => {
 
   const fillCalendarEvents = () => {
     let calendarEvent;
+    
     if (events) {
       const newCalendarEvent: ICalendarEvent[] = [];
       events.map((event) => {
-        
         event.requests.map(req => {
           if (users) {
             let findUser = users.find(user => user.id === req.userId);
+
             if (findUser) {
               calendarEvent = {
                 id: req.id,
@@ -81,23 +83,21 @@ export const Calendar = () => {
                 end: req.day,
                 allDay: true
               }
+
               newCalendarEvent.push(calendarEvent);
             }
           }
         });
-      } 
-      );
+      });
+
       setCalendarEvents(newCalendarEvent);
     }
   }
 
   React.useEffect(() => {
     let date;
-    if (dates != undefined) {
-      date = dates;
-    }else{
-      date = new Date();
-    }
+    (dates != undefined) ? date = dates : date = new Date();
+
     fillEvents(date);
   }, [events]);
 

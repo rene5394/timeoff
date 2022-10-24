@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format } from "date-fns";
 import React from "react";
 import Styles from './Balance.module.css';
-import { findAllRequestByUserJWTAndStatus, findAllRequestsByUsers } from "../../../lib/api/timeoff/request";
+import { findAllRequestsByUsers } from "../../../lib/api/timeoff/request";
 import { findAllTypes } from "../../../lib/api/timeoff/type";
 import { IRequest } from "../../../lib/domain/timeoff/IRequest";
 import { countDaysbyType } from "../../Commons/type";
@@ -19,14 +19,16 @@ export const ShowRequests = (usersIds: any[]) => {
   }
   React.useEffect(() => {
     const fillRequests = async() => {
-      let result = await findAllRequestsByUsers(-1, usersIds,'pending');
-      let resultList = result.list;
+      const result = await findAllRequestsByUsers(-1, usersIds,'pending');
+      const resultList = result.list;
       setRequests(resultList);
     }
+
     const fillTypes = async() => {
       const result = await findAllTypes();
       setTypes(result);
     }
+
     fillRequests();
     fillTypes();
   }, []);

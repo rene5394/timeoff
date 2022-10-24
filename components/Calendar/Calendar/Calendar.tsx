@@ -28,12 +28,12 @@ export const Calendar = () => {
   const [dates,setDates] = React.useState<any>();
 
   const fillEvents = async(compDates: Date) => {
-    let year, month;
-    month = compDates.getMonth()+1;
-    year = compDates.getFullYear();
-    let result, resultRequest;
-    result = await findNumberOfRequestsByYearMonth(year,month);
-    resultRequest = result.filter(ev => ev.number != 0);
+    const month = compDates.getMonth() + 1;
+    const year = compDates.getFullYear();
+
+    const result = await findNumberOfRequestsByYearMonth(year, month);
+    const resultRequest = result.filter(ev => ev.number != 0);
+
     setEvents(resultRequest);
     fillCalendarEvents();
   }
@@ -41,7 +41,7 @@ export const Calendar = () => {
   const fillCalendarEvents = () => {
     let calendarEvent;
     if (events) {
-      const newCalendarEvent = events.map((event,i) => {
+      const newCalendarEvent = events.map((event, i) => {
         calendarEvent = {
           id: i,
           title: String(event.number),
@@ -49,20 +49,18 @@ export const Calendar = () => {
           end: event.day,
           allDay: true
         }
+
         return calendarEvent;
-      } 
-      );
+      });
+
       setCalendarEvents(newCalendarEvent);
     }
   }
 
   React.useEffect(() => {
     let date;
-    if (dates != undefined) {
-      date = dates;
-    }else{
-      date = new Date();
-    }
+    (dates != undefined) ? date = dates : date = new Date();
+
     fillEvents(date);
   }, [events]);
 
