@@ -23,7 +23,7 @@ export const DenyRequestModal: React.FC<DenyRequestModalProps> = ({ requestData,
           <p className="text-center text-danger h2">
             <i className="bi bi-x-circle-fill"></i>
           </p>
-          <h2 className="text-danger text-center mb-3">Are you sure you want to<br /> cancel this request?</h2>
+          <h2 className="text-danger text-center mb-3">Are you sure you want to<br /> deny this request?</h2>
           <p className="mx-5"><b>User:</b> {requestData?.name}</p>
           <p className="mx-5"><b>Duration:</b> {requestData?.duration?.toString()}</p>
           <p className="mx-5"><b>From:</b> {Moment(requestData?.startDate).format('MM-DD-YYYY')}</p>
