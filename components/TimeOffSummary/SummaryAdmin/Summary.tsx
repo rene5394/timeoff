@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AllocationByUser, MyAllocation } from '../../Commons/AllocationTable';
+import { AllocationByUser } from '../../Commons/AllocationTableByUser';
 import Styles from './Summary.module.css';
 
 export const Summary = (userId:number) => {
