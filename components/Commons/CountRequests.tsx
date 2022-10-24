@@ -8,12 +8,12 @@ export const CountRequestsByStatus = (status: string, year: number) => {
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWTAndStatus(status);
-      const resultRequest = result.filter(req => new Date(req.startDate).getFullYear() == year);
+      const resultRequest = result.filter(req => new Date(req.startDate).getFullYear() === year);
       setRequests(resultRequest);
     }
 
     fillRequests();
-  }, []);
+  }, [year]);
 
   var amountRequests = 0;
 

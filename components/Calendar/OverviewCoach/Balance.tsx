@@ -109,6 +109,8 @@ export const Balance = () => {
                 }
               }
               //Today
+              console.log('today',today);
+              console.log('dia de la base',new Date(req.day));
               if (today === new Date(req.day)) {
                 if (!usersRepetidosToday.includes(req.userId)) {
                   countToday++;

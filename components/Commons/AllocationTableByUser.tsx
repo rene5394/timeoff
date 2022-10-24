@@ -13,7 +13,12 @@ export const AllocationByUser = (userId: number) => {
   React.useEffect(() => {
     const fillBalanceData = async() => {
       const result = await findOneBalanceByUserId(userId);
-      setBalance(result);
+      if (result.statusCode != 404) {
+        setBalance(result);
+      }else{
+        setBalance({id: -1, userId: userId, compDays: 0, vacationDays: 0})
+      }
+      
     };
     fillBalanceData();
   }, [userId])
@@ -23,7 +28,7 @@ export const AllocationByUser = (userId: number) => {
       const requests = await findAllRequestByUserId(userId,'pending');
       let compDays = 0;
       let vacationDays = 0;
-
+      console.log('requests en pending data',requests);
       requests.map((request) => {
         if (request.typeId === RequestType.compDay) {
           const dates = daysBetweenDatesNoWeekends(request.startDate, request.endDate);
@@ -38,7 +43,7 @@ export const AllocationByUser = (userId: number) => {
       setPendingBalance({compDays, vacationDays});
     };
     fillPendingData();
-  }, []);
+  }, [userId]);
 
   const showBalanceCompDay = (balances: string) =>{
     if (balances === 'balance') {
@@ -58,7 +63,6 @@ export const AllocationByUser = (userId: number) => {
   const showBalanceVacationDay = (balances: string) =>{
     if (balances === 'balance') {
       if (balance?.compDays) {
-        console.log('sirve',balance);
         return String(balance.vacationDays);
       }
       return 0;
@@ -83,13 +87,13 @@ export const AllocationByUser = (userId: number) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr key={balance?.id}>
             <td>Comp Day</td>
             <td>15 d</td>
             <td>{showBalanceCompDay('balance')} d</td>
             <td>{showBalanceCompDay('pending')} d</td>
           </tr>
-          <tr>
+          <tr key={userId}>
             <td>Vacation</td>
             <td>15 d</td>
             <td>{showBalanceVacationDay('balance')} d</td>
