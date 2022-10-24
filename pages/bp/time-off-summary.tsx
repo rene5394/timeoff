@@ -8,9 +8,24 @@ import { Requests } from '../../components/TimeOffSummary/Requests';
 
 const TimeOffSummary: NextPage = () => {
   const [year,setYear] = React.useState<number>();
+  const [years,setYears] = React.useState<number[]>();
   React.useEffect(() => {
     var thisYear = new Date().getFullYear();
     setYear(thisYear);
+    let newYears: number[] = [];
+    newYears.push(2022);
+    if (new Date().getFullYear() === 2022) {
+      newYears.push(2023);
+    }else{
+      var max = new Date().getFullYear()
+      var min = 2022;
+
+      for (var i = max; i >= min; i--) {
+        newYears.push(i)
+      }
+      newYears.push(new Date().getFullYear() + 1);
+    }
+    setYears(newYears);
   },[]);
 
   return(
@@ -30,14 +45,14 @@ const TimeOffSummary: NextPage = () => {
                 <h3>Time-Off Summary</h3>
                 <label htmlFor="Start">START DATE</label>
                 <select className="form-select" 
-                  value={year} 
                   onChange={(e) => {
                     setYear(parseInt(e.target.value));
                   }}>
-                  <option selected value={year}>{year}</option>
-                  <option value="2022">2022</option>
-                  <option value="2023">2023</option>
-                  <option value="2024">2024</option>
+                    <option defaultChecked value=''>--Select a year--</option>
+                  {
+                    years?.map((newYear) => 
+                      <option key={newYear} value={newYear}>{newYear}</option>  
+                  )}
                 </select>
               </div>
               <Summary />
