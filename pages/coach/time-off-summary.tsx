@@ -3,15 +3,13 @@ import * as React from 'react';
 import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarCoach } from '../../components/Layout/Sidebars/SidebarCoach';
-import { Summary } from '../../components/TimeOffSummary/Summary';
+import { Summary } from '../../components/TimeOffSummary/SummaryHR';
 import { Requests } from '../../components/TimeOffSummary/RequestsAdmin';
 import { ITeam } from '../../lib/domain/team/ITeam';
-import { findAllActiveTeams } from '../../lib/api/team/team';
-import { findAllTeamUsersEmployeesByJWT, findAllUsersEmployeesByTeam } from '../../lib/api/team/user';
+import { findAllTeamUsersEmployeesByJWT } from '../../lib/api/team/user';
 import { IUser } from '../../lib/domain/team/IUser';
 
 const TimeOffSummary: NextPage = () => {
-  const [teams,setTeams] = React.useState<ITeam[]>();
   const [users,setUsers] = React.useState<IUser[]>();
   const [userSelected,setUserSelected] = React.useState<number>(0);
 

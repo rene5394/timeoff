@@ -3,7 +3,7 @@ import * as React from 'react';
 import  Head  from 'next/head';
 import { NavHeader } from '../../components/Layout/NavHeader';
 import { SideBarAdmin } from '../../components/Layout/Sidebars/SidebarAdmin';
-import { Summary } from '../../components/TimeOffSummary/Summary';
+import { Summary } from '../../components/TimeOffSummary/SummaryHR';
 import { Requests } from '../../components/TimeOffSummary/RequestsAdmin';
 import { ITeam } from '../../lib/domain/team/ITeam';
 import { findAllActiveTeams } from '../../lib/api/team/team';
