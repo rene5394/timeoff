@@ -5,6 +5,7 @@
 
 .balances {
   font-weight: bold;
+  margin-bottom: 4px;
 }
 
 .compDay {
@@ -12,7 +13,7 @@
   border-radius: 15px;
   padding: 10px;
   margin-bottom: 10px;
-  height: 350px;
+  height: 200px;
   overflow-y: scroll;
 }
 

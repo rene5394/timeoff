@@ -57,23 +57,28 @@ export const Balance = () => {
 
 
   return(
-    <div className = {`col ${Styles.overview}`}>
+    <div className="col">
       <div className="row">
-        <div className='col'>
+        <div className="col-7">
           <h3 className = {Styles.title}>Overview</h3>
           <p>Quick Stats and Balances</p>
-          <br />
-          <p className = {Styles.balances}>Pending Requests</p>
-          <p>{ CountRequestsByStatus('pending', new Date().getFullYear()) }</p>
-          <p className = {Styles.balances}>Next Approved Leave</p>
-          <p>{String(findNearestDate())}</p>
-          <p className = {Styles.balances}>Comp Day</p>
-          <p>{balance?.compDays} d</p>
-          <p className = {Styles.balances}>Vacation</p>
-          <p>{balance?.vacationDays} d</p>
+          <div className='row'>
+            <div className="col-6">
+              <p className = {Styles.balances}>Pending Requests</p>
+              <p>{ CountRequestsByStatus('pending', new Date().getFullYear()) }</p>
+              <p className = {Styles.balances}>Next Approved Leave</p>
+              <p>{String(findNearestDate())}</p>
+            </div>
+            <div className="col-6">
+              <p className = {Styles.balances}>Comp Day</p>
+              <p>{balance?.compDays} d</p>
+              <p className = {Styles.balances}>Vacation</p>
+              <p>{balance?.vacationDays} d</p>
+            </div>
+          </div>
         </div>
-        <div className='col'>
-          <h3>My Pending</h3>
+        <div className='col-5'>
+          <h4>My Pending</h4>
           <div className = {Styles.compDay}>
             {ShowRequests()}
           </div>
