@@ -21,6 +21,7 @@ import { TransactionStatus } from '../../../../common/enums/transaction-status.e
 import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
 import { RequestStatus } from '../../../../common/enums/request-status.enum';
 import Moment from 'moment';
+import { CancelRequestModal } from '../../../Modals/CancelRequestModal';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -48,6 +49,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [endDate, setEndDate] = React.useState<string>(getLastDayOfMonth());
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
   const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
+  const [cancelRequestModalVisibility, setCancelRequestModalVisibility] = React.useState<boolean>(false);
   const [hr, setHr] = React.useState<number>();
 
   React.useEffect(() => {
@@ -185,12 +187,21 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     setDenyRequestModalVisibility(true);
   }
 
+  const openCancelRequestModal = (requestData: IRequestData) => {
+    setRequestData(requestData);
+    setCancelRequestModalVisibility(true);
+  }
+
   const closeApproveRequestModal = () => {
     setApproveRequestModalVisibility(false);
   }
 
   const closeDenyRequestModal = () => {
     setDenyRequestModalVisibility(false);
+  }
+
+  const closeCancelRequestModal = () => {
+    setCancelRequestModalVisibility(false);
   }
 
   const approveRequest = async(form: any) => {
@@ -223,6 +234,26 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       openSuccessModal({
         title: 'Success',
         body: 'Request denied successfully'
+      });
+    } if (result.status === 400) {
+      const messages = result.data.message;
+      openErrorModal({
+        title: 'Error',
+        body: messages
+      });
+    }
+  }
+
+  const cancelRequest = async(form: any) => {
+    form.preventDefault();
+    const result = await createTransaction(form);
+
+    if (result.status === 201) {
+      fillUserData(activePage);
+      closeCancelRequestModal();
+      openSuccessModal({
+        title: 'Success',
+        body: 'Request cancelled successfully'
       });
     } if (result.status === 400) {
       const messages = result.data.message;
@@ -274,13 +305,14 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                       <button className="btn btn-success">{requestData.lastTransaction}</button>
                     } {requestData.statusId === RequestStatus.pending &&
                       <button className="btn btn-warning">{requestData.lastTransaction}</button>
-                    } {requestData.statusId === RequestStatus.denied &&
+                    } {(requestData.statusId === RequestStatus.denied || requestData.statusId === RequestStatus.cancelled) &&
                       <button className="btn btn-danger">{requestData.lastTransaction}</button>
                     }
                   </td>
                   {(hr === 1) &&
                     <td>
-                    {requestData.coachApproval === 1 &&
+                    {(requestData.coachApproval === 1 && requestData.hrApproval === 0
+                    && requestData.lastTransactionId !== TransactionStatus.deniedByHR) &&
                       <>
                         <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
                         <i className="bi bi-check"></i>Approve
@@ -290,12 +322,11 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                         </button>
                       </>
                     }
-                    {requestData.hrApproval === 1 &&
-                      <>
-                        <button onClick={() => openDenyRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
-                        <i className="bi bi-x"></i>Cancel
-                        </button>
-                      </>
+                    {(requestData.hrApproval === 1 && (requestData.lastTransactionId !== TransactionStatus.cancelledByBP
+                    && requestData.lastTransactionId !== TransactionStatus.cancelledByHR)) && 
+                      <button onClick={() => openCancelRequestModal(requestData)} type="button" className="btn text-danger btn-link btn-sm btn-rounded">
+                      <i className="bi bi-x"></i>Cancel
+                      </button>
                     }
                     </td>
                   }
@@ -317,6 +348,13 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
           transactionStatus = {TransactionStatus.deniedByHR}
           denyRequest = {denyRequest}
           closeModal = {closeDenyRequestModal}
+        />
+        <CancelRequestModal
+          requestData =  {requestData}
+          visibility = {cancelRequestModalVisibility}
+          transactionStatus = {TransactionStatus.cancelledByHR}
+          cancelRequest = {cancelRequest}
+          closeModal = {closeCancelRequestModal}
         />
       </div>
     </>
