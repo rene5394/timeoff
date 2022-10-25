@@ -18,6 +18,7 @@ export const Balance = () => {
   const [teamUsers, setTeamUsers] = React.useState<IUser[]>();
   const [userIdArray, setUserIdArray] = React.useState<any[]>([]);
   const today = new Date();
+  today.setHours(0,0,0,0)
   const startThisWeek = startOfWeek(today,{weekStartsOn: 1});
   const endThisWeek = endOfWeek(today,{weekStartsOn:1});
   const nextWeek = addDays(endThisWeek,1);
@@ -109,7 +110,9 @@ export const Balance = () => {
                 }
               }
               //Today
-              if (today === new Date(req.day)) {
+              let requestDay = new Date(req.day);
+              if (today.getTime() === requestDay.getTime()) {
+                console.log('si entro en today',usersRepetidosToday)
                 if (!usersRepetidosToday.includes(req.userId)) {
                   countToday++;
                   usersRepetidosToday.push(req.userId);
@@ -136,7 +139,7 @@ export const Balance = () => {
 
     callRequestsDetails();
     createUsersIdsArray();
-  },[requests]);
+  },[requests,teamUsers]);
 
   return(
     <div className="col">
