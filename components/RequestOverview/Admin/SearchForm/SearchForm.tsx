@@ -36,7 +36,6 @@ export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate, teams, se
       </div>
       <div className="row g-3">
         <div className="col">
-          {startDate}
           <label htmlFor="start" className="light-gray-text-2 mt-3 mb-2">Submit start date</label>
           <input onChange={changeDate} className="form-control rounded" type="date" name="startDate" id="startDate" value={startDate} required />
         </div>
