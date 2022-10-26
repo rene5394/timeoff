@@ -9,9 +9,9 @@ const Calendar: NextPage = () => {
   return(
     <div className="container">
       <Head>
-        <title>Calendar | Time Off App</title>
-        <meta name="description" content="Calendar" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Calendar | Unplugged</title>
+        <meta name="description" content="Calendar to show requests" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <NavHeader />
       <div className="row body mx-0 mb-4 gx-6">

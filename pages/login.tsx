@@ -7,9 +7,9 @@ const Login: NextPage = () => {
   return (
       <>
         <Head>
-        <title>Login</title>
+        <title>Login | Unplugged</title>
         <meta name="description" content="Login page" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
         </Head>
         <div className="container-fluid min-vh-100 p-0">
           <div className="container pt-5">
