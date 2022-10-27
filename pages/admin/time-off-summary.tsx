@@ -11,10 +11,10 @@ import { findAllUsersEmployeesByTeam } from '../../lib/api/team/user';
 import { IUser } from '../../lib/domain/team/IUser';
 
 const TimeOffSummary: NextPage = () => {
-  const [teams,setTeams] = React.useState<ITeam[]>();
-  const [users,setUsers] = React.useState<IUser[]>();
-  const [disabled,setDisabled] = React.useState<boolean>(true);
-  const [userSelected,setUserSelected] = React.useState<number>(0);
+  const [teams, setTeams] = React.useState<ITeam[]>();
+  const [users, setUsers] = React.useState<IUser[]>();
+  const [disabled, setDisabled] = React.useState<boolean>(true);
+  const [userSelected, setUserSelected] = React.useState<number>(0);
 
   React.useEffect(() => {
     const callAllTeams = async() => {
@@ -29,8 +29,9 @@ const TimeOffSummary: NextPage = () => {
     if (disabled) {
       setDisabled(false);
     }
-    let result  = await findAllUsersEmployeesByTeam(id);
-    let resultList = result.list;
+
+    const result  = await findAllUsersEmployeesByTeam(id);
+    const resultList = result.list;
     setUsers(resultList);
   };
 
@@ -57,9 +58,9 @@ const TimeOffSummary: NextPage = () => {
                  
                 <select className="form-select" onChange={ (e) => {callTeamMembers(parseInt(e.target.value));}}>
                   <option defaultChecked value=''>Choose a team</option>
-                {teams?.map(team =>
-                  <option key={team.id} value={team.id}>{team.name}</option>
-                )}
+                  {teams?.map(team =>
+                    <option key={team.id} value={team.id}>{team.name}</option>
+                  )}
                 </select>
 
                 <label className="light-gray-text-2 mt-3 mb-2" htmlFor="Start">TEAM MEMBERS</label>
@@ -68,9 +69,9 @@ const TimeOffSummary: NextPage = () => {
                   (e) => { changeUserSelected(parseInt(e.target.value)) }
                 }>
                   <option defaultChecked value=''>Choose an user</option> 
-                {users?.map(user =>
-                  <option key={user.id} value={user.id}>{`${user.firstname} ${user.secondname} ${user.lastname} ${user.secondlastname}`}</option>
-                )}
+                  {users?.map(user =>
+                    <option key={user.id} value={user.id}>{`${user.firstname} ${user.secondname} ${user.lastname} ${user.secondlastname}`}</option>
+                  )}
                 </select>
               </div>
               {Summary(userSelected)}
