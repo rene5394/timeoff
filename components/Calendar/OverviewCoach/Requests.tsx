@@ -21,10 +21,17 @@ export const ShowRequests = (usersIds: any[]) => {
     return name;
   }
   React.useEffect(() => {
+    console.log('Usuarios array',usersIds);
     const fillRequests = async() => {
       const result = await findAllRequestsByUsers(-1, usersIds,'pending');
-      const resultList = result.list;
-      setRequests(resultList);
+      const resultList:IRequest[] = result.list;
+      const resultFilter = resultList.filter(request => {
+        let findUserOnRequests = usersIds.find(id => id === request.userId);
+        if (findUserOnRequests) {
+          return request;
+        }
+      })
+      setRequests(resultFilter);
     }
 
     const fillTypes = async() => {

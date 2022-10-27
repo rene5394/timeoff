@@ -13,6 +13,16 @@ export const MyAllocation = () => {
   React.useEffect(() => {
     const fillBalanceData = async() => {
       const result = await findOneByUserJWT();
+      if (result.statusCode != 404) {
+        setBalance(result);
+      } else {
+        setBalance({
+          id: -1,
+          userId: -1,
+          compDays: 0,
+          vacationDays: 0
+        });
+      }
       setBalance(result);
     };
     fillBalanceData();
@@ -37,7 +47,43 @@ export const MyAllocation = () => {
       setPendingBalance({compDays, vacationDays});
     };
     fillPendingData();
-  }, [])
+  }, []);
+
+  const showBalanceCompDay = (balances: string) =>{
+    if (balances === 'balance') {
+      if (balance) {
+        return String(balance.compDays);
+      }
+
+      return 0;
+    }
+    
+    if (balances === 'pending') {
+      if (pendingBalance) {
+        return String(pendingBalance.compDays);
+      }
+
+      return 0;
+    }
+  }
+
+  const showBalanceVacationDay = (balances: string) =>{
+    if (balances === 'balance') {
+      if (balance?.compDays) {
+        return String(balance.vacationDays);
+      }
+
+      return 0;
+    }
+
+    if (balances === 'pending') {
+      if (pendingBalance) {
+        return String(pendingBalance.vacationDays);
+      }
+      
+      return 0;
+    }
+  }
 
   return(
     <>
@@ -51,17 +97,17 @@ export const MyAllocation = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr key={1}>
             <td>Comp Day</td>
             <td>15 d</td>
-            <td>{String(balance?.compDays)} d</td>
-            <td>{String(pendingBalance?.compDays)} d</td>
+            <td>{showBalanceCompDay('balance')} d</td>
+            <td>{showBalanceCompDay('pending')} d</td>
           </tr>
-          <tr>
+          <tr key={2}>
             <td>Vacation</td>
             <td>15 d</td>
-            <td>{String(balance?.vacationDays)} d</td>
-            <td>{String(pendingBalance?.vacationDays)} d</td>
+            <td>{showBalanceVacationDay('balance')} d</td>
+            <td>{showBalanceVacationDay('pending')} d</td>
           </tr>
         </tbody>
       </table>
