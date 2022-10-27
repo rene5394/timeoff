@@ -3,7 +3,7 @@ import { findAllRequestByUserId, findAllRequestByUserJWTAndStatus } from '../../
 import { IRequest } from '../../lib/domain/timeoff/IRequest';
 
 export const CountRequestsByStatus = (status: string, year: number) => {
-  const [requests,setRequests] = React.useState<IRequest[]>();
+  const [requests, setRequests] = React.useState<IRequest[]>();
 
   React.useEffect( () => {
     const fillRequests = async() => {
@@ -15,7 +15,7 @@ export const CountRequestsByStatus = (status: string, year: number) => {
     fillRequests();
   }, [year]);
 
-  var amountRequests = 0;
+  let amountRequests = 0;
 
   if (requests) {
     amountRequests = requests.length;
