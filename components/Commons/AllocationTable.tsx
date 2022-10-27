@@ -13,17 +13,18 @@ export const MyAllocation = () => {
   React.useEffect(() => {
     const fillBalanceData = async() => {
       const result = await findOneByUserJWT();
-      if (result.statusCode != 404) {
-        setBalance(result);
-      } else {
+      console.log('balance',result);
+      if (result.statusCode === 404) {
         setBalance({
           id: -1,
           userId: -1,
           compDays: 0,
           vacationDays: 0
         });
+        
+      } else {
+        setBalance(result);
       }
-      setBalance(result);
     };
     fillBalanceData();
   }, [])
@@ -50,6 +51,7 @@ export const MyAllocation = () => {
   }, []);
 
   const showBalanceCompDay = (balances: string) =>{
+    console.log('balance en show',balance);
     if (balances === 'balance') {
       if (balance) {
         return String(balance.compDays);
