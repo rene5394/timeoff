@@ -8,9 +8,9 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment-timezone';
 import Styles from './Calendar.module.css';
-import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
-import { findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
-import { findAllTeamUsersEmployeesByJWT, findUsers } from '../../../lib/api/team/user';
+import { IEvents, IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
+import { findNumberOfRequestsByYearMonth, findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
+import { findAllTeamUsersEmployeesByJWT } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
 
 moment.tz.setDefault('America/El_Salvador');
@@ -25,21 +25,33 @@ interface ICalendarEvent {
 } 
 
 export const Calendar = () => {
-  const [events, setEvents] = React.useState<IEventsDetails[]>();
+  const [eventsDetails, setEventsDeatils] = React.useState<IEventsDetails[]>();
   const [calendarEvents, setCalendarEvents] = React.useState<ICalendarEvent[]>();
   const [dates, setDates] = React.useState<any>();
   const [users, setUsers] = React.useState<IUser[]>();
+  const [events, setEvents] = React.useState<IEvents[]>();
 
-  const fillEvents = async(compDates: Date) => {
+  const fillEventsDetails = async(compDates: Date) => {
     const month = compDates.getMonth()+1;
     const year = compDates.getFullYear();
 
     const result = await findRequestsByYearMonth(year,month);
     const resultRequest = result.filter(ev => ev.requests.length > 0);
 
-    setEvents(resultRequest);
+    setEventsDeatils(resultRequest);
     callUsers();
-    fillCalendarEvents();
+    //fillCalendarEventsDetails();
+  }
+
+  const fillEvents = async(compDates: Date) => {
+    const month = compDates.getMonth() + 1;
+    const year = compDates.getFullYear();
+
+    const result = await findNumberOfRequestsByYearMonth(year, month);
+    const resultRequest = result.filter(ev => ev.number != 0);
+
+    setEvents(resultRequest);
+    //fillCalendarEventsDetails();
   }
 
   const callUsers = async() => {
@@ -65,12 +77,41 @@ export const Calendar = () => {
     return 'Not found';
   }
 
-  const fillCalendarEvents = () => {
+
+  const fillCalendarEventsDetails = () => {
     let calendarEvent;
+    let newCalendarEvent: ICalendarEvent[] = [];
     
     if (events) {
-      const newCalendarEvent: ICalendarEvent[] = [];
-      events.map((event) => {
+      newCalendarEvent = events.map((event, i) => {
+        let newEvents: number = 0;
+        eventsDetails?.map(eventDetail => {
+          eventDetail.requests.map(request => {
+            let findUser = users?.find(user => user.id === request.userId);
+            if (request.day === event.day && findUser) {
+              newEvents++;
+            }
+          })
+          
+        });
+        console.log('existe newEvents?',newEvents);
+        calendarEvent = {
+          id: i,
+          title: String(event.number - newEvents),
+          start: event.day,
+          end: event.day,
+          allDay: true
+        }
+        
+        
+
+        return calendarEvent;
+      });
+    }
+
+    if (eventsDetails) {
+      
+      eventsDetails.map((event) => {
         event.requests.map(req => {
           if (users) {
             let findUser = users.find(user => user.id === req.userId);
@@ -89,17 +130,19 @@ export const Calendar = () => {
           }
         });
       });
-
-      setCalendarEvents(newCalendarEvent);
     }
+    let newCalendarEventFilter = newCalendarEvent.filter(event => event.title != '0');
+    setCalendarEvents(newCalendarEventFilter);
   }
 
   React.useEffect(() => {
     let date;
     (dates != undefined) ? date = dates : date = new Date();
 
+    fillEventsDetails(date);
     fillEvents(date);
-  }, [events]);
+    fillCalendarEventsDetails();
+  }, [eventsDetails]);
 
   const onNavigate = (date: moment.MomentInput) => {
     setDates(date);
