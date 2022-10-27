@@ -19,7 +19,7 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWTAndStatus(status);
-      var resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year)
+      const resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year)
       setRequests(resultFilter);
     }
     const fillTypes = async() => {
@@ -28,7 +28,7 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
     }
     fillRequests();
     fillTypes();
-  },[requests]);
+  }, [requests]);
   
 
   return(
@@ -45,13 +45,13 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
         </tr>
       </thead>
       <tbody>
-        {requests?.map((request,i) => 
+        {requests?.map((request, i) => 
           <tr>
             <td scope="row">{typeSearch(request.typeId)}</td>
             <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
             <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
             <td>All Day</td>
-            <td>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</td>
+            <td>{String(countDaysbyType(request.typeId, request.startDate, request.endDate))}d</td>
             <td>No comments...</td>
           </tr>
         )}

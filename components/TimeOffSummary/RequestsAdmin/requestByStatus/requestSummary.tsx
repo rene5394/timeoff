@@ -51,7 +51,7 @@ export const RequestSummaryByStatus = (status: string, year: number, userId: num
             <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
             <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
             <td>All Day</td>
-            <td>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</td>
+            <td>{String(countDaysbyType(request.typeId, request.startDate, request.endDate))}d</td>
             <td>No comments...</td>
           </tr>
         )}
