@@ -23,7 +23,7 @@ export const SearchForm: React.FC<SearchForm> = ({ teams, setTeams, changeTeam, 
           <label htmlFor="team" className="light-gray-text-2 mt-3 mb-2">Team</label>
           <select onChange={changeTeam} className="form-select rounded" id='team' name="team" required>
             <option value="">Select option</option>
-            { teams?.map((team) => <option value={team.id}>{team.name}</option>) }
+            { teams?.map((team) => <option key={team.id} value={team.id}>{team.name}</option>) }
           </select>
         </div>
         <div className="col">

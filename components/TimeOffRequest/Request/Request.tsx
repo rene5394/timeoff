@@ -76,7 +76,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
           <label htmlFor="type" className='light-gray-text-2 mt-4 mb-2'>TIME-OFF TYPE</label>
           <select className="form-select rounded" id='type' name="type" required>
             <option value="">Select option</option>
-            { types?.map((type) => <option value={type.id}>{type.name}</option>) }
+            { types?.map((type) => <option key={type.id} value={type.id}>{type.name}</option>) }
           </select>
           <label htmlFor="startDate" className="light-gray-text-2 mt-3 mb-2">START DATE</label>
           <input ref={startDate} className="form-control rounded" type="date" name="startDate" id="startDate" required />

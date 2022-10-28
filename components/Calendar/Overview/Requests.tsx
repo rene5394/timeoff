@@ -38,7 +38,7 @@ export const ShowRequests = () => {
     <>
       {
         requests?.map((request) =>
-          <div>
+          <div key={request.id}>
             <h5><FontAwesomeIcon icon = {['fas','warning']} />{typeSearch(request.typeId)}</h5>
             <p>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</p>
             <p>{format(new Date(request.startDate), 'd MMMM Y')}</p>

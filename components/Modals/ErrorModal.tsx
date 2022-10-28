@@ -23,7 +23,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({ text, visibility, closeM
           </p>
           <h2 className="text-danger text-center mb-3">{text?.title}</h2>
           <ul>
-            { text?.body.map((bodyText) => <li>{bodyText}</li>)}
+            { text?.body.map((bodyText) => <li key={text.title}>{bodyText}</li>)}
           </ul>
         </Modal.Body>
         <Modal.Footer className="pt-0 border-0">
