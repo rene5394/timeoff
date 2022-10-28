@@ -44,9 +44,9 @@ export const RequestSummaryByStatus = (status: string, userId: number) => {
         </tr>
       </thead>
       <tbody>
-        {requests?.map((request,i) => 
-          <tr>
-            <th scope="row">{typeSearch(request.typeId)}</th>
+        {requests?.map((request, i) => 
+          <tr key={i}>
+            <td scope="row"><b>{typeSearch(request.typeId)}</b></td>
             <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
             <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
             <td>All Day</td>
