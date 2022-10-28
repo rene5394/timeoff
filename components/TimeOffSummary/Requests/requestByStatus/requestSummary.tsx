@@ -46,7 +46,7 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
       </thead>
       <tbody>
         {requests?.map((request, i) => 
-          <tr>
+          <tr key={i}>
             <td scope="row"><b>{typeSearch(request.typeId)}</b></td>
             <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
             <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
