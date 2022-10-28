@@ -11,7 +11,7 @@ import { AdvancedPagination } from '../../../Commons/AdvancedPagination';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { findAllRequests, findAllRequestsByUsers } from '../../../../lib/api/timeoff/request';
 import { findAllRequestStatuses } from '../../../../lib/api/timeoff/requestStatus';
-import { findAllAppTypes } from '../../../../lib/api/timeoff/type';
+import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { RequestType } from '../../../../common/enums/request-type.enum';
 import { daysBetweenDates, daysBetweenDatesNoWeekends, getFirstDayOfMonth, getLastDayOfMonth } from '../../../../common/utils/timeValidation';
 import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
@@ -74,7 +74,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     const teams = await findAllActiveTeams();
     setTeams(teams);
 
-    const requestTypes = await findAllAppTypes();
+    const requestTypes = await findAllTypes();
     const requestStatuses = await findAllRequestStatuses();
     const transactionStatuses = await findAllTransactionStatuses();
 

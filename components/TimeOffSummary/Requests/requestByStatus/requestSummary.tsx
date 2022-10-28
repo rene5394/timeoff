@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import { findAllRequestByUserJWTAndStatus } from '../../../../lib/api/timeoff/request';
-import { findAllAppTypes } from '../../../../lib/api/timeoff/type';
+import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
 import { countDaysbyType } from '../../../Commons/type';
@@ -23,7 +23,7 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
       setRequests(resultFilter);
     }
     const fillTypes = async() => {
-      const result = await findAllAppTypes();
+      const result = await findAllTypes();
       setTypes(result);
     }
     fillRequests();
