@@ -6,7 +6,7 @@ import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../../lib/domain/timeoff/IType';
 import { countDaysbyType } from '../../../Commons/type';
 
-export const RequestSummaryByStatus = (status: string, year: number, userId: number) => {
+export const RequestSummaryByStatus = (status: string, userId: number) => {
   const [requests, setRequests] = React.useState<IRequest[]>();
   const [types, setTypes] = React.useState<IType[]>();
 
@@ -19,8 +19,7 @@ export const RequestSummaryByStatus = (status: string, year: number, userId: num
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserId(userId,status);
-      var resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year)
-      setRequests(resultFilter);
+      setRequests(result);
     }
     const fillTypes = async() => {
       const result = await findAllTypes();

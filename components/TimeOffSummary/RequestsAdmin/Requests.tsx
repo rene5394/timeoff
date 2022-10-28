@@ -7,10 +7,10 @@ import Styles from './Requests.module.css';
 
 export const Requests = (userId: number) => {
   const year = new Date().getFullYear();
-  const amountPending = CountRequestsByStatusAndUserId('pending', year, userId);
-  const amountApproved = CountRequestsByStatusAndUserId('approved', year, userId);
-  const amountDenied = CountRequestsByStatusAndUserId('denied', year, userId);
-  const amountCancelled = CountRequestsByStatusAndUserId('cancelled', year, userId);
+  const amountPending = CountRequestsByStatusAndUserId('pending', userId);
+  const amountApproved = CountRequestsByStatusAndUserId('approved', userId);
+  const amountDenied = CountRequestsByStatusAndUserId('denied', userId);
+  const amountCancelled = CountRequestsByStatusAndUserId('cancelled', userId);
   const [user,setUser] = React.useState<IUser>();
 
   React.useEffect(() => {
@@ -45,16 +45,16 @@ export const Requests = (userId: number) => {
         </ul>
         <div className="tab-content" id="myTabContent">
           <div className="tab-pane fade show active" id="approved" role="tabpanel" aria-labelledby="home-tab">
-            {RequestSummaryByStatus('approved', year, userId)}
+            {RequestSummaryByStatus('approved', userId)}
           </div>
           <div className="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tab">
-            {RequestSummaryByStatus('pending', year, userId)}
+            {RequestSummaryByStatus('pending', userId)}
           </div>
           <div className="tab-pane fade" id="denied" role="tabpanel" aria-labelledby="contact-tab">
-            {RequestSummaryByStatus('denied', year, userId)}
+            {RequestSummaryByStatus('denied', userId)}
           </div>
           <div className="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="contact-tab">
-            {RequestSummaryByStatus('cancelled', year, userId)}
+            {RequestSummaryByStatus('cancelled', userId)}
           </div>
         </div>
       </div>

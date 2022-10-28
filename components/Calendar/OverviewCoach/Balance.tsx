@@ -112,7 +112,6 @@ export const Balance = () => {
               //Today
               let requestDay = new Date(req.day);
               if (today.getTime() === requestDay.getTime()) {
-                console.log('si entro en today',usersRepetidosToday)
                 if (!usersRepetidosToday.includes(req.userId)) {
                   countToday++;
                   usersRepetidosToday.push(req.userId);

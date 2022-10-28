@@ -24,17 +24,13 @@ export const CountRequestsByStatus = (status: string, year: number) => {
   return amountRequests;
 }
 
-export const CountRequestsByStatusAndUserId = (status: string, year: number, userId: number) => {
+export const CountRequestsByStatusAndUserId = (status: string, userId: number) => {
   const [requests,setRequests] = React.useState<IRequest[]>();
 
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserId(userId,status);
-      const resultRequest = result.filter(req => {
-        return new Date(req.startDate).getFullYear() === year || new Date(req.endDate).getFullYear() === year;
-      });
-      setRequests(resultRequest);
-      
+      setRequests(result);
     }
 
     fillRequests();
