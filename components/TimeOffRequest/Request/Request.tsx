@@ -2,7 +2,7 @@ import * as React from 'react';
 import Styles from './Request.module.css';
 import { IType } from '../../../lib/domain/timeoff/IType';
 import { RequestType } from '../../../common/enums/request-type.enum';
-import { findAllTypes } from '../../../lib/api/timeoff/type';
+import { findAllAppTypes } from '../../../lib/api/timeoff/type';
 import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
@@ -20,7 +20,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
 
   React.useEffect(() => {
     const fillTypes = async() => {
-      const result = await findAllTypes();
+      const result = await findAllAppTypes();
       setTypes(result);
     };
     fillTypes();

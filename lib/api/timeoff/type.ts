@@ -18,6 +18,13 @@ instance.interceptors.response.use((response) => {
 });
 
 export const findAllTypes = async() => {
+  const url = '/types';
+  const result = await instance.get<IType[]>(url);
+
+  return result.data;
+};
+
+export const findAllAppTypes = async() => {
   const url = '/types?app=true';
   const result = await instance.get<IType[]>(url);
 

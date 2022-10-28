@@ -26,7 +26,6 @@ const TimeOffSummary: NextPage = () => {
 
   const changeUserSelected = (userId:number) => {
     setUserSelected(userId);
-    console.log('usuario',userId);
   };
 
   return(

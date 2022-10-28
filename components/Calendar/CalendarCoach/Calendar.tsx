@@ -94,7 +94,6 @@ export const Calendar = () => {
           })
           
         });
-        console.log('existe newEvents?',newEvents);
         calendarEvent = {
           id: i,
           title: String(event.number - newEvents),

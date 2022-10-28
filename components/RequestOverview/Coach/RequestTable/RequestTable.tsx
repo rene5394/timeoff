@@ -9,7 +9,7 @@ import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
 import { findAllRequestsByUsers } from '../../../../lib/api/timeoff/request';
 import { findAllRequestStatuses } from '../../../../lib/api/timeoff/requestStatus';
 import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
-import { findAllTypes } from '../../../../lib/api/timeoff/type';
+import { findAllAppTypes } from '../../../../lib/api/timeoff/type';
 import { RequestType } from '../../../../common/enums/request-type.enum';
 import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
 import { daysBetweenDates, daysBetweenDatesNoWeekends, getFirstDayOfMonth, getLastDayOfMonth } from '../../../../common/utils/timeValidation';
@@ -55,7 +55,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     const userIds: any = [];
     const objs: IRequestData[] = [];
 
-    const requestTypes = await findAllTypes();
+    const requestTypes = await findAllAppTypes();
     const requestStatuses = await findAllRequestStatuses();
     const transactionStatuses = await findAllTransactionStatuses();
 

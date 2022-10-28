@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import React from "react";
 import Styles from './Balance.module.css';
 import { findAllRequestsByUsers } from "../../../lib/api/timeoff/request";
-import { findAllTypes } from "../../../lib/api/timeoff/type";
+import { findAllAppTypes } from "../../../lib/api/timeoff/type";
 import { IRequest } from "../../../lib/domain/timeoff/IRequest";
 import { countDaysbyType } from "../../Commons/type";
 import { IType } from '../../../lib/domain/timeoff/IType';
@@ -21,7 +21,6 @@ export const ShowRequests = (usersIds: any[]) => {
     return name;
   }
   React.useEffect(() => {
-    console.log('Usuarios array',usersIds);
     const fillRequests = async() => {
       const result = await findAllRequestsByUsers(-1, usersIds,'pending');
       const resultList:IRequest[] = result.list;
@@ -35,13 +34,12 @@ export const ShowRequests = (usersIds: any[]) => {
     }
 
     const fillTypes = async() => {
-      const result = await findAllTypes();
+      const result = await findAllAppTypes();
       setTypes(result);
     }
 
     const fillUsersTeam = async() => {
       const result = await findAllTeamUsersEmployeesByJWT();
-      console.log('Usuarios',result);
       let resultList = result.list;
       setUserTeams(resultList);
     }

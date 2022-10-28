@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { format } from "date-fns";
 import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/request';
-import { findAllTypes } from "../../../lib/api/timeoff/type";
+import { findAllAppTypes } from "../../../lib/api/timeoff/type";
 import { IRequest } from "../../../lib/domain/timeoff/IRequest";
 import { countDaysbyType } from "../../Commons/type";
 import { IType } from '../../../lib/domain/timeoff/IType';
@@ -25,7 +25,7 @@ export const ShowRequests = () => {
     }
 
     const fillTypes = async() => {
-      const result = await findAllTypes();
+      const result = await findAllAppTypes();
       setTypes(result);
     }
 
