@@ -22,8 +22,6 @@ const TimeOffSummary: NextPage = () => {
     callTeamMembers();
   },[]);
 
-  
-
   const changeUserSelected = (userId:number) => {
     setUserSelected(userId);
   };
