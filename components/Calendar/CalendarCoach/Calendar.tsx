@@ -40,7 +40,6 @@ export const Calendar = () => {
 
     setEventsDeatils(resultRequest);
     callUsers();
-    //fillCalendarEventsDetails();
   }
 
   const fillEvents = async(compDates: Date) => {
@@ -51,7 +50,6 @@ export const Calendar = () => {
     const resultRequest = result.filter(ev => ev.number != 0);
 
     setEvents(resultRequest);
-    //fillCalendarEventsDetails();
   }
 
   const callUsers = async() => {
@@ -101,8 +99,6 @@ export const Calendar = () => {
           end: event.day,
           allDay: true
         }
-        
-        
 
         return calendarEvent;
       });
