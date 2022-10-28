@@ -13,11 +13,12 @@ const TimeOffSummary: NextPage = () => {
     var thisYear = new Date().getFullYear();
     setYear(thisYear);
     let newYears: number[] = [];
-    newYears.push(2022);
+    
     if (new Date().getFullYear() === 2022) {
       newYears.push(2023);
     }else{
-      var max = new Date().getFullYear()
+      
+      var max = new Date().getFullYear()-1;
       var min = 2022;
 
       for (var i = max; i >= min; i--) {
@@ -48,7 +49,7 @@ const TimeOffSummary: NextPage = () => {
                   onChange={(e) => {
                     setYear(parseInt(e.target.value));
                   }}>
-                    <option defaultChecked value=''>--Select a year--</option>
+                    <option defaultChecked value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
                   {
                     years?.map((newYear) => 
                       <option key={newYear} value={newYear}>{newYear}</option>  

@@ -28,7 +28,7 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
     }
     fillRequests();
     fillTypes();
-  }, [requests]);
+  }, [year]);
   
 
   return(
