@@ -55,13 +55,23 @@ export const MyAllocation = () => {
           <tr key={1}>
             <td>Comp Day</td>
             <td>15 d</td>
-            <td>{balance?.compDays} d</td>
-            <td>{pendingBalance?.compDays} d</td>
+            <td>
+              {(balance?.compDays || balance?.compDays === 0) ?
+                `${balance?.compDays} d` :
+                'Not assigned'
+              }
+            </td>
+            <td>{pendingBalance?.compDays || balance?.vacationDays === 0} d</td>
           </tr>
           <tr key={2}>
             <td>Vacation</td>
             <td>15 d</td>
-            <td>{balance?.vacationDays} d</td>
+            <td>
+              {balance?.vacationDays ?
+                `${balance?.vacationDays} d` :
+                'Not assigned'
+              }
+            </td>
             <td>{pendingBalance?.vacationDays} d</td>
           </tr>
         </tbody>
