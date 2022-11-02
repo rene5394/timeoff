@@ -61,7 +61,7 @@ export const MyAllocation = () => {
                 'Not assigned'
               }
             </td>
-            <td>{pendingBalance?.compDays || balance?.vacationDays === 0} d</td>
+            <td>{pendingBalance?.compDays} d</td>
           </tr>
           <tr key={2}>
             <td>Vacation</td>
