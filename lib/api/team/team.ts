@@ -46,4 +46,11 @@ export const findOneTeamByUserJWT = async() => {
   return result.data;
 };
 
+export const findOneTeamByCoachUserJWT = async() => {
+  const url = '/teams/coach/me';
+  const result = await instance.get<ITeam>(url);
+
+  return result.data;
+};
+
 
