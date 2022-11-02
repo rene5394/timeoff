@@ -67,7 +67,7 @@ export const MyAllocation = () => {
             <td>Vacation</td>
             <td>15 d</td>
             <td>
-              {balance?.vacationDays ?
+              {(balance?.vacationDays || balance?.vacationDays === 0) ?
                 `${balance?.vacationDays} d` :
                 'Not assigned'
               }
