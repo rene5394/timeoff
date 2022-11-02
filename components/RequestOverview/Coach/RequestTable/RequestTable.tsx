@@ -232,7 +232,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                     }
                   </td>
                   <td>
-                  {(requestData.coachApproval === 0 && requestData.lastTransactionId !== TransactionStatus.deniedByCoach) &&
+                  {(requestData.coachApproval === 0 && requestData.lastTransactionId !== TransactionStatus.deniedByTL) &&
                     <>
                       <button onClick={() => openApproveRequestModal(requestData)} type="button" className="btn text-success btn-link btn-sm btn-rounded">
                       <i className="bi bi-check"></i>Approve
@@ -251,14 +251,14 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
         <ApproveRequestModal
           requestData =  {requestData}
           visibility = {approveRequestModalVisibility}
-          transactionStatus = {TransactionStatus.approvedByCoach}
+          transactionStatus = {TransactionStatus.approvedByTL}
           approveRequest = {approveRequest}
           closeModal = {closeApproveRequestModal}
         />
         <DenyRequestModal
           requestData =  {requestData}
           visibility = {denyRequestModalVisibility}
-          transactionStatus = {TransactionStatus.deniedByCoach}
+          transactionStatus = {TransactionStatus.deniedByTL}
           denyRequest = {denyRequest}
           closeModal = {closeDenyRequestModal}
         />
