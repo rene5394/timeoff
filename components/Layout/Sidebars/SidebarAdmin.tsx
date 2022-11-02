@@ -2,10 +2,21 @@ import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { findOneTeamByCoachUserJWT } from '../../../lib/api/team/team';
 
 export const SideBarAdmin = () => {
-
+  const [isCoach, setIsCoach] = React.useState<boolean>(false);
   const router = useRouter();
+
+  React.useEffect(() => {
+    const checkIfUserIsCoach = async() => {
+      const result = await findOneTeamByCoachUserJWT();
+      if (result) {
+        setIsCoach(true);
+      }
+    };
+    checkIfUserIsCoach();
+  }, [])
   
   return (
     <>
@@ -58,6 +69,17 @@ export const SideBarAdmin = () => {
             </a>
           </Link>
         </li>
+
+        {isCoach && 
+          <li className = {`list-group-item ${router.pathname == '/admin/team-request-overview' ? 'sidebar-item-active' : ''}`}>
+          <Link href = {'./team-request-overview'} >
+            <a className = 'linkItem light-gray-text'>
+              <FontAwesomeIcon icon = {['fas', 'chart-pie']} /> Team Request Overview
+            </a>
+          </Link>
+        </li>
+        }
+
         <li className = "list-group-item">
           
         </li>
