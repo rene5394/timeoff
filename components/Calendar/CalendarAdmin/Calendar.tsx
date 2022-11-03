@@ -12,11 +12,12 @@ import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
 import { findUsers } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
+import { EventsModal } from '../../Modals/EventsModal';
 
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
 
-interface ICalendarEvent {
+export interface ICalendarEvent {
   id:number;
   title:String | undefined;
   start:Date;
@@ -29,6 +30,9 @@ export const Calendar = () => {
   const [calendarEvents, setCalendarEvents] = React.useState<ICalendarEvent[]>();
   const [dates, setDates] = React.useState<any>();
   const [users, setUsers] = React.useState<IUser[]>();
+  const [eventsModalVisibility, setEventsModalVisibility] = React.useState<boolean>(false);
+  const [eventsModal,setEventsModal] = React.useState<ICalendarEvent[]>();
+  const [choosenDate,setChoosenDate] = React.useState<moment.MomentInput>();
 
   const fillEvents = async(compDates: Date) => {
     const month = compDates.getMonth() + 1;
@@ -115,6 +119,16 @@ export const Calendar = () => {
   const onNavigate = (date: moment.MomentInput) => {
     setDates(date);
   }
+
+  const onShowMore = (events: ICalendarEvent[], date: moment.MomentInput ) => {
+    setEventsModal(events);
+    setChoosenDate(date);
+    setEventsModalVisibility(true);
+  };
+
+  const closeEventsModal = () => {
+    setEventsModalVisibility(false);
+  }
   
   return(
     <div className={`col ${Styles.calendar}`}>
@@ -125,7 +139,14 @@ export const Calendar = () => {
         views={[Views.MONTH]}
         defaultDate={new Date()}
         onNavigate = {(date) => onNavigate(date)}
-        popup = {true}
+        onShowMore = {(requests,date) => onShowMore(requests,date)}
+        
+      />
+      <EventsModal 
+        events = {eventsModal} 
+        date = {choosenDate}
+        visibility = {eventsModalVisibility} 
+        closeModal = {closeEventsModal}
       />
     </div>
   );
