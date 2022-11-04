@@ -8,15 +8,17 @@ import { RequestStatus } from '../../../common/enums/request-status.enum';
 import { findAllTeamUsersEmployeesByJWT } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
 import { ShowRequests } from './Requests';
+import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IEventsDetails[]>();
-  const [pendingRequests, setPendingRequests] = React.useState<number>();
+  const [countPendingRequests, setCountPendingRequests] = React.useState<number>();
   const [employeesOffThisWeek, setEmployeesOffThisWeek] = React.useState<number>(0);
   const [employeesOffNextWeek, setEmployeesOffNextWeek] = React.useState<number>(0);
   const [employeesOffToday, setEmployeesOffToday] = React.useState<number>(0);
   const [teamUsers, setTeamUsers] = React.useState<IUser[]>();
   const [userIdArray, setUserIdArray] = React.useState<any[]>([]);
+  const [pendingRequests, setPendingRequests] = React.useState<IRequest[]>();
   const today = new Date();
   today.setHours(0,0,0,0)
   const startThisWeek = startOfWeek(today,{weekStartsOn: 1});
@@ -29,8 +31,8 @@ export const Balance = () => {
     const allPendingRequests = async() => {
       const result = await findAllRequests(-1, 'pending');
       const list = result.list;
-
-      setPendingRequests(list.length);
+      
+      setPendingRequests(list);
     };
 
     const callAllRequests = async() => {
@@ -47,10 +49,22 @@ export const Balance = () => {
       setTeamUsers(resultList);
     };
 
+    findThisTeam();
     callAllRequests();
     allPendingRequests();
-    findThisTeam();
   }, []);
+  React.useEffect(() => {
+    if (pendingRequests) {
+      let count = 0;
+      pendingRequests.map(request => {
+        let existsInTeam = teamUsers?.find(teamUser => teamUser.id === request.userId);
+        if (existsInTeam) {
+          count++;
+        }
+      });
+      setCountPendingRequests(count);
+    }
+  },[pendingRequests]);
 
   React.useEffect(() => {
     const callRequestsDetails = async() => {
@@ -149,7 +163,7 @@ export const Balance = () => {
           <div className='row'>
             <div className="col-6">
               <p className = {Styles.balances}>Pending Requests</p>
-              <p>{ pendingRequests }</p>
+              <p>{ countPendingRequests }</p>
               <p className = {Styles.balances}>Employees Off Today</p>
               <p>{employeesOffToday}</p>
             </div>

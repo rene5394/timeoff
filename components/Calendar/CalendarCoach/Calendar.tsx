@@ -81,20 +81,20 @@ export const Calendar = () => {
     let newCalendarEvent: ICalendarEvent[] = [];
     
     if (events) {
-      newCalendarEvent = events.map((event, i) => {
-        let newEvents: number = 0;
+      newCalendarEvent = events.map((event, i) => { 
+        let newEvents: number = event.number;
         eventsDetails?.map(eventDetail => {
           eventDetail.requests.map(request => {
             let findUser = users?.find(user => user.id === request.userId);
             if (request.day === event.day && findUser) {
-              newEvents++;
+              newEvents--;
             }
           })
           
         });
         calendarEvent = {
           id: i,
-          title: String(event.number - newEvents),
+          title: String(newEvents),
           start: event.day,
           end: event.day,
           allDay: true
