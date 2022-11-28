@@ -15,7 +15,9 @@ import { IUser } from '../../../lib/domain/team/IUser';
 import { EventsModal } from '../../Modals/EventsModal';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
 import { IType } from '../../../lib/domain/timeoff/IType';
-import { findAllAppTypes } from '../../../lib/api/timeoff/type';
+import { findAllTypes } from '../../../lib/api/timeoff/type';
+import { findAllStatuses } from '../../../lib/api/timeoff/status';
+import { IStatus } from '../../../lib/domain/timeoff/IStatus';
 
 moment.tz.setDefault('America/El_Salvador');
 const localizer = momentLocalizer(moment);
@@ -38,9 +40,10 @@ export const Calendar = () => {
   const [choosenDate,setChoosenDate] = React.useState<moment.MomentInput>();
   const [requests, setRequests] = React.useState<IRequest[] | undefined>();
   const [types, setTypes] = React.useState<IType[]>();
+  const [statuses,setStatuses] = React.useState<IStatus[]>();
 
   const fillEvents = async(compDates: Date) => {
-    const month = compDates.getMonth() + 1;
+    const month = compDates.getMonth() +1 ;
     const year = compDates.getFullYear();
 
     const result = await findRequestsByYearMonth(year,month);
@@ -48,8 +51,6 @@ export const Calendar = () => {
 
     setEvents(resultRequest);
     callUsers();
-    findRequets();
-    fillCalendarEvents();
   }
 
   const callUsers = async() => {
@@ -72,28 +73,24 @@ export const Calendar = () => {
     
     setUsers(result2);
   }
-  React.useEffect(() => {
-    const findTypes = async() => {
-      const result = await findAllAppTypes();
-      setTypes(result);
-    }
-    findTypes();
-  },[])
 
-  const findRequets = () => {
-    if (events) {
-      let request: IRequest[] = [];
-      events.map((event) => {
-        event.requests.map(async(req) => {
-          const result = await findOneRequest(req.requestId);
-          request.push(result);
-        });
-      });
-      setRequests(request);
-    }
-  }
+  
   
 
+  React.useEffect(() => {
+    const findTypes = async() => {
+      const result = await findAllTypes();
+      setTypes(result);
+    }
+    const findStatus = async() => {
+      const result = await findAllStatuses();
+      setStatuses(result);
+    }
+    findTypes();
+    findStatus();
+    setDates(new Date());
+    fillEvents(new Date());
+  },[]);
 
   const findName = (id:number) => {
     if (users) {
@@ -109,61 +106,129 @@ export const Calendar = () => {
 
     return 'Not found';
   }
-  const getRequestType = (requestId: number) => {
+
+  const getRequestType = (requestId:number) => {
+
     if (requests) {
-      let newRequest = requests.find(request => request.id === requestId);
-      if (newRequest) {
-        let name = getTypeName(newRequest.typeId);
-        return name;
-      }
-      return 'not found'
+      let id = 0;
+      requests.map(request => {
+        if (request.id === requestId) {
+          id = request.typeId;
+        }
+      });
+      let name = getTypeName(id);
+      return name;
     }
   }
+
   const getTypeName = (typeId: number) => {
     if (types) {
-      let newType = types.find(type => type.id === typeId);
-      if (newType) {
-        console.log('name', newType);
-        return newType.name;
+      let name;
+      types.map(type => {
+        if (type.id === typeId) {
+          name = type.name;
+        }
+      });
+      return name;
+    }
+  }
+
+  const getRequestStatus = (requestId: number) => {
+    console.log('Se lleno Requests',requests);
+    if (requests) {
+      let id = 0;
+      requests.map(request => {
+        if (request.id === requestId) {
+          id = request.statusId;
+        }
+      });
+      let name = getStatusName(id);
+      return name;
+    }
+  }
+
+  const getStatusName = (statusId: number) => {
+    if (statuses) {
+      let name;
+      statuses.map(status => {
+        if (status.id === statusId) {
+          name = status.name;
+        }
+      });
+      return name;
+    }
+  }
+
+  
+  React.useEffect(() => {
+    
+    const findRequets = async() => {
+      if (events) {
+        let request: IRequest[] = [];
+        events.map((event) => {
+          event.requests.map(async(req) => {
+            const result = await findOneRequest(req.requestId);
+            console.log('resultado',result);
+            request.push(result);
+          });
+        });
+        console.log('Requests del mes',request);
+        setRequests(request);
       }
     }
-  }
 
-  const fillCalendarEvents = () => {
-    let calendarEvent;
+    
+    findRequets();
+  },[events])
 
-    if (events) {
-      const newCalendarEvent: ICalendarEvent[] = [];
-
-      events.map((event) => {  
-        event.requests.map(req => {
-          const userName = findName(req.userId);
-          const typeName = getRequestType(req.requestId);
-          const newTitle = `${userName} - ${typeName}`;
-          if (users) {
-            calendarEvent = {
-              id: req.id,
-              title: newTitle,
-              start: req.day,
-              end: req.day,
-              allDay: true
-            }
-
-            newCalendarEvent.push(calendarEvent);
-          }
+  React.useEffect(() => {
+    const fillCalendarEvents = () => {
+      let calendarEvent;
+      if (events) {
+        
+        let request: IRequest[] = [];
+        events.map((event) => {
+          event.requests.map(async(req) => {
+            const result = await findOneRequest(req.requestId);
+            request.push(result);
+          });
         });
-      });
 
-      setCalendarEvents(newCalendarEvent);
+        const newCalendarEvent: ICalendarEvent[] = [];
+  
+        events.map((event) => {  
+          event.requests.map(req => {
+            const userName = findName(req.userId);
+            const typeName = getRequestType(req.requestId);
+            const statusName = getRequestStatus(req.requestId);
+            const newTitle = `${statusName} - ${userName} - ${typeName}`;
+            if (users && statuses && types ) {
+              calendarEvent = {
+                id: req.id,
+                title: newTitle,
+                start: req.day,
+                end: req.day,
+                allDay: true
+              }
+  
+              newCalendarEvent.push(calendarEvent);
+            }
+          });
+        });
+
+        setCalendarEvents(newCalendarEvent);
+      }
     }
-  }
+    
+    fillCalendarEvents();
+  },[requests])
 
   React.useEffect(() => {
     let date;
     (dates != undefined) ? date = dates : date = new Date();
     
     fillEvents(date);
-  }, [events]);
+  }, [dates]);
 
   const onNavigate = (date: moment.MomentInput) => {
     setDates(date);
