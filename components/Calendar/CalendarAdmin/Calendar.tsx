@@ -50,32 +50,7 @@ export const Calendar = () => {
     const resultRequest = result.filter(ev => ev.requests.length > 0);
 
     setEvents(resultRequest);
-    callUsers();
   }
-
-  const callUsers = async() => {
-    let usersId: any[] = [];
-
-    if (events) {
-      events.map(event => {
-        event.requests.map(req => {
-          usersId.push(req.userId);
-        });
-      });
-    }
-
-    const usersIdsUniques = usersId.filter((element, index) => {
-      return usersId.indexOf(element) === index;
-    });
-
-    const result = await findUsers(usersIdsUniques);
-    const result2 = result.list;
-    
-    setUsers(result2);
-  }
-
-  
-  
 
   React.useEffect(() => {
     const findTypes = async() => {
@@ -161,23 +136,52 @@ export const Calendar = () => {
 
   
   React.useEffect(() => {
-    
-    const findRequets = async() => {
+
+    const findRequets = () => {
       if (events) {
-        let request: IRequest[] = [];
+        let newRequestsArray: IRequest[] = [];
+        let requestsId: any[] = [];
         events.map((event) => {
           event.requests.map(async(req) => {
-            const result = await findOneRequest(req.requestId);
-            console.log('resultado',result);
-            request.push(result);
+            requestsId.push(req.requestId);
           });
         });
-        console.log('Requests del mes',request);
-        setRequests(request);
+        const requestsIdsUniques = requestsId.filter((element, index) => {
+          return requestsId.indexOf(element) === index;
+        });
+
+        requestsIdsUniques.map(async(request) => {
+          const result = await findOneRequest(request);
+          newRequestsArray.push(result);
+        });
+
+        console.log('Requests del mes',newRequestsArray);
+        setRequests(newRequestsArray);
       }
     }
 
+    const callUsers = async() => {
+      let usersId: any[] = [];
+  
+      if (events) {
+        events.map(event => {
+          event.requests.map(req => {
+            usersId.push(req.userId);
+          });
+        });
+      }
+  
+      const usersIdsUniques = usersId.filter((element, index) => {
+        return usersId.indexOf(element) === index;
+      });
+  
+      const result = await findUsers(usersIdsUniques);
+      const result2 = result.list;
+      
+      setUsers(result2);
+    }
     
+    callUsers();
     findRequets();
   },[events])
 
@@ -185,23 +189,17 @@ export const Calendar = () => {
     const fillCalendarEvents = () => {
       let calendarEvent;
       if (events) {
-        
-        let request: IRequest[] = [];
-        events.map((event) => {
-          event.requests.map(async(req) => {
-            const result = await findOneRequest(req.requestId);
-            request.push(result);
-          });
-        });
 
         const newCalendarEvent: ICalendarEvent[] = [];
   
         events.map((event) => {  
           event.requests.map(req => {
             const userName = findName(req.userId);
-            const typeName = getRequestType(req.requestId);
-            const statusName = getRequestStatus(req.requestId);
-            const newTitle = `${statusName} - ${userName} - ${typeName}`;
+            const typeName = String(getRequestType(req.requestId));
+            const statusName = String(getRequestStatus(req.requestId));
+            const abbrStatus = statusName.substring(0,4);
+            const abbrType = typeName.substring(0,4);
+            const newTitle = `${abbrStatus} - ${userName} - ${abbrType}`;
             if (users && statuses && types ) {
               calendarEvent = {
                 id: req.id,
@@ -221,7 +219,7 @@ export const Calendar = () => {
     }
     
     fillCalendarEvents();
-  },[requests])
+  },[requests, users])
 
   React.useEffect(() => {
     let date;
