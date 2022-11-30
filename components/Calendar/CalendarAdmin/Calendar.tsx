@@ -109,7 +109,6 @@ export const Calendar = () => {
   }
 
   const getRequestStatus = (requestId: number) => {
-    console.log('Se lleno Requests',requests);
     if (requests) {
       let id = 0;
       requests.map(request => {
@@ -142,7 +141,7 @@ export const Calendar = () => {
         let newRequestsArray: IRequest[] = [];
         let requestsId: any[] = [];
         events.map((event) => {
-          event.requests.map(async(req) => {
+          event.requests.map((req) => {
             requestsId.push(req.requestId);
           });
         });
@@ -150,13 +149,13 @@ export const Calendar = () => {
           return requestsId.indexOf(element) === index;
         });
 
-        requestsIdsUniques.map(async(request) => {
+        Promise.all(requestsIdsUniques.map(async(request) => {
           const result = await findOneRequest(request);
           newRequestsArray.push(result);
+        })).then(() => {
+          setRequests(newRequestsArray);
         });
 
-        console.log('Requests del mes',newRequestsArray);
-        setRequests(newRequestsArray);
       }
     }
 
@@ -219,7 +218,7 @@ export const Calendar = () => {
     }
     
     fillCalendarEvents();
-  },[requests, users])
+  },[requests])
 
   React.useEffect(() => {
     let date;
