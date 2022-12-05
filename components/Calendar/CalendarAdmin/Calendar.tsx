@@ -197,8 +197,8 @@ export const Calendar = () => {
             const typeName = String(getRequestType(req.requestId));
             const statusName = String(getRequestStatus(req.requestId));
             const abbrStatus = statusName.substring(0,4);
-            const abbrType = typeName.substring(0,4);
-            const newTitle = `${abbrStatus} - ${userName} - ${abbrType}`;
+            const abbrType = typeName.substring(0,1);
+            const newTitle = `${abbrStatus} - ${userName} (${abbrType})`;
             if (users && statuses && types ) {
               calendarEvent = {
                 id: req.id,
@@ -218,7 +218,7 @@ export const Calendar = () => {
     }
     
     fillCalendarEvents();
-  },[requests])
+  },[requests, users])
 
   React.useEffect(() => {
     let date;
