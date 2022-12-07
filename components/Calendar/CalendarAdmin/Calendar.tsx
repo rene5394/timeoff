@@ -10,7 +10,7 @@ import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { findOneRequest, findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
-import { findUsers } from '../../../lib/api/team/user';
+import { findAllUsersWithoutStatus, findUsers } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
 import { EventsModal } from '../../Modals/EventsModal';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
@@ -80,6 +80,18 @@ export const Calendar = () => {
     }
 
     return 'Not found';
+  }
+
+  const isActive = (idUser: number) => {
+    if (users) {
+      let exits;
+      let user = users.find(user1 => user1.id === idUser);
+      let statusId = user?.status_id;
+      if (statusId === 3) {
+        return false;
+      }
+      return true;
+    }
   }
 
   const getRequestType = (requestId:number) => {
@@ -174,7 +186,7 @@ export const Calendar = () => {
         return usersId.indexOf(element) === index;
       });
   
-      const result = await findUsers(usersIdsUniques);
+      const result = await findAllUsersWithoutStatus(usersIdsUniques);
       const result2 = result.list;
       
       setUsers(result2);
@@ -199,7 +211,8 @@ export const Calendar = () => {
             const abbrStatus = statusName.substring(0,4);
             const abbrType = typeName.substring(0,1);
             const newTitle = `${abbrStatus} - ${userName} (${abbrType})`;
-            if (users && statuses && types ) {
+            const isUserActive = isActive(req.userId);
+            if (users && statuses && types && isUserActive) {
               calendarEvent = {
                 id: req.id,
                 title: newTitle,

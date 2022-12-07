@@ -46,6 +46,23 @@ export const findUsers = async(usersId: any[]) => {
   }
 }
 
+export const findAllUsersWithoutStatus = async(usersId: any[]) => {
+  const url = '/users/employees';
+  const request = {
+    params: {
+      userIds: usersId
+    }
+  };
+  
+  try {
+    const result = await instance.get<IUser[]>(url, request);
+
+    return result.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
 export const findAllUsersEmployees = async(text: string = '', page: number = -1, status: string = 'active') => {
   const url = `/users/employees?text=${text}&page=${page}&status=${status}`;
 
