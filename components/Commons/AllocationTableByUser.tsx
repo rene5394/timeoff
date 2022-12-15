@@ -14,15 +14,17 @@ export const AllocationByUser = (userId: number) => {
     const fillBalanceData = async() => {
       const result = await findOneBalanceByUserId(userId);
 
-      if (result.statusCode != 404) {
-        setBalance(result);
-      } else {
+      if (result.statusCode === 404) {
+
         setBalance({
           id: -1,
           userId: userId,
           compDays: 0,
           vacationDays: 0
         });
+        
+      } else {
+        setBalance(result);
       }
     };
     fillBalanceData();
@@ -49,7 +51,7 @@ export const AllocationByUser = (userId: number) => {
     };
     fillPendingData();
   }, [userId]);
-
+  /*
   const showBalanceCompDay = (balances: string) =>{
     if (balances === 'balance') {
       if (balance) {
@@ -85,7 +87,7 @@ export const AllocationByUser = (userId: number) => {
       return 0;
     }
   }
-
+*/
   return(
     <>
       <table className = "table">
@@ -101,14 +103,14 @@ export const AllocationByUser = (userId: number) => {
           <tr key={balance?.id}>
             <td>Comp Day</td>
             <td>15 d</td>
-            <td>{showBalanceCompDay('balance')} d</td>
-            <td>{showBalanceCompDay('pending')} d</td>
+            <td>{String(balance?.compDays)} d</td>
+            <td>{String(pendingBalance?.compDays)} d</td>
           </tr>
           <tr key={userId}>
             <td>Vacation</td>
             <td>15 d</td>
-            <td>{showBalanceVacationDay('balance')} d</td>
-            <td>{showBalanceVacationDay('pending')} d</td>
+            <td>{String(balance?.vacationDays)} d</td>
+            <td>{String(pendingBalance?.vacationDays)} d</td>
           </tr>
         </tbody>
       </table>
