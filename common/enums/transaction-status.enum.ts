@@ -1,4 +1,5 @@
 export enum TransactionStatus {
+  allTransactionStatuses = 0,
   createdByBP = 1,
   createdByTL = 2,
   createdByAdmin = 3,

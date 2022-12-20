@@ -1,17 +1,21 @@
 import * as React from 'react';
 import { ITeam } from '../../../../lib/domain/team/ITeam';
+import { ITransactionStatus } from '../../../../lib/domain/timeoff/ITransactionStatus';
 
 export interface SearchForm {
   startDate: string;
   endDate: string;
   teams: ITeam[] | undefined;
+  transactionStatuses: ITransactionStatus[] | undefined;
   setTeams: (teams: ITeam[]) => void;
+  setTransactionStatuses: (transactionStatuses: ITransactionStatus[]) => void;
+  changeTransactionStatus: (e: any) => void;
   changeTeam: (e: any) => void;
   changeText: (e: any) => void;
   changeDate: (e: any) => void;
 }
 
-export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate, teams, setTeams, changeTeam, changeText, changeDate }) => {
+export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate, teams, transactionStatuses, setTeams, setTransactionStatuses, changeTransactionStatus, changeTeam, changeText, changeDate }) => {
   const submitForm = async(form: any) => {
     form.preventDefault();
   }
@@ -42,6 +46,15 @@ export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate, teams, se
         <div className="col">
           <label htmlFor="end" className='light-gray-text-2 mt-3 mb-2'>Submit end date</label>
           <input onChange={changeDate} className="form-control rounded" type="date" name="endDate" id="endDate" value={endDate} required />
+        </div>
+      </div>
+      <div className="row g-3">
+        <div className="col">
+          <label htmlFor="transactionStatus" className="light-gray-text-2 mt-3 mb-2">Transaction status</label>
+          <select onChange={changeTransactionStatus} className="form-select rounded" id='transactionStatus' name="transactionStatus" required>
+            <option value="0">Select option</option>
+            { transactionStatuses?.map((status) => <option value={status.id}>{status.name}</option>) }
+          </select>
         </div>
       </div>
       </form>

@@ -18,6 +18,7 @@ import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
 import { createTransaction } from '../../../../lib/api/timeoff/transaction';
 import { RequestStatus } from '../../../../common/enums/request-status.enum';
 import Moment from 'moment';
+import { ITransactionStatus } from '../../../../lib/domain/timeoff/ITransactionStatus';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -43,10 +44,12 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const [endDate, setEndDate] = React.useState<string>(getLastDayOfMonth());
   const [approveRequestModalVisibility, setApproveRequestModalVisibility] = React.useState<boolean>(false);
   const [denyRequestModalVisibility, setDenyRequestModalVisibility] = React.useState<boolean>(false);
+  const [transactionStatuses, setTransactionStatuses] = React.useState<ITransactionStatus[]>();
+  const [transactionStatusSelected, setTransactionStatusSelected] = React.useState<number>(0);
 
   React.useEffect(() => {
     fillUserData(1);
-  }, [searchText, startDate, endDate])
+  }, [searchText, transactionStatusSelected, startDate, endDate])
 
   const fillUserData = async(page: number = 1) => {
     let requests: IRequest[];
@@ -58,6 +61,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     const requestTypes = await findAllTypes();
     const requestStatuses = await findAllRequestStatuses();
     const transactionStatuses = await findAllTransactionStatuses();
+    setTransactionStatuses(transactionStatuses);
 
     const data = await findAllTeamUsersEmployeesByJWT(searchText);
     users = data.list;
@@ -92,7 +96,13 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       obj.lastTransactionId = transactionStatus?.id;
       obj.lastTransaction = transactionStatus?.name;
 
-      objs.push(obj);
+      if (transactionStatusSelected !== TransactionStatus.allTransactionStatuses) {
+        if (transactionStatusSelected === obj.lastTransactionId) {
+          objs.push(obj);
+        }
+      } else {
+        objs.push(obj);
+      }
     });
     
     setRequestsData(objs);
@@ -107,6 +117,12 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
   const changeText = (e: any) => {
     const text = e.target.value;
     setSearchText(text);
+    setActivePage(1);
+  }
+
+  const changeTransactionStatus = (e: any) => {
+    const transactionStatusId = (e.target.value !== '') ? parseInt(e.target.value) : 0;
+    setTransactionStatusSelected(transactionStatusId);
     setActivePage(1);
   }
 
@@ -196,6 +212,9 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       <SearchForm
         startDate={startDate}
         endDate={endDate}
+        transactionStatuses={transactionStatuses}
+        setTransactionStatuses={setTransactionStatuses}
+        changeTransactionStatus={changeTransactionStatus}
         changeText={changeText}
         changeDate={changeDate}
       />
