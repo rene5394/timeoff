@@ -213,7 +213,6 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
         startDate={startDate}
         endDate={endDate}
         transactionStatuses={transactionStatuses}
-        setTransactionStatuses={setTransactionStatuses}
         changeTransactionStatus={changeTransactionStatus}
         changeText={changeText}
         changeDate={changeDate}

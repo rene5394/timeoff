@@ -5,13 +5,12 @@ export interface SearchForm {
   startDate: string;
   endDate: string;
   transactionStatuses: ITransactionStatus[] | undefined;
-  setTransactionStatuses: (transactionStatuses: ITransactionStatus[]) => void;
   changeTransactionStatus: (e: any) => void;
   changeText: (e: any) => void;
   changeDate: (e: any) => void;
 }
 
-export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate,transactionStatuses, setTransactionStatuses, changeTransactionStatus, changeText, changeDate }) => {
+export const SearchForm: React.FC<SearchForm> = ({ startDate, endDate,transactionStatuses, changeTransactionStatus, changeText, changeDate }) => {
   const submitForm = async(form: any) => {
     form.preventDefault();
   }
