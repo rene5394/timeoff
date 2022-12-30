@@ -51,15 +51,15 @@ export const createRequestByUserJWT = async (form:any) => {
   }
 }
 
-export const findAllRequests = async(page: number = -1, status: string = '', starDate: string = '', endDate: string = '') => {
-  const url = `/requests?page=${page}&status=${status}&startDate=${starDate}&endDate=${endDate}`;
+export const findAllRequests = async(page: number = -1, status: string = '', transactionStatus: string = '', starDate: string = '', endDate: string = '') => {
+  const url = `/requests?page=${page}&status=${status}&transactionStatus=${transactionStatus}&startDate=${starDate}&endDate=${endDate}`;
   const result = await instance.get<any>(url);
 
   return result.data;
 };
 
-export const findAllRequestsByUsers = async(page: number = -1, userIds: any[], status: string = '', starDate: string = '', endDate: string = '') => {
-  const url = `/requests?page=${page}&status=${status}&startDate=${starDate}&endDate=${endDate}`;
+export const findAllRequestsByUsers = async(page: number = -1, userIds: any[], status: string = '', transactionStatus: string = '', starDate: string = '', endDate: string = '') => {
+  const url = `/requests?page=${page}&status=${status}&transactionStatus=${transactionStatus}&startDate=${starDate}&endDate=${endDate}`;
   const request = {
     params: {
       userIds: userIds
@@ -69,6 +69,8 @@ export const findAllRequestsByUsers = async(page: number = -1, userIds: any[], s
   try {
     const result = await instance.get<any>(url, request);
 
+    console.log('Result', result);
+    
     return result.data;
   } catch (error: any) {
     return error.response.data;
