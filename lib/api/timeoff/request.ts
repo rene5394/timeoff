@@ -68,8 +68,6 @@ export const findAllRequestsByUsers = async(page: number = -1, userIds: any[], s
 
   try {
     const result = await instance.get<any>(url, request);
-
-    console.log('Result', result);
     
     return result.data;
   } catch (error: any) {
