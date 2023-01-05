@@ -61,14 +61,24 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
     const requestTypes = await findAllTypes();
     const requestStatuses = await findAllRequestStatuses();
     const transactionStatuses = await findAllTransactionStatuses();
+
     setTransactionStatuses(transactionStatuses);
 
     const data = await findAllTeamUsersEmployeesByJWT(searchText);
     users = data.list;
     
     users.map((user: IUser) => userIds.push(user.id));
+    
+    const transactionKeys = Object.values(TransactionStatus);
+    let transactionStatus = '';
 
-    const requestsData = await findAllRequestsByUsers(page, userIds, '', startDate, endDate);
+    Object.values(TransactionStatus).forEach(key => {
+      if (key === transactionStatusSelected) {
+        transactionStatus = transactionKeys[key].toString();
+      }
+    });
+    
+    const requestsData = await findAllRequestsByUsers(page, userIds, '', transactionStatus, startDate, endDate);
     requests = requestsData.list;
     
     pages = Math.ceil(requestsData.count / 10);
@@ -96,13 +106,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       obj.lastTransactionId = transactionStatus?.id;
       obj.lastTransaction = transactionStatus?.name;
 
-      if (transactionStatusSelected !== TransactionStatus.allTransactionStatuses) {
-        if (transactionStatusSelected === obj.lastTransactionId) {
-          objs.push(obj);
-        }
-      } else {
-        objs.push(obj);
-      }
+      objs.push(obj);
     });
     
     setRequestsData(objs);

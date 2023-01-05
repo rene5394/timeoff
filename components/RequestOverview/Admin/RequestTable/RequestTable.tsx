@@ -83,8 +83,17 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
 
     setTransactionStatuses(transactionStatuses);
 
+    const transactionKeys = Object.values(TransactionStatus);
+    let transactionStatus = '';
+
+    Object.values(TransactionStatus).forEach(key => {
+      if (key === transactionStatusSelected) {
+        transactionStatus = transactionKeys[key].toString();
+      }
+    });
+
     if (teamSelected === Team.allTeams && searchText === '') {
-      const requestsData = await findAllRequests(page, '', startDate, endDate);
+      const requestsData = await findAllRequests(page, '', transactionStatus, startDate, endDate);
       requests = requestsData.list;
       requests.map((request: IRequest) => userIds.push(request.userId));
       pages = Math.ceil(requestsData.count / 10);
@@ -97,7 +106,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users.map((user: IUser) => userIds.push(user.id));
 
       if (users.length > 0) {
-        const requestsData = await findAllRequestsByUsers(page, userIds, '', startDate, endDate);
+        const requestsData = await findAllRequestsByUsers(page, userIds, '', transactionStatus, startDate, endDate);
         requests = requestsData.list;
         pages = Math.ceil(requestsData.count / 10);
       } else {
@@ -109,10 +118,13 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       users = data.list;
       users.map((user: IUser) => userIds.push(user.id));
 
-      const requestsData = await findAllRequestsByUsers(page, userIds, '', startDate, endDate);
+      const requestsData = await findAllRequestsByUsers(page, userIds, '', transactionStatus, startDate, endDate);
       requests = requestsData.list;
       pages = Math.ceil(requestsData.count / 10);
     }
+
+    console.log('requests: ', requests);
+    
 
     requests.map((request: IRequest) => {
       const obj: IRequestData = { ...request };
