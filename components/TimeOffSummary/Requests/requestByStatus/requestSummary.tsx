@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 import { findAllRequestByUserJWTAndStatus } from '../../../../lib/api/timeoff/request';
 import { findAllTypes } from '../../../../lib/api/timeoff/type';
 import { IRequest } from '../../../../lib/domain/timeoff/IRequest';
@@ -19,13 +19,15 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
   React.useEffect( () => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWTAndStatus(status);
-      const resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year)
+      const resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year);
+
       setRequests(resultFilter);
     }
     const fillTypes = async() => {
       const result = await findAllTypes();
       setTypes(result);
     }
+
     fillRequests();
     fillTypes();
   }, [year]);
@@ -48,8 +50,8 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
         {requests?.map((request, i) => 
           <tr key={i}>
             <td scope="row"><b>{typeSearch(request.typeId)}</b></td>
-            <td>{format(new Date(request.startDate), 'd MMMM Y')}</td>
-            <td>{format(new Date(request.endDate), 'd MMMM Y')}</td>
+            <td>{formatInTimeZone(new Date(request.startDate), 'America/El_Salvador', 'd MMMM Y')}</td>
+            <td>{formatInTimeZone(new Date(request.endDate), 'America/El_Salvador', 'd MMMM Y')}</td>
             <td>All Day</td>
             <td>{String(countDaysbyType(request.typeId, request.startDate, request.endDate))}d</td>
             <td>No comments...</td>

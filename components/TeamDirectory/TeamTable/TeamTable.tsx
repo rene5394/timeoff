@@ -13,7 +13,7 @@ import { EditBalanceModal } from '../../Modals/EditBalanceModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { AdvancedPagination } from '../../Commons/AdvancedPagination';
-import Moment from 'moment';
+import { formatInTimeZone } from 'date-fns-tz';
 
 interface IUserData extends IUser {
   compDays?: number;
@@ -171,7 +171,7 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
                   </td>
                   <td>{userData.compDays?.toString()}</td>
                   <td>{userData.vacationDays?.toString()}</td>
-                  <td>{Moment(userData.hiredate).format('MM-DD-YYYY')}</td>
+                  <td>{formatInTimeZone(new Date(userData.hiredate), 'America/El_Salvador', 'd MMMM Y')}</td>
                 </tr>
               )}
           </tbody>

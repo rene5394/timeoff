@@ -16,7 +16,7 @@ import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { AdvancedPagination } from '../../Commons/AdvancedPagination';
 import { CreateRequestModal } from '../../Modals/CreateRequestModal';
 import { createRequest } from '../../../lib/api/timeoff/request';
-import Moment from 'moment';
+import { formatInTimeZone } from 'date-fns-tz';
 
 interface IUserData extends IUser {
   compDays?: number;
@@ -264,7 +264,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   <td>{userData.teamName}</td>
                   <td>{userData.compDays?.toString()}</td>
                   <td>{userData.vacationDays?.toString()}</td>
-                  <td>{Moment(userData.hiredate).format('MM-DD-YYYY')}</td>
+                  <td>{formatInTimeZone(new Date(userData.hiredate), 'America/El_Salvador', 'd MMMM Y')}</td>
                   {(hr === 1) &&
                     <td>
                       <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-warning btn-sm btn-rounded mb-2">

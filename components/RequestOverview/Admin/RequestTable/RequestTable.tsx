@@ -20,9 +20,9 @@ import { createTransaction } from '../../../../lib/api/timeoff/transaction';
 import { TransactionStatus } from '../../../../common/enums/transaction-status.enum';
 import { findAllTransactionStatuses } from '../../../../lib/api/timeoff/transactionStatus';
 import { RequestStatus } from '../../../../common/enums/request-status.enum';
-import Moment from 'moment';
 import { CancelRequestModal } from '../../../Modals/CancelRequestModal';
 import { ITransactionStatus } from '../../../../lib/domain/timeoff/ITransactionStatus';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -122,10 +122,7 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
       requests = requestsData.list;
       pages = Math.ceil(requestsData.count / 10);
     }
-
-    console.log('requests: ', requests);
     
-
     requests.map((request: IRequest) => {
       const obj: IRequestData = { ...request };
       const user = users.find((user) => user.id === request.userId);
@@ -328,10 +325,10 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                 <tr key={requestData.id.toString()}>
                   <td>{requestData.name}</td>
                   <td>{requestData.type.toString()}</td>
-                  <td>{Moment(requestData.startDate).format('MM-DD-YYYY')}</td>
-                  <td>{Moment(requestData.endDate).format('MM-DD-YYYY')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM Y')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM Y')}</td>
                   <td>{requestData.duration.toString()}</td>
-                  <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.createdAt), 'America/El_Salvador', 'd MMMM Y')}</td>
                   <td>
                     {requestData.statusId === RequestStatus.approved &&
                       <button className="btn btn-success">{requestData.lastTransaction}</button>

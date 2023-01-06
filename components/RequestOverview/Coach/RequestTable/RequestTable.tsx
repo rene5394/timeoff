@@ -17,8 +17,8 @@ import { ApproveRequestModal } from '../../../Modals/ApproveRequestModal';
 import { DenyRequestModal } from '../../../Modals/DenyRequestModal';
 import { createTransaction } from '../../../../lib/api/timeoff/transaction';
 import { RequestStatus } from '../../../../common/enums/request-status.enum';
-import Moment from 'moment';
 import { ITransactionStatus } from '../../../../lib/domain/timeoff/ITransactionStatus';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export interface IRequestData extends IRequest {
   name?: string;
@@ -240,10 +240,10 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                 <tr key={requestData.id.toString()}>
                   <td>{requestData.name}</td>
                   <td>{requestData.type.toString()}</td>
-                  <td>{Moment(requestData.startDate).format('MM-DD-YYYY')}</td>
-                  <td>{Moment(requestData.endDate).format('MM-DD-YYYY')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM Y')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM Y')}</td>
                   <td>{requestData.duration.toString()}</td>
-                  <td>{Moment(requestData.createdAt).format('MM-DD-YYYY')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.createdAt), 'America/El_Salvador', 'd MMMM Y')}</td>
                   <td>
                     {requestData.statusId === RequestStatus.approved &&
                       <button className="btn btn-success">{requestData.lastTransaction}</button>

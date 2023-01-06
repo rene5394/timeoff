@@ -6,7 +6,7 @@ import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/reque
 import { findOneByUserJWT } from '../../../lib/api/timeoff/balance';
 import { CountRequestsByStatus } from '../../Commons/CountRequests';
 import { ShowRequests } from './Requests';
-import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export const Balance = () => {
   const [requests, setRequests] = React.useState<IRequest[]>();
@@ -42,7 +42,7 @@ export const Balance = () => {
 
       nearest = new Date(requests[requests.length-1].startDate);
 
-      requests.map((req,i) => { 
+      requests.map((req, i) => { 
         if (new Date(req.startDate) > today) {
           dateToCompare = new Date(req.startDate);
           if (dateToCompare < nearest) {
@@ -52,7 +52,7 @@ export const Balance = () => {
       });
     }
 
-    return format(nearest,'d MMMM Y');
+    return formatInTimeZone(nearest, 'America/El_Salvador', 'd MMMM Y');
   }
 
 

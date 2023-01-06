@@ -10,7 +10,7 @@ import 'moment-timezone';
 import Styles from './Calendar.module.css';
 import { IEventsDetails } from '../../../lib/domain/timeoff/IEvents';
 import { findOneRequest, findRequestsByYearMonth } from '../../../lib/api/timeoff/request';
-import { findAllUsersWithoutStatus, findUsers } from '../../../lib/api/team/user';
+import { findAllUsersWithoutStatus } from '../../../lib/api/team/user';
 import { IUser } from '../../../lib/domain/team/IUser';
 import { EventsModal } from '../../Modals/EventsModal';
 import { IRequest } from '../../../lib/domain/timeoff/IRequest';
@@ -37,7 +37,7 @@ export const Calendar = () => {
   const [users, setUsers] = React.useState<IUser[]>();
   const [eventsModalVisibility, setEventsModalVisibility] = React.useState<boolean>(false);
   const [eventsModal,setEventsModal] = React.useState<ICalendarEvent[]>();
-  const [choosenDate,setChoosenDate] = React.useState<moment.MomentInput>();
+  const [choosenDate,setChoosenDate] = React.useState<Date | undefined>();
   const [requests, setRequests] = React.useState<IRequest[] | undefined>();
   const [types, setTypes] = React.useState<IType[]>();
   const [statuses,setStatuses] = React.useState<IStatus[]>();
@@ -244,7 +244,7 @@ export const Calendar = () => {
     setDates(date);
   }
 
-  const onShowMore = (events: ICalendarEvent[], date: moment.MomentInput ) => {
+  const onShowMore = (events: ICalendarEvent[], date: Date ) => {    
     setEventsModal(events);
     setChoosenDate(date);
     setEventsModalVisibility(true);

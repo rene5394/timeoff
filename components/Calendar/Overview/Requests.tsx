@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { format } from "date-fns";
+import { formatInTimeZone } from 'date-fns-tz';
 import { findAllRequestByUserJWTAndStatus } from '../../../lib/api/timeoff/request';
 import { findAllAppTypes } from "../../../lib/api/timeoff/type";
 import { IRequest } from "../../../lib/domain/timeoff/IRequest";
@@ -41,7 +41,7 @@ export const ShowRequests = () => {
           <div key={request.id}>
             <h5><FontAwesomeIcon icon = {['fas','warning']} />{typeSearch(request.typeId)}</h5>
             <p>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</p>
-            <p>{format(new Date(request.startDate), 'd MMMM Y')}</p>
+            <p>{formatInTimeZone(new Date(request.startDate), 'America/El_Salvador', 'd MMMM Y')}</p>
           </div>
           )
       }

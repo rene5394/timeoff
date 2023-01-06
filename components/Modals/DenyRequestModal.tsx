@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { IRequestData } from '../RequestOverview/Admin/RequestTable/RequestTable';
-import Moment from 'moment';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export interface DenyRequestModalProps {
   requestData: IRequestData;
@@ -26,8 +26,8 @@ export const DenyRequestModal: React.FC<DenyRequestModalProps> = ({ requestData,
           <h2 className="text-danger text-center mb-3">Are you sure you want to<br /> deny this request?</h2>
           <p className="mx-5"><b>User:</b> {requestData?.name}</p>
           <p className="mx-5"><b>Duration:</b> {requestData?.duration?.toString()}</p>
-          <p className="mx-5"><b>From:</b> {Moment(requestData?.startDate).format('MM-DD-YYYY')}</p>
-          <p className="mx-5"><b>To:</b> {Moment(requestData?.endDate).format('MM-DD-YYYY')}</p>
+          <p className="mx-5"><b>From:</b> {requestData?.startDate && formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM Y')}</p>
+          <p className="mx-5"><b>To:</b> {requestData?.endDate && formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM Y')}</p>
         </Modal.Body>
         <Modal.Footer className="border-0">
           <Button variant="secondary" className="px-4" onClick={closeModal}>No</Button>

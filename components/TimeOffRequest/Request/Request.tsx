@@ -6,6 +6,7 @@ import { findAllAppTypes } from '../../../lib/api/timeoff/type';
 import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
+import { formatInTimeZone } from 'date-fns-tz';
 import Moment from 'moment';
 
 interface RequestProps {
@@ -56,7 +57,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
 
       openSuccessModal({
         title: 'Success',
-        body: `${requestType} request made from ${Moment(data.startDate).format('MM-DD-YYYY')} to ${Moment(data.endDate).format('MM-DD-YYYY')}`
+        body: `${requestType} request made from ${formatInTimeZone(new Date(data.startDate), 'America/El_Salvador', 'd MMMM Y')} to ${formatInTimeZone(new Date(data.endDate), 'America/El_Salvador', 'd MMMM Y')}`
       });
     } if (result.status === 400) {
       const messages = result.data.message;

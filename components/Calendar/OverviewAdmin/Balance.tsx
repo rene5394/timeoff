@@ -21,7 +21,7 @@ export const Balance = () => {
 
   React.useEffect(() => {
     const allPendingRequests = async() => {
-      const result = await findAllRequests(-1,'pending');
+      const result = await findAllRequests(-1, 'pending');
       const list = result.list;
 
       setPendingRequests(list.length);

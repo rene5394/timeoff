@@ -9,25 +9,27 @@ import { Requests } from '../../components/TimeOffSummary/Requests';
 const TimeOffSummary: NextPage = () => {
   const [year,setYear] = React.useState<number>();
   const [years,setYears] = React.useState<number[]>();
+  
   React.useEffect(() => {
-    var thisYear = new Date().getFullYear();
+    let thisYear = new Date().getFullYear();
     setYear(thisYear);
+
     let newYears: number[] = [];
     
     if (new Date().getFullYear() === 2022) {
       newYears.push(2023);
-    }else{
-      
-      var max = new Date().getFullYear()-1;
-      var min = 2022;
+    } else{
+      let max = new Date().getFullYear() - 1;
+      let min = 2022;
 
-      for (var i = max; i >= min; i--) {
+      for (let i = max; i >= min; i--) {
         newYears.push(i)
       }
+
       newYears.push(new Date().getFullYear() + 1);
     }
     setYears(newYears);
-  },[]);
+  }, []);
 
   return(
     <div className="container">
