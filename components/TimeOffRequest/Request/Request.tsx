@@ -7,7 +7,6 @@ import { createRequestByUserJWT } from '../../../lib/api/timeoff/request';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
 import { formatInTimeZone } from 'date-fns-tz';
-import Moment from 'moment';
 
 interface RequestProps {
   openSuccessModal: (textProps: SuccessModalTextProps) => void;
@@ -16,6 +15,7 @@ interface RequestProps {
 
 export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorModal }) => {
   const [types, setTypes] = React.useState<IType[]>();
+  const [disable, setDisable] = React.useState<boolean>(false);
   const startDate = React.useRef<HTMLInputElement>(null);
   const endDate = React.useRef<HTMLInputElement>(null);
 
@@ -40,6 +40,8 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
 
         return ;
     }
+
+    setDisable(true);
 
     const result  = await createRequestByUserJWT(form);
 
@@ -66,6 +68,8 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
         body: messages
       });
     }
+
+    setDisable(false);
   }
 
   return(
@@ -83,7 +87,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
           <input ref={startDate} className="form-control rounded" type="date" name="startDate" id="startDate" required />
           <label htmlFor="endDate" className='light-gray-text-2 mt-3 mb-2'>END DATE</label>
           <input ref={endDate} className="form-control rounded" type="date" name="endDate" id="endDate" required />
-          <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`}>Submit</button>
+          <button type='submit' className={`btn btn-dark ${Styles.submitBtn}`} disabled={disable}>Submit</button>
         </form>
       </div>
     </div>
