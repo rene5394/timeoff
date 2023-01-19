@@ -18,7 +18,7 @@ instance.interceptors.response.use((response) => {
   return Promise.reject(error);
 });
 
-export const createRequest = async (form: any) =>{
+export const createRequest = async (form: any) => {
   const url = '/requests';
 
   try {
@@ -26,7 +26,8 @@ export const createRequest = async (form: any) =>{
       userId: parseInt(form.target.elements.userId.value),
       typeId: parseInt(form.target.elements.type.value),
       startDate: form.target.elements.start.value,
-      endDate: form.target.elements.end.value
+      endDate: form.target.elements.end.value,
+      comment: form.target.elements.comment.value
     });
     
     return result;

@@ -45,11 +45,16 @@ export const CreateRequestModal: React.FC<CreateRequestPopupProps> = ({ userId, 
               <Form.Label htmlFor="start" className="mt-3 mb-2">Start date</Form.Label>
               <Form.Control id="start" name="start" type="date" required />
             </Form.Group>
-            <Form.Group className="mb-4">
+            <Form.Group className="mb-2">
               <Form.Label htmlFor="end" className="light-gray-text-2 mt-3 mb-2">End date</Form.Label>
               <Form.Control id="end" name="end" type="date" required />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Form.Group className="mb-1">
+              <Form.Label htmlFor="end" className="light-gray-text-2 mt-3 mb-2">Comment</Form.Label>
+              <Form.Control as="textarea" id="comment" name="comment" required />
+              <Form.Text muted>Comment limit 300 characters</Form.Text>
+            </Form.Group>
+            <Button className="mt-4" variant="primary" type="submit">
               Submit
             </Button>
           </Form>
