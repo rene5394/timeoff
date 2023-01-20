@@ -10,6 +10,7 @@ import { IEmployee } from '../../../lib/domain/team/IEmployee';
 import { ITeam } from '../../../lib/domain/team/ITeam';
 import { Team } from '../../../common/enums/team.enum';
 import { SearchForm } from '../SearchForm';
+import { CreateBalanceModal } from '../../Modals/CreateBalanceModal';
 import { EditBalanceModal } from '../../Modals/EditBalanceModal';
 import { SuccessModalTextProps } from '../../Modals/SucessModal';
 import { ErrorModalTextProps } from '../../Modals/ErrorModal';
@@ -19,6 +20,7 @@ import { createRequest } from '../../../lib/api/timeoff/request';
 import { formatInTimeZone } from 'date-fns-tz';
 
 interface IUserData extends IUser {
+  balanceId?: number;
   compDays?: number;
   vacationDays?: number;
   teamName?: string;
@@ -29,6 +31,10 @@ export interface Balance {
   userId?: number;
   compDays?: string;
   vacationDays?: string;
+}
+
+export interface UpdateBalance extends Balance {
+  comment?: string;
 }
 
 interface StaffTableProps {
@@ -43,6 +49,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
   const [teams, setTeams] = React.useState<ITeam[]>();
   const [teamSelected, setTeamSelected] = React.useState<number>(0);
   const [searchText, setSearchText] = React.useState<string>('');
+  const [createBalanceModalVisibility, setCreateBalanceModalVisibility] = React.useState<boolean>(false);
   const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
   const [createRequestModalVisibility, setCreateRequestModalVisibility] = React.useState<boolean>(false);
   const [balance, setBalance] = React.useState<Balance>();
@@ -93,6 +100,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
 
       balances.map((balance: IBalance) => {
         if (user.id === balance.userId) {
+          obj.balanceId = balance.id;
           obj.compDays = balance.compDays;
           obj.vacationDays = balance.vacationDays;
         }
@@ -133,7 +141,17 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
     setActivePage(1);
   }
 
-  const openEditBalanceModal = (userId: number, balance: IBalance) => {
+  const openCreateBalanceModal = async(userId: number) => {
+    setBalance({
+      userId: userId
+    });
+
+    setCreateBalanceModalVisibility(true);
+  }
+
+  const openEditBalanceModal = async(userId: number) => {
+    const balance = await findOneBalanceByUserId(userId);
+
     setBalance({
       id: balance?.id,
       userId: userId,
@@ -144,13 +162,12 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
     setEditBalanceModalVisibility(true);
   }
 
-  const closeEditBalanceModal = () => {
-    setEditBalanceModalVisibility(false);
+  const closeCreateBalanceModal = () => {
+    setCreateBalanceModalVisibility(false);
   }
 
-  const editBalance = async(userId: number) => {
-    const balance = await findOneBalanceByUserId(userId);
-    openEditBalanceModal(userId, balance);
+  const closeEditBalanceModal = () => {
+    setEditBalanceModalVisibility(false);
   }
 
   const createNewBalance = async(form: any) => {
@@ -159,12 +176,13 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
     
     if (result.status === 201) {
       fillUserData(activePage);
-      closeEditBalanceModal();
+      closeCreateBalanceModal();
       openSuccessModal({
         title: 'Success',
         body: 'Balance created successfully'
       });
     } if (result.status === 400) {
+      console.log('Bad!');
       const messages = result.data.message;
       openErrorModal({
         title: 'Error',
@@ -267,9 +285,11 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   <td>{formatInTimeZone(new Date(userData.hiredate), 'America/El_Salvador', 'd MMMM Y')}</td>
                   {(hr === 1) &&
                     <td>
-                      <button onClick={() => editBalance(userData.id)} type="button" className="btn btn-warning btn-sm btn-rounded mb-2">
-                        Edit Balance
-                      </button>
+                      {userData.balanceId
+                        ? <button onClick={() => openEditBalanceModal(userData.id)} type="button" className="btn btn-warning btn-sm btn-rounded mb-2">Edit Balance</button>
+                        : <button onClick={() => openCreateBalanceModal(userData.id)} type="button" className="btn btn-warning btn-sm btn-rounded mb-2">Create Balance</button>
+                      }
+                      
                       <button onClick={() => createANewRequest(userData.id)} type="button" className="btn btn-success btn-sm btn-rounded">
                         Create Request
                       </button>
@@ -280,12 +300,18 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
           </tbody>
         </table>
         <AdvancedPagination activePage={activePage} numberOfPages={numberOfPages} changePage={changePage} />
+        <CreateBalanceModal
+          balance = {balance}
+          setBalance = {setBalance}
+          visibility = {createBalanceModalVisibility}
+          closeModal = {closeCreateBalanceModal}
+          createNewBalance = {createNewBalance}
+        />
         <EditBalanceModal
           balance = {balance}
           setBalance = {setBalance}
           visibility = {editBalanceModalVisibility}
           closeModal = {closeEditBalanceModal}
-          createNewBalance = {createNewBalance}
           updateCurrentBalance = {updateCurrentBalance}
         />
         <CreateRequestModal

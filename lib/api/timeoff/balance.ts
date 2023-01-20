@@ -105,7 +105,8 @@ export const updateBalance = async(form: any) => {
   try {
     const result = await instance.patch<IBalance>(url, {
       compDays: parseInt(form.target.elements.compDays.value),
-      vacationDays: parseInt(form.target.elements.vacationDays.value)
+      vacationDays: parseInt(form.target.elements.vacationDays.value),
+      comment: form.target.elements.comment.value
     });
 
     return result;
