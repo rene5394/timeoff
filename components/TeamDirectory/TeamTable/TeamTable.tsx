@@ -39,8 +39,6 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
   const [activePage, setActivePage] = React.useState<number>(1);
   const [team, setTeam] = React.useState<ITeam>();
   const [searchText, setSearchText] = React.useState<string>('');
-  const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
-  const [balance, setBalance] = React.useState<Balance>();
 
   React.useEffect(() => {
     fillUserData(1);
@@ -96,50 +94,6 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
     setActivePage(1);
   }
 
-  const closeEditBalanceModal = () => {
-    setEditBalanceModalVisibility(false);
-  }
-
-  const createNewBalance = async(form: any) => {
-    form.preventDefault();
-    const result = await createBalance(form);
-    
-    if (result.status === 201) {
-      fillUserData(activePage);
-      closeEditBalanceModal();
-      openSuccessModal({
-        title: 'Success',
-        body: 'Balance created successfully'
-      });
-    } if (result.status === 400) {
-      const messages = result.data.message;
-      openErrorModal({
-        title: 'Error',
-        body: messages
-      });
-    }
-  }
-  
-  const updateCurrentBalance = async(form: any) => {
-    form.preventDefault();
-    const result = await updateBalance(form);
-
-    if (result.status === 200) {
-      fillUserData(activePage);
-      closeEditBalanceModal();
-      openSuccessModal({
-        title: 'Success',
-        body: 'Balance updated successfully'
-      });
-    } if (result.status === 400) {
-      const messages = result.data.message;
-      openErrorModal({
-        title: 'Error',
-        body: messages
-      });
-    }
-  }
-
   return(
     <>
       <SearchForm changeText={changeText} />
@@ -177,14 +131,6 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
           </tbody>
         </table>
         <AdvancedPagination activePage={activePage} numberOfPages={numberOfPages} changePage={changePage} />
-        <EditBalanceModal
-          balance = {balance}
-          setBalance = {setBalance}
-          visibility = {editBalanceModalVisibility}
-          closeModal = {closeEditBalanceModal}
-          createNewBalance = {createNewBalance}
-          updateCurrentBalance = {updateCurrentBalance}
-        />
       </div>
     </>
   );
