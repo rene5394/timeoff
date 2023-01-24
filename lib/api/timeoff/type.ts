@@ -31,6 +31,13 @@ export const findAllAppTypes = async() => {
   return result.data;
 };
 
+export const findAllAdminTypes = async() => {
+  const url = '/types?app=false';
+  const result = await instance.get<IType[]>(url);
+
+  return result.data;
+};
+
 export const findOneType = async(id: number) => {
   const url = `/types/${id}`;
   const result = await instance.get<IType>(url);

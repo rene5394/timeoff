@@ -36,6 +36,24 @@ export const createRequest = async (form: any) => {
   }
 }
 
+export const createRequestByCoach = async (form: any) => {
+  const url = '/requests/user/coach';
+
+  try {
+    const result = await instance.post<any>(url, {
+      userId: parseInt(form.target.elements.userId.value),
+      typeId: parseInt(form.target.elements.type.value),
+      startDate: form.target.elements.start.value,
+      endDate: form.target.elements.end.value,
+      comment: form.target.elements.comment.value
+    });
+    
+    return result;
+  } catch (error: any) {
+    return error.response;
+  }
+}
+
 export const createRequestByUserJWT = async (form:any) => {
   const url = '/requests/user/me';
 
