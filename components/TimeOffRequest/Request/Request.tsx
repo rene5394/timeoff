@@ -16,8 +16,8 @@ interface RequestProps {
 export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorModal }) => {
   const [types, setTypes] = React.useState<IType[]>();
   const [disable, setDisable] = React.useState<boolean>(false);
-  const startDate = React.useRef<HTMLInputElement>(null);
-  const endDate = React.useRef<HTMLInputElement>(null);
+  let startDate = React.useRef<HTMLInputElement | null>(null);
+  let endDate = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
     const fillTypes = async() => {
@@ -55,8 +55,13 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
         requestType = 'Vacations';
       } if (data.typeId == RequestType.permisoSinGoce) {
         requestType = 'Permiso sin goce';
-      } 
+      }
 
+      if (startDate.current != null && endDate.current != null) {
+        startDate.current.value = '';
+        endDate.current.value = '';
+      }
+      
       openSuccessModal({
         title: 'Success',
         body: `${requestType} request made from ${formatInTimeZone(new Date(data.startDate), 'America/El_Salvador', 'd MMMM Y')} to ${formatInTimeZone(new Date(data.endDate), 'America/El_Salvador', 'd MMMM Y')}`
