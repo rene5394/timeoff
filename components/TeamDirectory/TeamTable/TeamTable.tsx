@@ -76,7 +76,7 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
           obj.compDays = balance.compDays;
           obj.vacationDays = balance.vacationDays;
         }
-      });
+      });      
 
       objs.push(obj);
     });
@@ -163,7 +163,7 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
                   </td>
                   <td>{userData.compDays?.toString()}</td>
                   <td>{userData.vacationDays?.toString()}</td>
-                  <td>{formatInTimeZone(new Date(userData.hiredate), 'America/El_Salvador', 'd MMMM Y')}</td>
+                  <td>{formatInTimeZone(new Date(userData.hiredate), 'Etc/UTC', 'd MMMM Y')}</td>
                   <td>                      
                     <button onClick={() => createANewRequest(userData.id)} type="button" className="btn btn-success btn-sm btn-rounded">
                       Create Request
