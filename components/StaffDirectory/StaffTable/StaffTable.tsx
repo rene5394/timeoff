@@ -52,6 +52,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
   const [createBalanceModalVisibility, setCreateBalanceModalVisibility] = React.useState<boolean>(false);
   const [editBalanceModalVisibility, setEditBalanceModalVisibility] = React.useState<boolean>(false);
   const [createRequestModalVisibility, setCreateRequestModalVisibility] = React.useState<boolean>(false);
+  const [createRequestModalDisable, setCreateRequestModalDisable] = React.useState<boolean>(false);
   const [balance, setBalance] = React.useState<Balance>();
   const [userId, setUserId] = React.useState<number>();
   const [hr, setHr] = React.useState<number>();
@@ -226,6 +227,9 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
 
   const createNewRequest = async(form: any) => {
     form.preventDefault();
+
+    setCreateRequestModalDisable(true);
+
     const result = await createRequest(form);
     
     if (result.status === 201) {
@@ -244,6 +248,8 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
         body: messages
       });
     }
+
+    setCreateRequestModalDisable(false);
   }
 
   return(
@@ -319,6 +325,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
         visibility = {createRequestModalVisibility}
         closeModal = {closeCreateRequestModal}
         createNewRequest ={createNewRequest}
+        createRequestModalDisable = {createRequestModalDisable}
         />
       </div>
     </>
