@@ -40,6 +40,7 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
   const [team, setTeam] = React.useState<ITeam>();
   const [searchText, setSearchText] = React.useState<string>('');
   const [createRequestModalVisibility, setCreateRequestModalVisibility] = React.useState<boolean>(false);
+  const [createRequestModalDisable, setCreateRequestModalDisable] = React.useState<boolean>(false);
   const [userId, setUserId] = React.useState<number>();
 
   React.useEffect(() => {
@@ -100,6 +101,9 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
 
   const createNewRequest = async(form: any) => {
     form.preventDefault();
+
+    setCreateRequestModalDisable(true);
+
     const result = await createRequestByCoach(form);
     
     if (result.status === 201) {
@@ -118,6 +122,8 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
         body: messages
       });
     }
+
+    setCreateRequestModalDisable(false);
   }
 
   const changePage = (page: number) => {
@@ -179,6 +185,7 @@ export const TeamTable: React.FC<TeamTableProps> = ({ openSuccessModal, openErro
           visibility = {createRequestModalVisibility}
           closeModal = {closeCreateRequestModal}
           createNewRequest ={createNewRequest}
+          createRequestModalDisable = {createRequestModalDisable}
         />
       </div>
     </>

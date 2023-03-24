@@ -10,9 +10,10 @@ export interface CreateRequestPopupProps {
   visibility: boolean;
   closeModal: () => void;
   createNewRequest: (form: any) => void;
+  createRequestModalDisable: boolean;
 }
 
-export const CreateRequestCoachModal: React.FC<CreateRequestPopupProps> = ({ userId, visibility, closeModal, createNewRequest }) => {
+export const CreateRequestCoachModal: React.FC<CreateRequestPopupProps> = ({ userId, visibility, closeModal, createNewRequest, createRequestModalDisable }) => {
   const [types, setTypes] = React.useState<IType[]>();
   
   React.useEffect(() => {
@@ -54,7 +55,7 @@ export const CreateRequestCoachModal: React.FC<CreateRequestPopupProps> = ({ use
               <Form.Control as="textarea" id="comment" name="comment" required />
               <Form.Text muted>Comment limit 300 characters</Form.Text>
             </Form.Group>
-            <Button className="mt-4" variant="primary" type="submit">
+            <Button className="mt-4" variant="primary" type="submit" disabled={createRequestModalDisable}>
               Submit
             </Button>
           </Form>
