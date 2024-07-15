@@ -64,7 +64,7 @@ export const Request: React.FC<RequestProps> = ({ openSuccessModal, openErrorMod
       
       openSuccessModal({
         title: 'Success',
-        body: `${requestType} request made from ${formatInTimeZone(new Date(data.startDate), 'America/El_Salvador', 'd MMMM Y')} to ${formatInTimeZone(new Date(data.endDate), 'America/El_Salvador', 'd MMMM Y')}`
+        body: `${requestType} request made from ${formatInTimeZone(new Date(data.startDate), 'America/El_Salvador', 'd MMMM yyyy')} to ${formatInTimeZone(new Date(data.endDate), 'America/El_Salvador', 'd MMMM yyyy')}`
       });
     } if (result.status === 400) {
       const messages = result.data.message;

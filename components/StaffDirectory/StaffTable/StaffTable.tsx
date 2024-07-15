@@ -288,7 +288,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({ openSuccessModal, openEr
                   <td>{userData.teamName}</td>
                   <td>{userData.compDays?.toString()}</td>
                   <td>{userData.vacationDays?.toString()}</td>
-                  <td>{formatInTimeZone(new Date(userData.hiredate), 'Etc/UTC', 'd MMMM Y')}</td>
+                  <td>{formatInTimeZone(new Date(userData.hiredate), 'Etc/UTC', 'd MMMM yyyy')}</td>
                   {(hr === 1) &&
                     <td>
                       {userData.balanceId

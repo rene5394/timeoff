@@ -41,7 +41,7 @@ export const ShowRequests = () => {
           <div key={request.id}>
             <h5><FontAwesomeIcon icon = {['fas','warning']} />{typeSearch(request.typeId)}</h5>
             <p>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</p>
-            <p>{formatInTimeZone(new Date(request.startDate), 'America/El_Salvador', 'd MMMM Y')}</p>
+            <p>{formatInTimeZone(new Date(request.startDate), 'America/El_Salvador', 'd MMMM yyyy')}</p>
           </div>
           )
       }

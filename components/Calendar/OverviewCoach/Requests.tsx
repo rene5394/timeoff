@@ -65,7 +65,7 @@ export const ShowRequests = (usersIds: any[]) => {
           <div key={request.id}>
             <h5 className={Styles.Comp}><FontAwesomeIcon  icon = {['fas','tree']} /> {typeSearch(request.typeId)} - {searchUserName(request.userId)}</h5>
             <p>{String(countDaysbyType(request.typeId,request.startDate,request.endDate))}d</p>
-            <p>{formatInTimeZone(new Date(request.startDate),'America/El_Salvador', 'd MMMM Y')}</p>
+            <p>{formatInTimeZone(new Date(request.startDate),'America/El_Salvador', 'd MMMM yyyy')}</p>
           </div>
           )
       }

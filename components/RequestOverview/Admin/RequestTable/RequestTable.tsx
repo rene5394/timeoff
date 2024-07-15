@@ -325,10 +325,10 @@ export const RequestTable: React.FC<RequestTableProps> = ({ openSuccessModal, op
                 <tr key={requestData.id.toString()}>
                   <td>{requestData.name}</td>
                   <td>{requestData.type.toString()}</td>
-                  <td>{formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM Y')}</td>
-                  <td>{formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM Y')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM yyyy')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM yyyy')}</td>
                   <td>{requestData.duration.toString()}</td>
-                  <td>{formatInTimeZone(new Date(requestData.createdAt), 'America/El_Salvador', 'd MMMM Y')}</td>
+                  <td>{formatInTimeZone(new Date(requestData.createdAt), 'America/El_Salvador', 'd MMMM yyyy')}</td>
                   <td>
                     {requestData.statusId === RequestStatus.approved &&
                       <button className="btn btn-success">{requestData.lastTransaction}</button>

@@ -20,6 +20,7 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
     const fillRequests = async() => {
       const result = await findAllRequestByUserJWTAndStatus(status);
       const resultFilter = result.filter(req => new Date(req.startDate).getFullYear() == year);
+      console.log('RESULT FILTER', resultFilter);
 
       setRequests(resultFilter);
     }
@@ -50,8 +51,8 @@ export const RequestSummaryByStatus = (status: string, year: number) => {
         {requests?.map((request, i) => 
           <tr key={i}>
             <td scope="row"><b>{typeSearch(request.typeId)}</b></td>
-            <td>{formatInTimeZone(new Date(request.startDate), 'America/El_Salvador', 'd MMMM Y')}</td>
-            <td>{formatInTimeZone(new Date(request.endDate), 'America/El_Salvador', 'd MMMM Y')}</td>
+            <td>{formatInTimeZone(new Date(request.startDate), 'America/El_Salvador', 'd MMMM yyyy')}</td>
+            <td>{formatInTimeZone(new Date(request.endDate), 'America/El_Salvador', 'd MMMM yyyy')}</td>
             <td>All Day</td>
             <td>{String(countDaysbyType(request.typeId, request.startDate, request.endDate))}d</td>
             <td>No comments...</td>

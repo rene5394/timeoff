@@ -16,7 +16,7 @@ export const EventsModal: React.FC<CalendarEventsModalProps> = ({  events, visib
     <>
       <Modal show={visibility} onHide={closeModal} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>Time-Off requests on { date && formatInTimeZone(new Date(date), 'America/El_Salvador', 'd MMMM Y')} </Modal.Title>
+          <Modal.Title>Time-Off requests on { date && formatInTimeZone(new Date(date), 'America/El_Salvador', 'd MMMM yyyy')} </Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-4 pb-0" >
           <ul className='list-group'>

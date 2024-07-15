@@ -26,8 +26,8 @@ export const CancelRequestModal: React.FC<CancelRequestModalProps> = ({ requestD
           <h2 className="text-danger text-center mb-3">Are you sure you want to<br /> cancel this request?</h2>
           <p className="mx-5"><b>User:</b> {requestData?.name}</p>
           <p className="mx-5"><b>Duration:</b> {requestData?.duration?.toString()}</p>
-          <p className="mx-5"><b>From:</b> {requestData?.startDate && formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM Y')}</p>
-          <p className="mx-5"><b>To:</b> {requestData?.endDate && formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM Y')}</p>
+          <p className="mx-5"><b>From:</b> {requestData?.startDate && formatInTimeZone(new Date(requestData.startDate), 'America/El_Salvador', 'd MMMM yyyy')}</p>
+          <p className="mx-5"><b>To:</b> {requestData?.endDate && formatInTimeZone(new Date(requestData.endDate), 'America/El_Salvador', 'd MMMM yyyy')}</p>
         </Modal.Body>
         <Modal.Footer className="border-0">
           <Button variant="secondary" className="px-4" onClick={closeModal}>No</Button>

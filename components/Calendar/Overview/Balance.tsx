@@ -52,7 +52,7 @@ export const Balance = () => {
       });
     }
 
-    return formatInTimeZone(nearest, 'America/El_Salvador', 'd MMMM Y');
+    return formatInTimeZone(nearest, 'America/El_Salvador', 'd MMMM yyyy');
   }
 
 
